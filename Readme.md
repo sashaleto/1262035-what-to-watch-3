@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александра](https://up.htmlacademy.ru/react/3/user/1262035).
-* Наставник: `Неизвестно`.
+* Наставник: [Захар Овчаров](https://up.htmlacademy.ru/react/3/user/906939).
 
 ---
 
