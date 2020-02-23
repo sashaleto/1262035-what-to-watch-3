@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const getPosterName = (title) => {
   return title.toLowerCase().replace(/[.,!:]/g, ``).split(` `).join(`-`);
@@ -9,9 +10,7 @@ const getUniqueKey = () => {
   return String(Date.parse(now)) + String(Math.random());
 };
 
-const Main = (props) => {
-  // eslint-disable-next-line react/prop-types
-  const {films, title, genre, year} = props;
+const Main = ({filmsTitles, title, genre, year}) => {
 
   return <React.Fragment>
     <section className="movie-card">
@@ -40,7 +39,7 @@ const Main = (props) => {
       <div className="movie-card__wrap">
         <div className="movie-card__info">
           <div className="movie-card__poster">
-            <img src="img/the-grand-budapest-hotel-poster.jpg" alt={title}
+            <img src={`img/${getPosterName(title)}-poster.jpg`} alt={title}
               width="218"
               height="327"/>
           </div>
@@ -108,14 +107,13 @@ const Main = (props) => {
         </ul>
 
         <div className="catalog__movies-list">
-          {/* eslint-disable-next-line react/prop-types */}
-          {films.map((film) => (<article key={getUniqueKey()} className="small-movie-card catalog__movies-card">
+          {filmsTitles.map((filmTitle) => (<article key={getUniqueKey()} className="small-movie-card catalog__movies-card">
             <div className="small-movie-card__image">
-              <img src={`img/${getPosterName(film)}.jpg`}
-                alt={film} width="280" height="175"/>
+              <img src={`img/${getPosterName(filmTitle)}.jpg`}
+                alt={filmTitle} width="280" height="175"/>
             </div>
             <h3 className="small-movie-card__title">
-              <a className="small-movie-card__link" href="movie-page.html">{film}</a>
+              <a className="small-movie-card__link" href="movie-page.html">{filmTitle}</a>
             </h3>
           </article>))}
         </div>
@@ -140,6 +138,13 @@ const Main = (props) => {
       </footer>
     </div>
   </React.Fragment>;
+};
+
+Main.propTypes = {
+  filmsTitles: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+  genre: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
 };
 
 export default Main;
