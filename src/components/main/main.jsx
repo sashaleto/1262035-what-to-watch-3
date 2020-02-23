@@ -10,12 +10,12 @@ const getUniqueKey = () => {
   return String(Date.parse(now)) + String(Math.random());
 };
 
-const Main = ({filmsTitles, title, genre, year}) => {
+const Main = ({filmsTitles, movieData}) => {
 
   return <React.Fragment>
     <section className="movie-card">
       <div className="movie-card__bg">
-        <img src={`img/bg-${getPosterName(title)}.jpg`} alt={title}/>
+        <img src={`img/bg-${getPosterName(movieData.title)}.jpg`} alt={movieData.title}/>
       </div>
 
       <h1 className="visually-hidden">WTW</h1>
@@ -39,16 +39,16 @@ const Main = ({filmsTitles, title, genre, year}) => {
       <div className="movie-card__wrap">
         <div className="movie-card__info">
           <div className="movie-card__poster">
-            <img src={`img/${getPosterName(title)}-poster.jpg`} alt={title}
+            <img src={`img/${getPosterName(movieData.title)}-poster.jpg`} alt={movieData.title}
               width="218"
               height="327"/>
           </div>
 
           <div className="movie-card__desc">
-            <h2 className="movie-card__title">{title}</h2>
+            <h2 className="movie-card__title">{movieData.title}</h2>
             <p className="movie-card__meta">
-              <span className="movie-card__genre">{genre}</span>
-              <span className="movie-card__year">{year}</span>
+              <span className="movie-card__genre">{movieData.genre}</span>
+              <span className="movie-card__year">{movieData.year}</span>
             </p>
 
             <div className="movie-card__buttons">
@@ -142,9 +142,11 @@ const Main = ({filmsTitles, title, genre, year}) => {
 
 Main.propTypes = {
   filmsTitles: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
-  genre: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
+  movieData: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    genre: PropTypes.string.isRequired,
+    year: PropTypes.number.isRequired,
+  })
 };
 
 export default Main;
