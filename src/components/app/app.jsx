@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Main from '../main/main.jsx';
 
+const onFilmTitleClick = () => {};
+
 const App = ({filmsTitles, movieData}) => {
   return (
-    <Main filmsTitles={filmsTitles} movieData={movieData}/>
+    <Main filmsTitles={filmsTitles} movieData={movieData} onFilmTitleClick={onFilmTitleClick}/>
   );
 };
 

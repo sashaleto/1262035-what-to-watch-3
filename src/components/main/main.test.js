@@ -13,7 +13,7 @@ const FILMS_TITLES = [`The Gentlemen`, `Sonic the Hedgehog`, `Guns Akimbo`, `Blo
 it(`Render Main page`, () => {
   const tree = renderer
     .create(<Main
-      filmsTitles={FILMS_TITLES} movieData={movieData}
+      filmsTitles={FILMS_TITLES} movieData={movieData} onFilmTitleClick={() => {}}
     />)
     .toJSON();
 
