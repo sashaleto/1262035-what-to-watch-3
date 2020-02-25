@@ -10,7 +10,7 @@ const getUniqueKey = () => {
   return String(Date.parse(now)) + String(Math.random());
 };
 
-const Main = ({filmsTitles, movieData}) => {
+const Main = ({filmsTitles, movieData, onFilmTitleClick}) => {
 
   return <React.Fragment>
     <section className="movie-card">
@@ -112,7 +112,7 @@ const Main = ({filmsTitles, movieData}) => {
               <img src={`img/${getPosterName(filmTitle)}.jpg`}
                 alt={filmTitle} width="280" height="175"/>
             </div>
-            <h3 className="small-movie-card__title">
+            <h3 className="small-movie-card__title" onClick={onFilmTitleClick}>
               <a className="small-movie-card__link" href="movie-page.html">{filmTitle}</a>
             </h3>
           </article>))}
@@ -146,7 +146,8 @@ Main.propTypes = {
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
-  })
+  }),
+  onFilmTitleClick: PropTypes.func.isRequired
 };
 
 export default Main;
