@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render MovieCard 1`] = `
+<article
+  className="small-movie-card catalog__movies-card"
+  onMouseEnter={[Function]}
+>
+  <div
+    className="small-movie-card__image"
+  >
+    <img
+      alt="The Great Gatsby"
+      height="175"
+      src="img/the-great-gatsby.jpg"
+      width="280"
+    />
+  </div>
+  <h3
+    className="small-movie-card__title"
+    onClick={[Function]}
+  >
+    <a
+      className="small-movie-card__link"
+      href="movie-page.html"
+    >
+      The Great Gatsby
+    </a>
+  </h3>
+</article>
+`;
