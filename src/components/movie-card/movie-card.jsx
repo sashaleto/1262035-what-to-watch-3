@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const getPosterName = (title) => {
-  return title.toLowerCase().replace(/[.,!:]/g, ``).split(` `).join(`-`);
-};
+import {getPosterName} from '../../utils';
 
 const MovieCard = ({film, onFilmTitleClick, onMovieCardHover}) => {
   return (
