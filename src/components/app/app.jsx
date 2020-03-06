@@ -4,14 +4,14 @@ import Main from '../main/main.jsx';
 
 const onFilmTitleClick = () => {};
 
-const App = ({filmsTitles, movieData}) => {
+const App = ({films, movieData}) => {
   return (
-    <Main filmsTitles={filmsTitles} movieData={movieData} onFilmTitleClick={onFilmTitleClick}/>
+    <Main films={films} movieData={movieData} onFilmTitleClick={onFilmTitleClick}/>
   );
 };
 
 App.propTypes = {
-  filmsTitles: PropTypes.array.isRequired,
+  films: PropTypes.array.isRequired,
   movieData: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,

@@ -1,12 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import App from "./app.jsx";
-
-const movieData = {
-  title: `The Great Gatsby`,
-  genre: `Drama`,
-  year: 2013,
-};
+import MoviesList from './movies-list';
 
 const films = [
   {
@@ -20,12 +14,12 @@ const films = [
   }
 ];
 
-it(`Render App`, () => {
+it(`Render Movies List`, () => {
   const tree = renderer
-    .create(<App
-      films={films} movieData={movieData}
-    />)
-    .toJSON();
+        .create(<MoviesList
+          films={films} onFilmTitleClick={() => {}}
+        />)
+        .toJSON();
 
   expect(tree).toMatchSnapshot();
 });
