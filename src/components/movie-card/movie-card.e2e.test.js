@@ -41,3 +41,24 @@ it(`Simulates hover on MovieCard and passing the arguments to handler`, () => {
   expect(movieCardHoverHandler.mock.calls.length).toBe(1);
   expect(movieCardHoverHandler.mock.calls[0][0]).toMatchObject(film);
 });
+
+it(`Simulates click on MovieCard and passing the arguments to handler`, () => {
+  const movieCardClickHandler = jest.fn();
+  const movieCardHoverHandler = jest.fn();
+  const preventDefault = {
+    preventDefault: jest.fn()
+  };
+
+  const card = shallow(
+      <MovieCard
+        film={film}
+        onMovieCardClick={() => movieCardClickHandler(film.id)}
+        onMovieCardHover={() => movieCardHoverHandler(film)}
+      />
+  );
+
+  card.simulate(`click`, preventDefault);
+
+  expect(movieCardClickHandler.mock.calls.length).toBe(1);
+  expect(movieCardClickHandler.mock.calls[0][0]).toBe(film.id);
+});
