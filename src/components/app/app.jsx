@@ -30,7 +30,7 @@ class App extends PureComponent {
     }
 
     return (
-      <Main films={ films } movieData={ movieData } onFilmTitleClick={ this._handlerMovieCardClick }/>
+      <Main films={ films } movieData={ movieData } onMovieCardClick={ this._handlerMovieCardClick }/>
     );
   }
 
