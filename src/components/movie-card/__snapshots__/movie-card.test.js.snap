@@ -3,27 +3,27 @@
 exports[`Render MovieCard 1`] = `
 <article
   className="small-movie-card catalog__movies-card"
+  onClick={[Function]}
   onMouseEnter={[Function]}
 >
   <div
     className="small-movie-card__image"
   >
     <img
-      alt="The Great Gatsby"
+      alt="Gangs of new york"
       height="175"
-      src="img/the-great-gatsby.jpg"
+      src="https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg"
       width="280"
     />
   </div>
   <h3
     className="small-movie-card__title"
-    onClick={[Function]}
   >
     <a
       className="small-movie-card__link"
       href="movie-page.html"
     >
-      The Great Gatsby
+      Gangs of new york
     </a>
   </h3>
 </article>
