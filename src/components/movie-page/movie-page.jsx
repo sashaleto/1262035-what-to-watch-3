@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {movieLevelMapper} from '../../utils';
 
 const MoviePage = ({movie}) => {
   return (
@@ -7,7 +8,7 @@ const MoviePage = ({movie}) => {
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
-            <img src={movie.poster.bg} alt={movie.title}/>
+            <img src={movie.backgroundImage} alt={movie.title}/>
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -33,7 +34,7 @@ const MoviePage = ({movie}) => {
               <h2 className="movie-card__title">{movie.title}</h2>
               <p className="movie-card__meta">
                 <span className="movie-card__genre">{movie.genre}</span>
-                <span className="movie-card__year">{movie.releaseYear}</span>
+                <span className="movie-card__year">{movie.released}</span>
               </p>
 
               <div className="movie-card__buttons">
@@ -58,7 +59,7 @@ const MoviePage = ({movie}) => {
         <div className="movie-card__wrap movie-card__translate-top">
           <div className="movie-card__info">
             <div className="movie-card__poster movie-card__poster--big">
-              <img src={movie.poster.big} alt={`${movie.title} poster`}
+              <img src={movie.posterImage} alt={`${movie.title} poster`}
                 width="218"
                 height="327"/>
             </div>
@@ -81,7 +82,7 @@ const MoviePage = ({movie}) => {
               <div className="movie-rating">
                 <div className="movie-rating__score">{movie.rating.score}</div>
                 <p className="movie-rating__meta">
-                  <span className="movie-rating__level">{movie.rating.level}</span>
+                  <span className="movie-rating__level">{movieLevelMapper(movie.rating.score)}</span>
                   <span className="movie-rating__count">{movie.rating.count} ratings</span>
                 </p>
               </div>
@@ -166,14 +167,11 @@ MoviePage.propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    releaseYear: PropTypes.number.isRequired,
-    poster: PropTypes.shape({
-      big: PropTypes.string.isRequired,
-      bg: PropTypes.string.isRequired,
-    }).isRequired,
+    released: PropTypes.number.isRequired,
+    posterImage: PropTypes.string.isRequired,
+    backgroundImage: PropTypes.string.isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     director: PropTypes.string.isRequired,

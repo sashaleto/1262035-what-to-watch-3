@@ -20,7 +20,7 @@ class App extends PureComponent {
             <Main films={ films } movieData={ movieData } onFilmTitleClick={ onFilmTitleClick }/>
           </Route>
           <Route exact path="/movie-page">
-            <MoviePage movie={ movieInfo }/>
+            <MoviePage movie={ films[0] }/>
           </Route>
         </Switch>
       </BrowserRouter>
@@ -35,7 +35,6 @@ App.propTypes = {
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
   }),
-  movieInfo: PropTypes.object.isRequired,
 };
 
 export default App;
