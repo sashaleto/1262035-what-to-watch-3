@@ -1,8 +1,8 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MovieCard from './movie-card';
+import MoviePage from "./movie-page";
 
-const film = {
+const movie = {
   title: `Gangs of new york`,
   posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
   previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg`,
@@ -21,9 +21,7 @@ const film = {
 
 it(`Render MovieCard`, () => {
   const tree = renderer
-        .create(<MovieCard
-          film={film} onMovieCardClick={() => {}} onMovieCardHover={() => {}}
-        />)
+        .create(<MoviePage movie={movie} />)
         .toJSON();
 
   expect(tree).toMatchSnapshot();

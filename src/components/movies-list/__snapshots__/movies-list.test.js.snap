@@ -6,105 +6,79 @@ exports[`Render Movies List 1`] = `
 >
   <article
     className="small-movie-card catalog__movies-card"
+    onClick={[Function]}
     onMouseEnter={[Function]}
   >
     <div
       className="small-movie-card__image"
     >
       <img
-        alt="The Gentlemen"
+        alt="Gangs of new york"
         height="175"
-        src="img/the-gentlemen.jpg"
+        src="https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg"
         width="280"
       />
     </div>
     <h3
       className="small-movie-card__title"
-      onClick={[Function]}
     >
       <a
         className="small-movie-card__link"
         href="movie-page.html"
       >
-        The Gentlemen
+        Gangs of new york
       </a>
     </h3>
   </article>
   <article
     className="small-movie-card catalog__movies-card"
+    onClick={[Function]}
     onMouseEnter={[Function]}
   >
     <div
       className="small-movie-card__image"
     >
       <img
-        alt="Sonic the Hedgehog"
+        alt="Seven Years in Tibet"
         height="175"
-        src="img/sonic-the-hedgehog.jpg"
+        src="https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/seven-years-in-tibet.jpg"
         width="280"
       />
     </div>
     <h3
       className="small-movie-card__title"
-      onClick={[Function]}
     >
       <a
         className="small-movie-card__link"
         href="movie-page.html"
       >
-        Sonic the Hedgehog
+        Seven Years in Tibet
       </a>
     </h3>
   </article>
   <article
     className="small-movie-card catalog__movies-card"
+    onClick={[Function]}
     onMouseEnter={[Function]}
   >
     <div
       className="small-movie-card__image"
     >
       <img
-        alt="Guns Akimbo"
+        alt="Orlando"
         height="175"
-        src="img/guns-akimbo.jpg"
+        src="https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/orlando.jpg"
         width="280"
       />
     </div>
     <h3
       className="small-movie-card__title"
-      onClick={[Function]}
     >
       <a
         className="small-movie-card__link"
         href="movie-page.html"
       >
-        Guns Akimbo
-      </a>
-    </h3>
-  </article>
-  <article
-    className="small-movie-card catalog__movies-card"
-    onMouseEnter={[Function]}
-  >
-    <div
-      className="small-movie-card__image"
-    >
-      <img
-        alt="Bloodshot"
-        height="175"
-        src="img/bloodshot.jpg"
-        width="280"
-      />
-    </div>
-    <h3
-      className="small-movie-card__title"
-      onClick={[Function]}
-    >
-      <a
-        className="small-movie-card__link"
-        href="movie-page.html"
-      >
-        Bloodshot
+        Orlando
       </a>
     </h3>
   </article>
