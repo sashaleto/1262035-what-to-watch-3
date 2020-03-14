@@ -14,6 +14,7 @@ export const films = [
     genre: `Crime`,
     released: 2002,
     id: 1,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
   }, {
     title: `Seven Years in Tibet`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
@@ -29,6 +30,7 @@ export const films = [
     genre: `Adventure`,
     released: 1997,
     id: 2,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
   }, {
     title: `Orlando`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Orlando.jpg`,
@@ -44,6 +46,7 @@ export const films = [
     genre: `Drama`,
     released: 1992,
     id: 3,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
   }, {
     title: `A Star Is Born`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/A_Star_Is_Born.jpg`,
@@ -59,6 +62,7 @@ export const films = [
     genre: `Drama`,
     released: 2018,
     id: 4,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
   }, {
     title: `Pulp Fiction`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Pulp_Fiction.jpg`,
@@ -74,6 +78,7 @@ export const films = [
     genre: `Crime`,
     released: 1994,
     id: 5,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
   }, {
     title: `What We Do in the Shadows`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/What-We-Do-in-the-Shadows.jpg`,
@@ -89,6 +94,7 @@ export const films = [
     genre: `Comedy`,
     released: 2019,
     id: 6,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/c/cf/2018-12-25_savoureuse-belfort.webm`,
   }, {
     title: `Johnny English`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Johnny_English.jpg`,
@@ -104,6 +110,7 @@ export const films = [
     genre: `Comedy`,
     released: 2003,
     id: 7,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/5/53/Diversity_2019_11.webm`,
   }, {
     title: `Snatch`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Snatch.jpg`,
@@ -119,5 +126,6 @@ export const films = [
     genre: `Comedy`,
     released: 2000,
     id: 8,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
   },
 ];
