@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MovieCard from './movie-card';
+import VideoPlayer from "./video-player";
 
 const film = {
   title: `Gangs of new york`,
@@ -17,19 +17,18 @@ const film = {
   genre: `Crime`,
   released: 2002,
   id: 1,
-  trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
+  trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
 };
 
-it(`Render MovieCard`, () => {
+it(`Render VideoPlayer`, () => {
   const tree = renderer
-        .create(<MovieCard
-          film={film}
-          onMovieCardClick={() => {}}
-          onMovieCardHover={() => {}}
-          onMovieCardLeave={() => {}}
-          isHovered={false}
-        />)
-        .toJSON();
+    .create(<VideoPlayer
+      src={film.trailerLink}
+      isAutoplay={true}
+      isMuted={true}
+      posterURL={film.posterImage}
+    />)
+    .toJSON();
 
   expect(tree).toMatchSnapshot();
 });

@@ -7,20 +7,33 @@ const getUniqueKey = () => {
   return String(Date.parse(now)) + String(Math.random());
 };
 
+const TEASER_LAG = 1000;
+
 class MoviesList extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {activeCard: null};
     this._handleMovieCardHover = this._handleMovieCardHover.bind(this);
+    this._handleMovieCardLeave = this._handleMovieCardLeave.bind(this);
+
+    this._timerId = null;
   }
 
   _handleMovieCardHover(film) {
-    this.setState({activeCard: film});
+    this._timerId = setTimeout(() => {
+      this.setState({activeCard: film});
+    }, TEASER_LAG);
+  }
+
+  _handleMovieCardLeave() {
+    clearTimeout(this._timerId);
+    this.setState({activeCard: null});
   }
 
   render() {
     const {films, onMovieCardClick} = this.props;
+    const {activeCard} = this.state;
     return (
       <div className="catalog__movies-list">
         { films.map((film) => (
@@ -28,7 +41,9 @@ class MoviesList extends PureComponent {
             key={ getUniqueKey() }
             film={ film }
             onMovieCardHover={this._handleMovieCardHover}
+            onMovieCardLeave={this._handleMovieCardLeave}
             onMovieCardClick={onMovieCardClick}
+            isHovered={activeCard === film}
           />
         )) }
       </div>
