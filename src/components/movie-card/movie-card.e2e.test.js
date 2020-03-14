@@ -22,6 +22,7 @@ const film = {
   genre: `Crime`,
   released: 2002,
   id: 1,
+  trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
 };
 
 it(`Simulates hover on MovieCard and passing the arguments to handler`, () => {
@@ -33,6 +34,8 @@ it(`Simulates hover on MovieCard and passing the arguments to handler`, () => {
         film={film}
         onMovieCardClick={() => movieCardClickHandler(film.id)}
         onMovieCardHover={() => movieCardHoverHandler(film)}
+        onMovieCardLeave={() => {}}
+        isHovered={false}
       />
   );
 
@@ -54,6 +57,8 @@ it(`Simulates click on MovieCard and passing the arguments to handler`, () => {
         film={film}
         onMovieCardClick={() => movieCardClickHandler(film.id)}
         onMovieCardHover={() => movieCardHoverHandler(film)}
+        onMovieCardLeave={() => {}}
+        isHovered={false}
       />
   );
 

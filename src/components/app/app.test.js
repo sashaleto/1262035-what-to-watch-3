@@ -24,6 +24,7 @@ const films = [
     genre: `Crime`,
     released: 2002,
     id: 1,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
   }, {
     title: `Seven Years in Tibet`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
@@ -39,6 +40,7 @@ const films = [
     genre: `Adventure`,
     released: 1997,
     id: 2,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
   }, {
     title: `Orlando`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Orlando.jpg`,
@@ -54,7 +56,8 @@ const films = [
     genre: `Drama`,
     released: 1992,
     id: 3,
-  },
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
+  }
 ];
 
 it(`Render App`, () => {

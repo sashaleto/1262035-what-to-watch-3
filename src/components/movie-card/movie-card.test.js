@@ -17,12 +17,17 @@ const film = {
   genre: `Crime`,
   released: 2002,
   id: 1,
+  trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
 };
 
 it(`Render MovieCard`, () => {
   const tree = renderer
         .create(<MovieCard
-          film={film} onMovieCardClick={() => {}} onMovieCardHover={() => {}}
+          film={film}
+          onMovieCardClick={() => {}}
+          onMovieCardHover={() => {}}
+          onMovieCardLeave={() => {}}
+          isHovered={false}
         />)
         .toJSON();
 
