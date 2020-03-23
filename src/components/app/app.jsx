@@ -21,12 +21,22 @@ class App extends PureComponent {
     });
   }
 
+  _getSameGenreFilms(films, activeMovie) {
+    return films.filter((film) => film.genre === activeMovie.genre).filter((film) => film.id !== activeMovie.id).slice(0, 4);
+  }
+
   _renderMainScreen() {
     const {films, movieData} = this.props;
     const {activeMovieId} = this.state;
 
     if (activeMovieId !== null) {
-      return (<MoviePage movie={films.find((movie) => movie.id === activeMovieId)}/>);
+      const activeMovie = films.find((movie) => movie.id === activeMovieId);
+
+      return (<MoviePage
+        movie={activeMovie}
+        films={this._getSameGenreFilms(films, activeMovie)}
+        onMovieCardClick={ this._handlerMovieCardClick }
+      />);
     }
 
     return (
@@ -43,7 +53,10 @@ class App extends PureComponent {
             {this._renderMainScreen()}
           </Route>
           <Route exact path="/movie-page">
-            <MoviePage movie={ films[0] }/>
+            <MoviePage
+              movie={films[0]}
+              films={this._getSameGenreFilms(films, films[0])}
+              onMovieCardClick={ this._handlerMovieCardClick }/>
           </Route>
         </Switch>
       </BrowserRouter>
