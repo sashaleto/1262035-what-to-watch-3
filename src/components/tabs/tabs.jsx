@@ -2,6 +2,7 @@ import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {movieLevelMapper} from '../../utils';
 import {comments} from "../../mocks/comments";
+import {MONTH_NAMES} from "../../constants";
 
 const TabsTitles = {
   OVERVIEW: `Overview`,
@@ -27,13 +28,16 @@ class Tabs extends PureComponent {
   }
 
   _getCommentTemplate(comment) {
+    const date = new Date(comment.date);
+    const dateFormatted = `${MONTH_NAMES[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+
     return <div key={comment.id} className="review">
       <blockquote className="review__quote">
         <p className="review__text">{comment.comment}</p>
 
         <footer className="review__details">
           <cite className="review__author">{comment.user.name}</cite>
-          <time className="review__date" dateTime={comment.date}>{comment.date}</time>
+          <time className="review__date" dateTime={comment.date}>{dateFormatted}</time>
         </footer>
       </blockquote>
 
