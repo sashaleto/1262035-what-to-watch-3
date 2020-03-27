@@ -4,9 +4,9 @@ import MoviesList from '../movies-list/movies-list.jsx';
 import {getPosterName} from '../../utils';
 import GenresList from "../genres-list/genres-list.jsx";
 
-const genres = [`Comedy`, `Drama`, `Crime`, `Romantic`];
-
 const Main = ({films, movieData, onMovieCardClick}) => {
+  const genres = new Set();
+  films.forEach((film) => genres.add(film.genre));
 
   return <React.Fragment>
     <section className="movie-card">

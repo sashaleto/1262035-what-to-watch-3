@@ -20,7 +20,7 @@ class GenresList extends PureComponent {
 
   render() {
     const {genres} = this.props;
-    const titles = [`All genres`].concat(genres);
+    const titles = [`All genres`].concat(Array.from(genres));
 
     return <ul className="catalog__genres-list">
       {titles.map((title, i) => {
@@ -35,7 +35,7 @@ class GenresList extends PureComponent {
 }
 
 GenresList.propTypes = {
-  genres: PropTypes.array.isRequired,
+  genres: PropTypes.instanceOf(Set).isRequired,
 };
 
 export default GenresList;

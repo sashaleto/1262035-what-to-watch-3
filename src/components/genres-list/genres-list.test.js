@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import GenresList from "./genres-list.jsx";
 
-const genres = [`Comedy`, `Drama`, `Crime`, `Romantic`];
+const genres = new Set([`Comedy`, `Drama`, `Crime`, `Romantic`]);
 
 it(`Render Genres List`, () => {
   const tree = renderer
