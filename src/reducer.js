@@ -2,7 +2,7 @@ import {extend} from "./utils.js";
 import {films} from "./mocks/films.js";
 import {GENRES_TITLES} from "./constants";
 
-const makeGenresSet = (filmsList) => {
+export const makeGenresSet = (filmsList) => {
   const genres = new Set();
   filmsList.forEach((film) => genres.add(film.genre));
   return [GENRES_TITLES.ALL_GENRES].concat(Array.from(genres));
@@ -45,7 +45,9 @@ const reducer = (state = initialState, action) => {
 
     case ActionType.SET_FILMS_BY_GENRE:
       if (action.payload === GENRES_TITLES.ALL_GENRES) {
-        return extend({}, initialState);
+        return extend(state, {
+          films: state.allFilms,
+        });
       }
 
       return extend(state, {
