@@ -12,3 +12,9 @@ export const MONTH_NAMES = [
   `November`,
   `December`,
 ];
+
+export const GENRES_TO_RENDER_COUNT = 10;
+
+export const GENRES_TITLES = {
+  ALL_GENRES: `All genres`,
+};

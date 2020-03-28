@@ -2,6 +2,8 @@ import React from "react";
 import Enzyme, {mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import Main from "./main";
+import configureStore from "redux-mock-store";
+import {Provider} from "react-redux";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -64,19 +66,27 @@ const films = [
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
   }
 ];
+const mockStore = configureStore([]);
+const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
 
 it(`Should movie card title be pressed`, () => {
   const onMovieCardClick = jest.fn();
   const preventDefault = {
     preventDefault: jest.fn()
   };
+  const store = mockStore({
+    activeGenre: `All genres`,
+    genresList: genres,
+  });
 
   const mainScreen = mount(
-      <Main
-        films={films}
-        movieData={movieData}
-        onMovieCardClick={onMovieCardClick}
-      />
+      <Provider store={store}>
+        <Main
+          films={films}
+          movieData={movieData}
+          onMovieCardClick={onMovieCardClick}
+        />
+      </Provider>
   );
 
   const movieCardTitles = mainScreen.find(`.small-movie-card__title`);
