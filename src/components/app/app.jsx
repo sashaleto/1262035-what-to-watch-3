@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 
@@ -12,10 +13,10 @@ class App extends PureComponent {
       activeMovieId: null,
     };
 
-    this._handlerMovieCardClick = this._handlerMovieCardClick.bind(this);
+    this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
   }
 
-  _handlerMovieCardClick(id) {
+  _handleMovieCardClick(id) {
     this.setState({
       activeMovieId: id,
     });
@@ -35,12 +36,16 @@ class App extends PureComponent {
       return (<MoviePage
         movie={activeMovie}
         films={this._getSameGenreFilms(films, activeMovie)}
-        onMovieCardClick={ this._handlerMovieCardClick }
+        onMovieCardClick={ this._handleMovieCardClick }
       />);
     }
 
     return (
-      <Main films={ films } movieData={ movieData } onMovieCardClick={ this._handlerMovieCardClick }/>
+      <Main
+        films={ films }
+        movieData={ movieData }
+        onMovieCardClick={ this._handleMovieCardClick }
+      />
     );
   }
 
@@ -56,7 +61,7 @@ class App extends PureComponent {
             <MoviePage
               movie={films[0]}
               films={this._getSameGenreFilms(films, films[0])}
-              onMovieCardClick={ this._handlerMovieCardClick }/>
+              onMovieCardClick={ this._handleMovieCardClick }/>
           </Route>
         </Switch>
       </BrowserRouter>
@@ -73,4 +78,9 @@ App.propTypes = {
   }),
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  films: state.films,
+});
+
+export {App};
+export default connect(mapStateToProps)(App);

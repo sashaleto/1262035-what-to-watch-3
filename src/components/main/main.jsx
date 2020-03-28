@@ -5,8 +5,6 @@ import {getPosterName} from '../../utils';
 import GenresList from "../genres-list/genres-list.jsx";
 
 const Main = ({films, movieData, onMovieCardClick}) => {
-  const genres = new Set();
-  films.forEach((film) => genres.add(film.genre));
 
   return <React.Fragment>
     <section className="movie-card">
@@ -69,7 +67,7 @@ const Main = ({films, movieData, onMovieCardClick}) => {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <GenresList genres={genres} />
+        <GenresList />
 
         <MoviesList films={films} onMovieCardClick={onMovieCardClick}/>
 
@@ -102,7 +100,7 @@ Main.propTypes = {
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
   }),
-  onMovieCardClick: PropTypes.func.isRequired
+  onMovieCardClick: PropTypes.func.isRequired,
 };
 
 export default Main;
