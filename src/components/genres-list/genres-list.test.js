@@ -1,13 +1,17 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import GenresList from "./genres-list.jsx";
+import {GenresList} from "./genres-list.jsx";
 
-const genres = new Set([`Comedy`, `Drama`, `Crime`, `Romantic`]);
+const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
 
 it(`Render Genres List`, () => {
   const tree = renderer
-        .create(<GenresList genres={genres} />)
-        .toJSON();
+    .create(<GenresList
+      activeGenre={genres[0]}
+      genresList={genres}
+      onGenreTitleClick={() => {}}
+    />)
+    .toJSON();
 
   expect(tree).toMatchSnapshot();
 });

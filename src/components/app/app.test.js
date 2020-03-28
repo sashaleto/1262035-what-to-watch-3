@@ -1,13 +1,16 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import App from "./app.jsx";
+import {Provider} from "react-redux";
+import configureStore from "redux-mock-store";
+import {App} from "./app.jsx";
+
+const mockStore = configureStore([]);
 
 const movieData = {
   title: `The Great Gatsby`,
   genre: `Drama`,
   year: 2013,
 };
-
 const films = [
   {
     title: `Gangs of new york`,
@@ -59,12 +62,23 @@ const films = [
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
   }
 ];
+const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
 
 it(`Render App`, () => {
+  const store = mockStore({
+    activeGenre: `All genres`,
+    genresList: genres,
+  });
+
   const tree = renderer
-    .create(<App
-      films={films} movieData={movieData}
-    />)
+    .create(
+        <Provider store={store}>
+          <App
+            films={films}
+            movieData={movieData}
+          />
+        </Provider>
+    )
     .toJSON();
 
   expect(tree).toMatchSnapshot();
