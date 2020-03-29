@@ -1,9 +1,10 @@
 import React from "react";
 import Enzyme, {mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import Main from "./main";
+import {Main} from "./main";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
+import {INITIAL_CARDS_COUNT} from "../../constants";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -85,6 +86,8 @@ it(`Should movie card title be pressed`, () => {
           films={films}
           movieData={movieData}
           onMovieCardClick={onMovieCardClick}
+          onShowMoreClick={() => {}}
+          shownCardsBound={INITIAL_CARDS_COUNT}
         />
       </Provider>
   );

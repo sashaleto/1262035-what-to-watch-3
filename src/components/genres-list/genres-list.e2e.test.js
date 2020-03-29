@@ -30,3 +30,24 @@ it(`Simulates click on GenresList and passing the arguments to handler`, () => {
   expect(genreTitleClickHandler.mock.calls.length).toBe(1);
   expect(genreTitleClickHandler.mock.calls[0][0]).toBe(genres[0]);
 });
+
+it(`Should all titles in Genre List be pressed`, () => {
+  const genreTitleClickHandler = jest.fn();
+  const preventDefault = {
+    preventDefault: jest.fn()
+  };
+
+  const list = shallow(
+      <GenresList
+        activeGenre={genres[1]}
+        genresList={genres}
+        onGenreTitleClick={() => genreTitleClickHandler(genres[0])}
+      />
+  );
+
+  const titles = list.find(`.catalog__genres-link`);
+
+  titles.forEach((title) => title.simulate(`click`, preventDefault));
+
+  expect(genreTitleClickHandler.mock.calls.length).toBe(genres.length);
+});

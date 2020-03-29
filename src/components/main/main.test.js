@@ -1,8 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import Main from "./main";
+import {Main} from "./main";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
+import {INITIAL_CARDS_COUNT} from "../../constants";
 
 const movieData = {
   title: `The Great Gatsby`,
@@ -59,7 +60,103 @@ const films = [
     released: 1992,
     id: 3,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
-  }
+  }, {
+    title: `A Star Is Born`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/A_Star_Is_Born.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/A_Star_Is_Born.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/A_Star_is_Born.jpg`,
+    description: `A musician helps a young singer find fame as age and alcoholism send his own career into a downward spiral.`,
+    rating: {
+      score: 3.9,
+      count: 244484,
+    },
+    director: `Bradley Cooper`,
+    starring: [`Lady Gaga`, `Bradley Cooper`, `Sam Elliott`],
+    genre: `Drama`,
+    released: 2018,
+    id: 4,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
+  }, {
+    title: `Pulp Fiction`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Pulp_Fiction.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/pulp-fiction.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Pulp_Fiction.jpg`,
+    description: `The lives of two mob hitmen, a boxer, a gangster & his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.`,
+    rating: {
+      score: 1.5,
+      count: 1635992,
+    },
+    director: `Quentin Tarantino`,
+    starring: [`John Travolta`, `Uma Thurman`, `Samuel L. Jackson`],
+    genre: `Crime`,
+    released: 1994,
+    id: 5,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+  }, {
+    title: `What We Do in the Shadows`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/What-We-Do-in-the-Shadows.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/what-we-do-in-the-shadows.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/What-We-Do-in-the-Shadows.jpg`,
+    description: `A look into the daily (or rather, nightly) lives of three vampires who've lived together for over 100 years, in Staten Island.`,
+    rating: {
+      score: 7.2,
+      count: 6173,
+    },
+    director: `Jemaine Clement`,
+    starring: [`Kayvan Novak`, `Matt Berry`, `Natasia Demetriou`],
+    genre: `Comedy`,
+    released: 2019,
+    id: 6,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/c/cf/2018-12-25_savoureuse-belfort.webm`,
+  }, {
+    title: `Johnny English`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Johnny_English.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/johnny-english.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Johnny_English.jpg`,
+    description: `After a sudden attack on the MI5, Johnny English, Britain's most confident yet unintelligent spy, becomes Britain's only spy.`,
+    rating: {
+      score: 10,
+      count: 136843,
+    },
+    director: `Peter Howitt`,
+    starring: [`Rowan Atkinson`, `John Malkovich`, `Natalie Imbruglia`],
+    genre: `Comedy`,
+    released: 2003,
+    id: 7,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/5/53/Diversity_2019_11.webm`,
+  }, {
+    title: `Snatch`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Snatch.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/snatch.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Snatch.jpg`,
+    description: `Unscrupulous boxing promoters, violent bookmakers, a Russian gangster, incompetent amateur robbers and supposedly Jewish jewelers fight to track down a priceless stolen diamond.`,
+    rating: {
+      "score": 0.2,
+      "count": 716577,
+    },
+    director: `Guy Ritchie`,
+    starring: [`Jason Statham`, `Brad Pitt`, `Benicio Del Toro`],
+    genre: `Comedy`,
+    released: 2000,
+    id: 8,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
+  }, {
+    title: `Shutter Island`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/shutter-island.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Shutter_Island.jpg`,
+    description: `In 1954, a U.S. Marshal investigates the disappearance of a murderer, who escaped from a hospital for the criminally insane.`,
+    rating: {
+      score: 4.1,
+      count: 1002557,
+    },
+    director: `Martin Scorsese`,
+    starring: [`Leonardo DiCaprio`, `Emily Mortimer`, `Mark Ruffalo`],
+    genre: `Thriller`,
+    released: 2010,
+    id: 9,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+  },
 ];
 const mockStore = configureStore([]);
 const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
@@ -74,7 +171,11 @@ it(`Render Main page`, () => {
     .create(
         <Provider store={store}>
           <Main
-            films={films} movieData={movieData} onMovieCardClick={() => {}}
+            films={films}
+            movieData={movieData}
+            onMovieCardClick={() => {}}
+            shownCardsBound={INITIAL_CARDS_COUNT}
+            onShowMoreClick={() => {}}
           />
         </Provider>
     )
