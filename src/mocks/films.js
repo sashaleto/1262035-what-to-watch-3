@@ -127,5 +127,21 @@ export const films = [
     released: 2000,
     id: 8,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
+  }, {
+    title: `Shutter Island`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/shutter-island.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Shutter_Island.jpg`,
+    description: `In 1954, a U.S. Marshal investigates the disappearance of a murderer, who escaped from a hospital for the criminally insane.`,
+    rating: {
+      score: 4.1,
+      count: 1002557,
+    },
+    director: `Martin Scorsese`,
+    starring: [`Leonardo DiCaprio`, `Emily Mortimer`, `Mark Ruffalo`],
+    genre: `Thriller`,
+    released: 2010,
+    id: 9,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
   },
 ];

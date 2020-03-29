@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import MoviesList from '../movies-list/movies-list.jsx';
 import {getPosterName} from '../../utils';
 import GenresList from "../genres-list/genres-list.jsx";
+import ShowMore from "../show-more/show-more.jsx";
+import {ActionCreator} from "../../reducer";
+import {connect} from "react-redux";
 
-const Main = ({films, movieData, onMovieCardClick}) => {
+const Main = ({films, movieData, shownCardsBound, onMovieCardClick, onShowMoreClick}) => {
+  const filmsToRender = films.slice(0, shownCardsBound);
 
   return <React.Fragment>
     <section className="movie-card">
@@ -69,11 +73,14 @@ const Main = ({films, movieData, onMovieCardClick}) => {
 
         <GenresList />
 
-        <MoviesList films={films} onMovieCardClick={onMovieCardClick}/>
+        <MoviesList films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
 
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">Show more</button>
-        </div>
+        {
+          (films.length > shownCardsBound)
+            ? <ShowMore onShowMoreClick={onShowMoreClick}/>
+            : null
+        }
+
       </section>
 
       <footer className="page-footer">
@@ -101,6 +108,20 @@ Main.propTypes = {
     year: PropTypes.number.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
+  onShowMoreClick: PropTypes.func.isRequired,
+  shownCardsBound: PropTypes.number.isRequired,
 };
 
-export default Main;
+const mapStateToProps = (state) => ({
+  shownCardsBound: state.shownCardsBound,
+  films: state.films,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onShowMoreClick() {
+    dispatch(ActionCreator.expandCardsBound());
+  },
+});
+
+export {Main};
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

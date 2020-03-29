@@ -1,6 +1,6 @@
 import {extend} from "./utils.js";
 import {films} from "./mocks/films.js";
-import {GENRES_TITLES} from "./constants";
+import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "./constants";
 
 export const makeGenresSet = (filmsList) => {
   const genres = new Set();
@@ -13,11 +13,14 @@ const initialState = {
   allFilms: films,
   films,
   genresList: makeGenresSet(films),
+  shownCardsBound: INITIAL_CARDS_COUNT,
 };
 
 const ActionType = {
   SET_GENRE: `SET_GENRE`,
   SET_FILMS_BY_GENRE: `SET_FILMS_BY_GENRE`,
+  EXPAND_CARDS_BOUND: `EXPAND_CARDS_BOUND`,
+  RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
 };
 
 const ActionCreator = {
@@ -29,7 +32,17 @@ const ActionCreator = {
   setGenre: (genre) => ({
     type: ActionType.SET_GENRE,
     payload: genre,
-  })
+  }),
+
+  expandCardsBound: () => ({
+    type: ActionType.EXPAND_CARDS_BOUND,
+    payload: null,
+  }),
+
+  resetCardsBound: () => ({
+    type: ActionType.RESET_CARDS_BOUND,
+    payload: null,
+  }),
 };
 
 const filterFilmsByGenre = (movies, genre) => {
@@ -52,6 +65,16 @@ const reducer = (state = initialState, action) => {
 
       return extend(state, {
         films: filterFilmsByGenre(state.allFilms, action.payload),
+      });
+
+    case ActionType.EXPAND_CARDS_BOUND:
+      return extend(state, {
+        shownCardsBound: state.shownCardsBound + CARDS_SHOWING_STEP,
+      });
+
+    case ActionType.RESET_CARDS_BOUND:
+      return extend(state, {
+        shownCardsBound: INITIAL_CARDS_COUNT,
       });
   }
 

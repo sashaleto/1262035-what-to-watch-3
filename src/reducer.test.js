@@ -1,5 +1,5 @@
 import {reducer, makeGenresSet, ActionCreator, ActionType} from "./reducer.js";
-import {GENRES_TITLES} from "./constants";
+import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "./constants";
 
 const films = [
   {
@@ -130,6 +130,22 @@ const films = [
     released: 2000,
     id: 8,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
+  }, {
+    title: `Shutter Island`,
+    posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
+    previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/shutter-island.jpg`,
+    backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Shutter_Island.jpg`,
+    description: `In 1954, a U.S. Marshal investigates the disappearance of a murderer, who escaped from a hospital for the criminally insane.`,
+    rating: {
+      score: 4.1,
+      count: 1002557,
+    },
+    director: `Martin Scorsese`,
+    starring: [`Leonardo DiCaprio`, `Emily Mortimer`, `Mark Ruffalo`],
+    genre: `Thriller`,
+    released: 2010,
+    id: 9,
+    trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
   },
 ];
 const genresList = makeGenresSet(films);
@@ -140,6 +156,7 @@ it(`Reducer without additional parameters should return initial state`, () => {
     allFilms: films,
     films,
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   });
 });
 
@@ -149,6 +166,7 @@ it(`Reducer should set active genre by a given value`, () => {
     allFilms: films,
     films,
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   }, {
     type: ActionType.SET_GENRE,
     payload: GENRES_TITLES.ALL_GENRES,
@@ -157,6 +175,7 @@ it(`Reducer should set active genre by a given value`, () => {
     allFilms: films,
     films,
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   });
 });
 
@@ -166,6 +185,7 @@ it(`Reducer should filter films by a given genre`, () => {
     allFilms: films,
     films,
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   }, {
     type: ActionType.SET_FILMS_BY_GENRE,
     payload: `Adventure`,
@@ -190,6 +210,7 @@ it(`Reducer should filter films by a given genre`, () => {
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
     }],
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   });
 });
 
@@ -215,6 +236,7 @@ it(`Reducer should return all films for "All genres"`, () => {
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
     }],
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   }, {
     type: ActionType.SET_FILMS_BY_GENRE,
     payload: GENRES_TITLES.ALL_GENRES,
@@ -223,6 +245,45 @@ it(`Reducer should return all films for "All genres"`, () => {
     allFilms: films,
     films,
     genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
+  });
+});
+
+it(`Reducer should expand shown films card bound by CARDS_SHOWING_STEP const`, () => {
+  expect(reducer({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
+  }, {
+    type: ActionType.EXPAND_CARDS_BOUND,
+    payload: null,
+  })).toEqual({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT + CARDS_SHOWING_STEP,
+  });
+});
+
+it(`Reducer should reset shown films card bound to INITIAL_CARDS_COUNT`, () => {
+  expect(reducer({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: 1024,
+  }, {
+    type: ActionType.RESET_CARDS_BOUND,
+    payload: null,
+  })).toEqual({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
   });
 });
 
@@ -238,6 +299,20 @@ describe(`Action creators work correctly`, () => {
     expect(ActionCreator.setFilmsByGenre(`Adventure`)).toEqual({
       type: ActionType.SET_FILMS_BY_GENRE,
       payload: `Adventure`,
+    });
+  });
+
+  it(`Action creator for expand cards bound returns correct action`, () => {
+    expect(ActionCreator.expandCardsBound()).toEqual({
+      type: ActionType.EXPAND_CARDS_BOUND,
+      payload: null,
+    });
+  });
+
+  it(`Action creator for reset cards bound returns correct action`, () => {
+    expect(ActionCreator.resetCardsBound()).toEqual({
+      type: ActionType.RESET_CARDS_BOUND,
+      payload: null,
     });
   });
 });
