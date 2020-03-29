@@ -35,6 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
   onGenreTitleClick(genre) {
     dispatch(ActionCreator.setGenre(genre));
     dispatch(ActionCreator.setFilmsByGenre(genre));
+    dispatch(ActionCreator.resetCardsBound());
   },
 });
 

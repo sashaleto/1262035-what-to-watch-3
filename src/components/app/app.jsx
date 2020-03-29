@@ -42,7 +42,6 @@ class App extends PureComponent {
 
     return (
       <Main
-        films={ films }
         movieData={ movieData }
         onMovieCardClick={ this._handleMovieCardClick }
       />
