@@ -93,7 +93,5 @@ exports[`Render Tabs 1`] = `
       </strong>
     </p>
   </div>
-  
-  
 </div>
 `;

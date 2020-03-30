@@ -6,6 +6,9 @@ import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
 import {ActionCreator} from "../../reducer";
 import {connect} from "react-redux";
+import withActiveItem from "../../hocs/with-active-item";
+
+const MoviesListWrapped = withActiveItem(MoviesList);
 
 const Main = ({films, movieData, shownCardsBound, onMovieCardClick, onShowMoreClick}) => {
   const filmsToRender = films.slice(0, shownCardsBound);
@@ -73,7 +76,7 @@ const Main = ({films, movieData, shownCardsBound, onMovieCardClick, onShowMoreCl
 
         <GenresList />
 
-        <MoviesList films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
+        <MoviesListWrapped films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
 
         {
           (films.length > shownCardsBound)

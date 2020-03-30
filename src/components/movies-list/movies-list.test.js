@@ -57,7 +57,10 @@ const films = [
 it(`Render Movies List`, () => {
   const tree = renderer
         .create(<MoviesList
-          films={films} onMovieCardClick={() => {}}
+          films={films}
+          onMovieCardClick={() => {}}
+          activeItem={null}
+          onActivateItem={() => {}}
         />)
         .toJSON();
 

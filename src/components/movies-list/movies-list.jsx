@@ -13,7 +13,6 @@ class MoviesList extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {activeCard: null};
     this._handleMovieCardHover = this._handleMovieCardHover.bind(this);
     this._handleMovieCardLeave = this._handleMovieCardLeave.bind(this);
 
@@ -22,18 +21,21 @@ class MoviesList extends PureComponent {
 
   _handleMovieCardHover(film) {
     this._timerId = setTimeout(() => {
-      this.setState({activeCard: film});
+      this.props.onActivateItem(film);
     }, TEASER_LAG);
   }
 
   _handleMovieCardLeave() {
     clearTimeout(this._timerId);
-    this.setState({activeCard: null});
+    this.props.onActivateItem(null);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._timerId);
   }
 
   render() {
-    const {films, onMovieCardClick} = this.props;
-    const {activeCard} = this.state;
+    const {films, onMovieCardClick, activeItem} = this.props;
     return (
       <div className="catalog__movies-list">
         { films.map((film) => (
@@ -43,7 +45,7 @@ class MoviesList extends PureComponent {
             onMovieCardHover={this._handleMovieCardHover}
             onMovieCardLeave={this._handleMovieCardLeave}
             onMovieCardClick={onMovieCardClick}
-            isHovered={activeCard === film}
+            isHovered={activeItem === film}
           />
         )) }
       </div>
@@ -54,6 +56,8 @@ class MoviesList extends PureComponent {
 MoviesList.propTypes = {
   films: PropTypes.array.isRequired,
   onMovieCardClick: PropTypes.func.isRequired,
+  activeItem: PropTypes.object,
+  onActivateItem: PropTypes.func.isRequired,
 };
 
 export default MoviesList;
