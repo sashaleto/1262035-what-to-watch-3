@@ -4,22 +4,11 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
+import {ActionCreator} from "../../reducer";
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      activeMovieId: null,
-    };
-
-    this._handleMovieCardClick = this._handleMovieCardClick.bind(this);
-  }
-
-  _handleMovieCardClick(id) {
-    this.setState({
-      activeMovieId: id,
-    });
   }
 
   _getSameGenreFilms(films, activeMovie) {
@@ -27,29 +16,29 @@ class App extends PureComponent {
   }
 
   _renderMainScreen() {
-    const {films, movieData} = this.props;
-    const {activeMovieId} = this.state;
+    const {films, movieData, onMovieCardClick, activeFilm} = this.props;
 
-    if (activeMovieId !== null) {
+    if (activeFilm !== null) {
+      const activeMovieId = activeFilm.id;
       const activeMovie = films.find((movie) => movie.id === activeMovieId);
 
       return (<MoviePage
         movie={activeMovie}
         films={this._getSameGenreFilms(films, activeMovie)}
-        onMovieCardClick={ this._handleMovieCardClick }
+        onMovieCardClick={onMovieCardClick}
       />);
     }
 
     return (
       <Main
-        movieData={ movieData }
-        onMovieCardClick={ this._handleMovieCardClick }
+        movieData={movieData}
+        onMovieCardClick={onMovieCardClick}
       />
     );
   }
 
   render() {
-    const {films} = this.props;
+    const {films, onMovieCardClick} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -60,7 +49,7 @@ class App extends PureComponent {
             <MoviePage
               movie={films[0]}
               films={this._getSameGenreFilms(films, films[0])}
-              onMovieCardClick={ this._handleMovieCardClick }/>
+              onMovieCardClick={onMovieCardClick}/>
           </Route>
         </Switch>
       </BrowserRouter>
@@ -75,11 +64,20 @@ App.propTypes = {
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
   }),
+  onMovieCardClick: PropTypes.func.isRequired,
+  activeFilm: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   films: state.films,
+  activeFilm: state.activeFilm,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onMovieCardClick(film) {
+    dispatch(ActionCreator.setActiveFilm(film));
+  },
 });
 
 export {App};
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

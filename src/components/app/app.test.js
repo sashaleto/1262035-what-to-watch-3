@@ -175,6 +175,8 @@ it(`Render App`, () => {
           <App
             films={films}
             movieData={movieData}
+            onMovieCardClick={() => {}}
+            activeFilm={null}
           />
         </Provider>
     )
