@@ -24,7 +24,7 @@ const ActionType = {
   EXPAND_CARDS_BOUND: `EXPAND_CARDS_BOUND`,
   RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
   SET_ACTIVE_FILM: `SET_ACTIVE_FILM`,
-  PLAY_FILM: `PLAY_FILM`,
+  SET_PLAYING_FILM: `SET_PLAYING_FILM`,
 };
 
 const ActionCreator = {
@@ -53,8 +53,8 @@ const ActionCreator = {
     payload: film,
   }),
 
-  playFilm: (film) => ({
-    type: ActionType.PLAY_FILM,
+  setPlayingFilm: (film) => ({
+    type: ActionType.SET_PLAYING_FILM,
     payload: film,
   }),
 };
@@ -96,7 +96,7 @@ const reducer = (state = initialState, action) => {
         activeFilm: action.payload,
       });
 
-    case ActionType.PLAY_FILM:
+    case ActionType.SET_PLAYING_FILM:
       return extend(state, {
         playingFilm: action.payload,
       });

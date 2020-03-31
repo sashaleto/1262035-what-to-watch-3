@@ -10,11 +10,11 @@ import MoviePlayer from "../movie-player/movie-player.jsx";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 
-const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreClick, onPlayClick, playingFilm}) => {
+const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreClick, playingFilm, setPlayingFilm}) => {
   const filmsToRender = films.slice(0, shownCardsBound);
 
   return playingFilm
-    ? (<MoviePlayer movie={playingFilm} />)
+    ? (<MoviePlayer movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} />)
     : (<React.Fragment>
       <section className="movie-card">
         <div className="movie-card__bg">
@@ -53,7 +53,7 @@ const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreCl
               </p>
 
               <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button" onClick={() => onPlayClick(heroMovie)}>
+                <button className="btn btn--play movie-card__button" type="button" onClick={() => setPlayingFilm(heroMovie)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"/>
                   </svg>
@@ -115,7 +115,7 @@ Main.propTypes = {
   onMovieCardClick: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
-  onPlayClick: PropTypes.func.isRequired,
+  setPlayingFilm: PropTypes.func.isRequired,
   playingFilm: PropTypes.object,
 };
 
@@ -129,8 +129,8 @@ const mapDispatchToProps = (dispatch) => ({
   onShowMoreClick() {
     dispatch(ActionCreator.expandCardsBound());
   },
-  onPlayClick(film) {
-    dispatch(ActionCreator.playFilm(film));
+  setPlayingFilm(film) {
+    dispatch(ActionCreator.setPlayingFilm(film));
   },
 });
 
