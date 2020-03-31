@@ -16,7 +16,7 @@ class App extends PureComponent {
   }
 
   _renderMainScreen() {
-    const {films, movieData, onMovieCardClick, activeFilm} = this.props;
+    const {films, heroMovie, onMovieCardClick, activeFilm} = this.props;
 
     if (activeFilm !== null) {
       const activeMovieId = activeFilm.id;
@@ -31,7 +31,7 @@ class App extends PureComponent {
 
     return (
       <Main
-        movieData={movieData}
+        heroMovie={heroMovie}
         onMovieCardClick={onMovieCardClick}
       />
     );
@@ -59,7 +59,7 @@ class App extends PureComponent {
 
 App.propTypes = {
   films: PropTypes.array.isRequired,
-  movieData: PropTypes.shape({
+  heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
