@@ -1,7 +1,3 @@
-export const getPosterName = (title) => {
-  return title.toLowerCase().replace(/[.,!:]/g, ``).split(` `).join(`-`);
-};
-
 export const movieLevelMapper = (rating) => {
   switch (true) {
     case (rating >= 0 && rating < 3):
