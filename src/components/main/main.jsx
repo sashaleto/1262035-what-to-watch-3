@@ -5,7 +5,7 @@ import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
 import {ActionCreator} from "../../reducer";
 import {connect} from "react-redux";
-import withActiveItem from "../../hocs/with-active-item";
+import withActiveItem from "../../hocs/with-active-item/with-active-item";
 import MoviePlayer from "../movie-player/movie-player.jsx";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
