@@ -13,18 +13,16 @@ const TabsTitles = {
 class Tabs extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      activeTab: TabsTitles.OVERVIEW,
-    };
   }
 
   _setTabActiveClass(title) {
-    return this.state.activeTab === title ? `movie-nav__item--active` : ``;
+    const activeTab = this.props.activeItem || TabsTitles.OVERVIEW;
+    return activeTab === title ? `movie-nav__item--active` : ``;
   }
 
   _onTabClickHandler(e, newActiveTab) {
     e.preventDefault();
-    this.setState({activeTab: newActiveTab});
+    this.props.onActivateItem(newActiveTab);
   }
 
   _getCommentTemplate(comment) {
@@ -46,9 +44,10 @@ class Tabs extends PureComponent {
   }
 
   render() {
-    const {movie} = this.props;
-    const {activeTab} = this.state;
+    const {movie, activeItem} = this.props;
     const firstColumnCommentsLength = Math.ceil(comments.length / 2);
+
+    const activeTab = activeItem || TabsTitles.OVERVIEW;
 
     return (
       <div className="movie-card__desc">
@@ -64,70 +63,75 @@ class Tabs extends PureComponent {
           </ul>
         </nav>
 
-        {activeTab === TabsTitles.OVERVIEW ?
-          <Fragment>
-            <div className="movie-rating">
-              <div className="movie-rating__score">{movie.rating.score}</div>
-              <p className="movie-rating__meta">
-                <span className="movie-rating__level">{movieLevelMapper(movie.rating.score)}</span>
-                <span className="movie-rating__count">{movie.rating.count} ratings</span>
-              </p>
-            </div>
+        {
+          (activeTab === TabsTitles.OVERVIEW)
+            ? <Fragment>
+              <div className="movie-rating">
+                <div className="movie-rating__score">{movie.rating.score}</div>
+                <p className="movie-rating__meta">
+                  <span className="movie-rating__level">{movieLevelMapper(movie.rating.score)}</span>
+                  <span className="movie-rating__count">{movie.rating.count} ratings</span>
+                </p>
+              </div>
 
-            <div className="movie-card__text">
-              <p>{movie.description}</p>
+              <div className="movie-card__text">
+                <p>{movie.description}</p>
 
-              <p className="movie-card__director"><strong>Director: {movie.director}</strong></p>
+                <p className="movie-card__director"><strong>Director: {movie.director}</strong></p>
 
-              <p className="movie-card__starring"><strong>Starring: {movie.starring.join(`, `)} and other</strong></p>
-            </div>
-          </Fragment>
-          : ``
+                <p className="movie-card__starring"><strong>Starring: {movie.starring.join(`, `)} and other</strong></p>
+              </div>
+            </Fragment>
+            : null
         }
 
-        {activeTab === TabsTitles.DETAILS ?
-          <Fragment>
-            <div className="movie-card__text movie-card__row">
-              <div className="movie-card__text-col">
-                <p className="movie-card__details-item">
-                  <strong className="movie-card__details-name">Director</strong>
-                  <span className="movie-card__details-value">{movie.director}</span>
-                </p>
-                <p className="movie-card__details-item">
-                  <strong className="movie-card__details-name">Starring</strong>
-                  <span className="movie-card__details-value">{movie.starring.join(`,\n`)}</span>
-                </p>
-              </div>
+        {
+          (activeTab === TabsTitles.DETAILS)
+            ? <Fragment>
+              <div className="movie-card__text movie-card__row">
+                <div className="movie-card__text-col">
+                  <p className="movie-card__details-item">
+                    <strong className="movie-card__details-name">Director</strong>
+                    <span className="movie-card__details-value">{movie.director}</span>
+                  </p>
+                  <p className="movie-card__details-item">
+                    <strong className="movie-card__details-name">Starring</strong>
+                    <span className="movie-card__details-value">{movie.starring.join(`,\n`)}</span>
+                  </p>
+                </div>
 
-              <div className="movie-card__text-col">
-                <p className="movie-card__details-item">
-                  <strong className="movie-card__details-name">Run Time</strong>
-                  <span className="movie-card__details-value">1h 39m</span>
-                </p>
-                <p className="movie-card__details-item">
-                  <strong className="movie-card__details-name">Genre</strong>
-                  <span className="movie-card__details-value">{movie.genre}</span>
-                </p>
-                <p className="movie-card__details-item">
-                  <strong className="movie-card__details-name">Released</strong>
-                  <span className="movie-card__details-value">{movie.released}</span>
-                </p>
+                <div className="movie-card__text-col">
+                  <p className="movie-card__details-item">
+                    <strong className="movie-card__details-name">Run Time</strong>
+                    <span className="movie-card__details-value">1h 39m</span>
+                  </p>
+                  <p className="movie-card__details-item">
+                    <strong className="movie-card__details-name">Genre</strong>
+                    <span className="movie-card__details-value">{movie.genre}</span>
+                  </p>
+                  <p className="movie-card__details-item">
+                    <strong className="movie-card__details-name">Released</strong>
+                    <span className="movie-card__details-value">{movie.released}</span>
+                  </p>
+                </div>
               </div>
-            </div>
-          </Fragment> : ``
+            </Fragment>
+            : null
         }
 
-        {activeTab === TabsTitles.REVIEWS ?
-          <Fragment>
-            <div className="movie-card__reviews movie-card__row">
-              <div className="movie-card__reviews-col">
-                {comments.slice(0, firstColumnCommentsLength).map(this._getCommentTemplate)}
+        {
+          (activeTab === TabsTitles.REVIEWS)
+            ? <Fragment>
+              <div className="movie-card__reviews movie-card__row">
+                <div className="movie-card__reviews-col">
+                  {comments.slice(0, firstColumnCommentsLength).map(this._getCommentTemplate)}
+                </div>
+                <div className="movie-card__reviews-col">
+                  {comments.slice(firstColumnCommentsLength, comments.length).map(this._getCommentTemplate)}
+                </div>
               </div>
-              <div className="movie-card__reviews-col">
-                {comments.slice(firstColumnCommentsLength, comments.length).map(this._getCommentTemplate)}
-              </div>
-            </div>
-          </Fragment> : ``
+            </Fragment>
+            : null
         }
       </div>
     );
@@ -149,6 +153,8 @@ Tabs.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string).isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
+  activeItem: PropTypes.string,
+  onActivateItem: PropTypes.func.isRequired,
 };
 
 export default Tabs;

@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from "../tabs/tabs.jsx";
 import MoviesList from "../movies-list/movies-list.jsx";
+import withActiveItem from "../../hocs/with-active-item";
+
+const MoviesListWrapped = withActiveItem(MoviesList);
+const TabsWrapped = withActiveItem(Tabs);
 
 const MoviePage = ({movie, films, onMovieCardClick}) => {
   return (
@@ -65,7 +69,7 @@ const MoviePage = ({movie, films, onMovieCardClick}) => {
                 height="327"/>
             </div>
 
-            <Tabs movie={movie}/>
+            <TabsWrapped movie={movie}/>
           </div>
         </div>
       </section>
@@ -74,7 +78,7 @@ const MoviePage = ({movie, films, onMovieCardClick}) => {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <MoviesList films={films} onMovieCardClick={onMovieCardClick}/>
+          <MoviesListWrapped films={films} onMovieCardClick={onMovieCardClick}/>
         </section>
 
         <footer className="page-footer">

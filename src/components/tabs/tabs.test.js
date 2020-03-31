@@ -21,7 +21,7 @@ const movie = {
 
 it(`Render Tabs`, () => {
   const tree = renderer
-        .create(<Tabs movie={movie} />)
+        .create(<Tabs movie={movie} activeItem={null} onActivateItem={() => {}}/>)
         .toJSON();
 
   expect(tree).toMatchSnapshot();

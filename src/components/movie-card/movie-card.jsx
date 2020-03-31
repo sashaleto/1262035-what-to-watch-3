@@ -9,7 +9,7 @@ const MovieCard = ({film, onMovieCardClick, onMovieCardHover, onMovieCardLeave, 
       onMouseLeave={() => onMovieCardLeave()}
       onClick={(e) => {
         e.preventDefault();
-        onMovieCardClick(film.id);
+        onMovieCardClick(film);
       }}
       className="small-movie-card catalog__movies-card">
       <div className="small-movie-card__image">
