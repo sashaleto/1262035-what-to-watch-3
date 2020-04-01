@@ -6,15 +6,17 @@ import ShowMore from "../show-more/show-more.jsx";
 import {ActionCreator} from "../../reducer";
 import {connect} from "react-redux";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
+import withVideo from "../../hocs/with-video/with-video";
 import MoviePlayer from "../movie-player/movie-player.jsx";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
+const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreClick, playingFilm, setPlayingFilm}) => {
   const filmsToRender = films.slice(0, shownCardsBound);
 
   return playingFilm
-    ? (<MoviePlayer movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} />)
+    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} src={playingFilm.videoLink} />)
     : (<React.Fragment>
       <section className="movie-card">
         <div className="movie-card__bg">
