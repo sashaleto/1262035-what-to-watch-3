@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render MovieCard 1`] = `
+exports[`Render MoviePage 1`] = `
 Array [
   <section
     className="movie-card movie-card--full"
@@ -93,6 +93,7 @@ Array [
           >
             <button
               className="btn btn--play movie-card__button"
+              onClick={[Function]}
               type="button"
             >
               <svg
