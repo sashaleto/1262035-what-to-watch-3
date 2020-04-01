@@ -18,3 +18,7 @@ export const movieLevelMapper = (rating) => {
 export const extend = (a, b) => {
   return Object.assign({}, a, b);
 };
+
+export const formatPlayerTime = (seconds) => {
+  return new Date(seconds * 1000).toISOString().substr(11, 8);
+};
