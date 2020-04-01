@@ -16,7 +16,7 @@ class App extends PureComponent {
   }
 
   _renderMainScreen() {
-    const {films, heroMovie, onMovieCardClick, activeFilm} = this.props;
+    const {films, heroMovie, onMovieCardClick, activeFilm, playingFilm, setPlayingFilm} = this.props;
 
     if (activeFilm !== null) {
       const activeMovieId = activeFilm.id;
@@ -26,6 +26,8 @@ class App extends PureComponent {
         movie={activeMovie}
         films={this._getSameGenreFilms(films, activeMovie)}
         onMovieCardClick={onMovieCardClick}
+        playingFilm={playingFilm}
+        setPlayingFilm={setPlayingFilm}
       />);
     }
 
@@ -33,12 +35,14 @@ class App extends PureComponent {
       <Main
         heroMovie={heroMovie}
         onMovieCardClick={onMovieCardClick}
+        playingFilm={playingFilm}
+        setPlayingFilm={setPlayingFilm}
       />
     );
   }
 
   render() {
-    const {films, onMovieCardClick} = this.props;
+    const {films, onMovieCardClick, playingFilm, setPlayingFilm} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -49,7 +53,10 @@ class App extends PureComponent {
             <MoviePage
               movie={films[0]}
               films={this._getSameGenreFilms(films, films[0])}
-              onMovieCardClick={onMovieCardClick}/>
+              onMovieCardClick={onMovieCardClick}
+              playingFilm={playingFilm}
+              setPlayingFilm={setPlayingFilm}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -68,17 +75,23 @@ App.propTypes = {
     videoLink: PropTypes.string.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
+  setPlayingFilm: PropTypes.func.isRequired,
   activeFilm: PropTypes.object,
+  playingFilm: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   films: state.films,
   activeFilm: state.activeFilm,
+  playingFilm: state.playingFilm,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onMovieCardClick(film) {
     dispatch(ActionCreator.setActiveFilm(film));
+  },
+  setPlayingFilm(film) {
+    dispatch(ActionCreator.setPlayingFilm(film));
   },
 });
 

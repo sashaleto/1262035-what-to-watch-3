@@ -124,15 +124,11 @@ Main.propTypes = {
 const mapStateToProps = (state) => ({
   shownCardsBound: state.shownCardsBound,
   films: state.films,
-  playingFilm: state.playingFilm,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onShowMoreClick() {
     dispatch(ActionCreator.expandCardsBound());
-  },
-  setPlayingFilm(film) {
-    dispatch(ActionCreator.setPlayingFilm(film));
   },
 });
 

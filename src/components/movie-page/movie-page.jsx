@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from "../tabs/tabs.jsx";
 import MoviesList from "../movies-list/movies-list.jsx";
+import MoviePlayer from "../movie-player/movie-player.jsx";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
+import withVideo from "../../hocs/with-video/with-video";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 const TabsWrapped = withActiveItem(Tabs);
+const MoviePlayerWrapped = withVideo(MoviePlayer);
 
-const MoviePage = ({movie, films, onMovieCardClick}) => {
-  return (
-    <React.Fragment>
+const MoviePage = ({movie, films, onMovieCardClick, playingFilm, setPlayingFilm}) => {
+  return playingFilm
+    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} src={playingFilm.videoLink} />)
+    : (<React.Fragment>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
           <div className="movie-card__bg">
@@ -43,7 +47,7 @@ const MoviePage = ({movie, films, onMovieCardClick}) => {
               </p>
 
               <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button">
+                <button className="btn btn--play movie-card__button" type="button" onClick={() => setPlayingFilm(movie)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"/>
                   </svg>
@@ -95,8 +99,7 @@ const MoviePage = ({movie, films, onMovieCardClick}) => {
           </div>
         </footer>
       </div>
-    </React.Fragment>
-  );
+    </React.Fragment>);
 };
 
 MoviePage.propTypes = {
@@ -116,6 +119,8 @@ MoviePage.propTypes = {
   }).isRequired,
   films: PropTypes.array.isRequired,
   onMovieCardClick: PropTypes.func.isRequired,
+  setPlayingFilm: PropTypes.func.isRequired,
+  playingFilm: PropTypes.object,
 };
 
 export default MoviePage;
