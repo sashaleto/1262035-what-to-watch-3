@@ -14,10 +14,12 @@ const films = [
     },
     director: `Martin Scorsese`,
     starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+    runTime: 136,
     genre: `Crime`,
     released: 2002,
     id: 1,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Seven Years in Tibet`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
@@ -30,10 +32,12 @@ const films = [
     },
     director: `Jean-Jacques Annaud`,
     starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
+    runTime: 10,
     genre: `Adventure`,
     released: 1997,
     id: 2,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Orlando`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Orlando.jpg`,
@@ -46,10 +50,12 @@ const films = [
     },
     director: `Sally Potter`,
     starring: [`Tilda Swinton`, `Billy Zane`, `Quentin Crisp`],
+    runTime: 85,
     genre: `Drama`,
     released: 1992,
     id: 3,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `A Star Is Born`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/A_Star_Is_Born.jpg`,
@@ -62,10 +68,12 @@ const films = [
     },
     director: `Bradley Cooper`,
     starring: [`Lady Gaga`, `Bradley Cooper`, `Sam Elliott`],
+    runTime: 90,
     genre: `Drama`,
     released: 2018,
     id: 4,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Pulp Fiction`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Pulp_Fiction.jpg`,
@@ -78,10 +86,12 @@ const films = [
     },
     director: `Quentin Tarantino`,
     starring: [`John Travolta`, `Uma Thurman`, `Samuel L. Jackson`],
+    runTime: 124,
     genre: `Crime`,
     released: 1994,
     id: 5,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `What We Do in the Shadows`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/What-We-Do-in-the-Shadows.jpg`,
@@ -94,10 +104,12 @@ const films = [
     },
     director: `Jemaine Clement`,
     starring: [`Kayvan Novak`, `Matt Berry`, `Natasia Demetriou`],
+    runTime: 65,
     genre: `Comedy`,
     released: 2019,
     id: 6,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/c/cf/2018-12-25_savoureuse-belfort.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Johnny English`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Johnny_English.jpg`,
@@ -110,10 +122,12 @@ const films = [
     },
     director: `Peter Howitt`,
     starring: [`Rowan Atkinson`, `John Malkovich`, `Natalie Imbruglia`],
+    runTime: 98,
     genre: `Comedy`,
     released: 2003,
     id: 7,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/5/53/Diversity_2019_11.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Snatch`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Snatch.jpg`,
@@ -126,10 +140,12 @@ const films = [
     },
     director: `Guy Ritchie`,
     starring: [`Jason Statham`, `Brad Pitt`, `Benicio Del Toro`],
+    runTime: 120,
     genre: `Comedy`,
     released: 2000,
     id: 8,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Shutter Island`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
@@ -142,10 +158,12 @@ const films = [
     },
     director: `Martin Scorsese`,
     starring: [`Leonardo DiCaprio`, `Emily Mortimer`, `Mark Ruffalo`],
+    runTime: 110,
     genre: `Thriller`,
     released: 2010,
     id: 9,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   },
 ];
 const genresList = makeGenresSet(films);
@@ -158,6 +176,7 @@ it(`Reducer without additional parameters should return initial state`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   });
 });
 
@@ -169,6 +188,7 @@ it(`Reducer should set active genre by a given value`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   }, {
     type: ActionType.SET_GENRE,
     payload: GENRES_TITLES.ALL_GENRES,
@@ -179,6 +199,7 @@ it(`Reducer should set active genre by a given value`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   });
 });
 
@@ -190,6 +211,7 @@ it(`Reducer should filter films by a given genre`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   }, {
     type: ActionType.SET_FILMS_BY_GENRE,
     payload: `Adventure`,
@@ -208,14 +230,17 @@ it(`Reducer should filter films by a given genre`, () => {
       },
       director: `Jean-Jacques Annaud`,
       starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
+      runTime: 10,
       genre: `Adventure`,
       released: 1997,
       id: 2,
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
     }],
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   });
 });
 
@@ -235,10 +260,12 @@ it(`Reducer should return all films for "All genres"`, () => {
       },
       director: `Jean-Jacques Annaud`,
       starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
+      runTime: 10,
       genre: `Adventure`,
       released: 1997,
       id: 2,
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
     }],
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
@@ -264,6 +291,7 @@ it(`Reducer should expand shown films card bound by CARDS_SHOWING_STEP const`, (
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   }, {
     type: ActionType.EXPAND_CARDS_BOUND,
     payload: null,
@@ -274,6 +302,7 @@ it(`Reducer should expand shown films card bound by CARDS_SHOWING_STEP const`, (
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT + CARDS_SHOWING_STEP,
     activeFilm: null,
+    playingFilm: null,
   });
 });
 
@@ -285,6 +314,7 @@ it(`Reducer should reset shown films card bound to INITIAL_CARDS_COUNT`, () => {
     genresList,
     shownCardsBound: 1024,
     activeFilm: null,
+    playingFilm: null,
   }, {
     type: ActionType.RESET_CARDS_BOUND,
     payload: null,
@@ -295,6 +325,7 @@ it(`Reducer should reset shown films card bound to INITIAL_CARDS_COUNT`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   });
 });
 
@@ -306,6 +337,7 @@ it(`Reducer should set active film by a given film`, () => {
     genresList,
     shownCardsBound: INITIAL_CARDS_COUNT,
     activeFilm: null,
+    playingFilm: null,
   }, {
     type: ActionType.SET_ACTIVE_FILM,
     payload: {
@@ -320,10 +352,12 @@ it(`Reducer should set active film by a given film`, () => {
       },
       director: `Martin Scorsese`,
       starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
       genre: `Crime`,
       released: 2002,
       id: 1,
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
     },
   })).toEqual({
     activeGenre: `Some`,
@@ -343,10 +377,72 @@ it(`Reducer should set active film by a given film`, () => {
       },
       director: `Martin Scorsese`,
       starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
       genre: `Crime`,
       released: 2002,
       id: 1,
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    },
+    playingFilm: null,
+  });
+});
+
+it(`Reducer should set playing film by a given film`, () => {
+  expect(reducer({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
+    activeFilm: null,
+    playingFilm: null,
+  }, {
+    type: ActionType.SET_PLAYING_FILM,
+    payload: {
+      title: `Gangs of new york`,
+      posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
+      previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg`,
+      backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/gangs_of_new_york.jpg`,
+      description: `In 1862, Amsterdam Vallon returns to the Five Points area of New York City seeking revenge against Bill the Butcher, his father's killer.`,
+      rating: {
+        score: 8.8,
+        count: 370881,
+      },
+      director: `Martin Scorsese`,
+      starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
+      genre: `Crime`,
+      released: 2002,
+      id: 1,
+      trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    },
+  })).toEqual({
+    activeGenre: `Some`,
+    allFilms: films,
+    films,
+    genresList,
+    shownCardsBound: INITIAL_CARDS_COUNT,
+    activeFilm: null,
+    playingFilm: {
+      title: `Gangs of new york`,
+      posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
+      previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg`,
+      backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/gangs_of_new_york.jpg`,
+      description: `In 1862, Amsterdam Vallon returns to the Five Points area of New York City seeking revenge against Bill the Butcher, his father's killer.`,
+      rating: {
+        score: 8.8,
+        count: 370881,
+      },
+      director: `Martin Scorsese`,
+      starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
+      genre: `Crime`,
+      released: 2002,
+      id: 1,
+      trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
     },
   });
 });
@@ -393,10 +489,12 @@ describe(`Action creators work correctly`, () => {
       },
       director: `Martin Scorsese`,
       starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
       genre: `Crime`,
       released: 2002,
       id: 1,
       trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
     })).toEqual({
       type: ActionType.SET_ACTIVE_FILM,
       payload: {
@@ -411,10 +509,55 @@ describe(`Action creators work correctly`, () => {
         },
         director: `Martin Scorsese`,
         starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+        runTime: 136,
         genre: `Crime`,
         released: 2002,
         id: 1,
         trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+        videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+      },
+    });
+  });
+
+  it(`Action creator for set playing film returns correct action`, () => {
+    expect(ActionCreator.setPlayingFilm({
+      title: `Gangs of new york`,
+      posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
+      previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg`,
+      backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/gangs_of_new_york.jpg`,
+      description: `In 1862, Amsterdam Vallon returns to the Five Points area of New York City seeking revenge against Bill the Butcher, his father's killer.`,
+      rating: {
+        score: 8.8,
+        count: 370881,
+      },
+      director: `Martin Scorsese`,
+      starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+      runTime: 136,
+      genre: `Crime`,
+      released: 2002,
+      id: 1,
+      trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    })).toEqual({
+      type: ActionType.SET_PLAYING_FILM,
+      payload: {
+        title: `Gangs of new york`,
+        posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
+        previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/gangs_of_new_york.jpg`,
+        backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/gangs_of_new_york.jpg`,
+        description: `In 1862, Amsterdam Vallon returns to the Five Points area of New York City seeking revenge against Bill the Butcher, his father's killer.`,
+        rating: {
+          score: 8.8,
+          count: 370881,
+        },
+        director: `Martin Scorsese`,
+        starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+        runTime: 136,
+        genre: `Crime`,
+        released: 2002,
+        id: 1,
+        trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+        videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
       },
     });
   });

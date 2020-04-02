@@ -9,8 +9,8 @@ Array [
       className="movie-card__bg"
     >
       <img
-        alt="The Great Gatsby"
-        src="img/bg-the-great-gatsby.jpg"
+        alt="Matrix"
+        src="https://htmlacademy-react-3.appspot.com/wtw/static/film/background/matrix.jpg"
       />
     </div>
     <h1
@@ -69,9 +69,9 @@ Array [
           className="movie-card__poster"
         >
           <img
-            alt="The Great Gatsby"
+            alt="Matrix"
             height="327"
-            src="img/the-great-gatsby-poster.jpg"
+            src="https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/matrix.jpg"
             width="218"
           />
         </div>
@@ -81,7 +81,7 @@ Array [
           <h2
             className="movie-card__title"
           >
-            The Great Gatsby
+            Matrix
           </h2>
           <p
             className="movie-card__meta"
@@ -89,12 +89,12 @@ Array [
             <span
               className="movie-card__genre"
             >
-              Drama
+              Action
             </span>
             <span
               className="movie-card__year"
             >
-              2013
+              1999
             </span>
           </p>
           <div
@@ -102,6 +102,7 @@ Array [
           >
             <button
               className="btn btn--play movie-card__button"
+              onClick={[Function]}
               type="button"
             >
               <svg

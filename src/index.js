@@ -4,12 +4,7 @@ import {createStore} from "redux";
 import {Provider} from "react-redux";
 import App from './components/app/app.jsx';
 import {reducer} from './reducer';
-
-const movieData = {
-  title: `The Grand Budapest Hotel`,
-  genre: `Drama`,
-  year: 2014,
-};
+import {heroMovie} from "./mocks/hero-movie";
 
 const store = createStore(
     reducer,
@@ -18,7 +13,7 @@ const store = createStore(
 
 ReactDOM.render(
     <Provider store={store}>
-      <App movieData={movieData}/>
+      <App heroMovie={heroMovie}/>
     </Provider>,
     document.querySelector(`#root`)
 );

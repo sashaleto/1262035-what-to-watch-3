@@ -15,6 +15,7 @@ const initialState = {
   genresList: makeGenresSet(films),
   shownCardsBound: INITIAL_CARDS_COUNT,
   activeFilm: null,
+  playingFilm: null,
 };
 
 const ActionType = {
@@ -23,6 +24,7 @@ const ActionType = {
   EXPAND_CARDS_BOUND: `EXPAND_CARDS_BOUND`,
   RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
   SET_ACTIVE_FILM: `SET_ACTIVE_FILM`,
+  SET_PLAYING_FILM: `SET_PLAYING_FILM`,
 };
 
 const ActionCreator = {
@@ -48,6 +50,11 @@ const ActionCreator = {
 
   setActiveFilm: (film) => ({
     type: ActionType.SET_ACTIVE_FILM,
+    payload: film,
+  }),
+
+  setPlayingFilm: (film) => ({
+    type: ActionType.SET_PLAYING_FILM,
     payload: film,
   }),
 };
@@ -87,6 +94,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_ACTIVE_FILM:
       return extend(state, {
         activeFilm: action.payload,
+      });
+
+    case ActionType.SET_PLAYING_FILM:
+      return extend(state, {
+        playingFilm: action.payload,
       });
   }
 

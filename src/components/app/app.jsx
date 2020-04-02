@@ -16,7 +16,7 @@ class App extends PureComponent {
   }
 
   _renderMainScreen() {
-    const {films, movieData, onMovieCardClick, activeFilm} = this.props;
+    const {films, heroMovie, onMovieCardClick, activeFilm, playingFilm, setPlayingFilm} = this.props;
 
     if (activeFilm !== null) {
       const activeMovieId = activeFilm.id;
@@ -26,19 +26,23 @@ class App extends PureComponent {
         movie={activeMovie}
         films={this._getSameGenreFilms(films, activeMovie)}
         onMovieCardClick={onMovieCardClick}
+        playingFilm={playingFilm}
+        setPlayingFilm={setPlayingFilm}
       />);
     }
 
     return (
       <Main
-        movieData={movieData}
+        heroMovie={heroMovie}
         onMovieCardClick={onMovieCardClick}
+        playingFilm={playingFilm}
+        setPlayingFilm={setPlayingFilm}
       />
     );
   }
 
   render() {
-    const {films, onMovieCardClick} = this.props;
+    const {films, onMovieCardClick, playingFilm, setPlayingFilm} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -49,7 +53,10 @@ class App extends PureComponent {
             <MoviePage
               movie={films[0]}
               films={this._getSameGenreFilms(films, films[0])}
-              onMovieCardClick={onMovieCardClick}/>
+              onMovieCardClick={onMovieCardClick}
+              playingFilm={playingFilm}
+              setPlayingFilm={setPlayingFilm}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -59,23 +66,32 @@ class App extends PureComponent {
 
 App.propTypes = {
   films: PropTypes.array.isRequired,
-  movieData: PropTypes.shape({
+  heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
     year: PropTypes.number.isRequired,
+    backgroundImage: PropTypes.string.isRequired,
+    posterImage: PropTypes.string.isRequired,
+    videoLink: PropTypes.string.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
+  setPlayingFilm: PropTypes.func.isRequired,
   activeFilm: PropTypes.object,
+  playingFilm: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   films: state.films,
   activeFilm: state.activeFilm,
+  playingFilm: state.playingFilm,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onMovieCardClick(film) {
     dispatch(ActionCreator.setActiveFilm(film));
+  },
+  setPlayingFilm(film) {
+    dispatch(ActionCreator.setPlayingFilm(film));
   },
 });
 
