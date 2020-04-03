@@ -15,6 +15,7 @@ export const heroMovie = {
   genre: `Action`,
   year: 1999,
   id: 19,
+  released: 2010,
   videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
 };

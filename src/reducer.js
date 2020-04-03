@@ -1,6 +1,7 @@
 import {extend} from "./utils.js";
-import {films} from "./mocks/films.js";
+// import {films} from "./mocks/films.js";
 import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "./constants";
+import Film from './film';
 
 export const makeGenresSet = (filmsList) => {
   const genres = new Set();
@@ -10,9 +11,9 @@ export const makeGenresSet = (filmsList) => {
 
 const initialState = {
   activeGenre: GENRES_TITLES.ALL_GENRES,
-  allFilms: films,
-  films,
-  genresList: makeGenresSet(films),
+  allFilms: [],
+  films: [],
+  genresList: [],
   shownCardsBound: INITIAL_CARDS_COUNT,
   activeFilm: null,
   playingFilm: null,
@@ -25,6 +26,7 @@ const ActionType = {
   RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
   SET_ACTIVE_FILM: `SET_ACTIVE_FILM`,
   SET_PLAYING_FILM: `SET_PLAYING_FILM`,
+  LOAD_FILMS: `LOAD_FILMS`,
 };
 
 const ActionCreator = {
@@ -57,10 +59,29 @@ const ActionCreator = {
     type: ActionType.SET_PLAYING_FILM,
     payload: film,
   }),
+
+  loadFilms: (films) => ({
+    type: ActionType.LOAD_FILMS,
+    payload: films,
+  }),
+};
+
+const Operation = {
+  loadFilms: () => (dispatch, getState, api) => {
+    return api.get(`/films`)
+      .then((response) => {
+        const films = Film.parseFilms(response.data);
+        dispatch(ActionCreator.loadFilms(films));
+      });
+  },
 };
 
 const filterFilmsByGenre = (movies, genre) => {
   return movies.filter((movie) => movie.genre === genre);
+};
+
+const getSameGenreFilms = (films, activeMovie) => {
+  return films.filter((film) => film.genre === activeMovie.genre).filter((film) => film.id !== activeMovie.id).slice(0, 4);
 };
 
 const reducer = (state = initialState, action) => {
@@ -94,11 +115,19 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_ACTIVE_FILM:
       return extend(state, {
         activeFilm: action.payload,
+        films: getSameGenreFilms(state.allFilms, action.payload),
       });
 
     case ActionType.SET_PLAYING_FILM:
       return extend(state, {
         playingFilm: action.payload,
+      });
+
+    case ActionType.LOAD_FILMS:
+      return extend(state, {
+        allFilms: action.payload,
+        films: action.payload,
+        genresList: makeGenresSet(action.payload),
       });
   }
 
@@ -106,4 +135,4 @@ const reducer = (state = initialState, action) => {
 };
 
 
-export {reducer, ActionType, ActionCreator};
+export {reducer, ActionType, ActionCreator, Operation};

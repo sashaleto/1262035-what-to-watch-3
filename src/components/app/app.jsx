@@ -11,20 +11,13 @@ class App extends PureComponent {
     super(props);
   }
 
-  _getSameGenreFilms(films, activeMovie) {
-    return films.filter((film) => film.genre === activeMovie.genre).filter((film) => film.id !== activeMovie.id).slice(0, 4);
-  }
-
   _renderMainScreen() {
     const {films, heroMovie, onMovieCardClick, activeFilm, playingFilm, setPlayingFilm} = this.props;
 
     if (activeFilm !== null) {
-      const activeMovieId = activeFilm.id;
-      const activeMovie = films.find((movie) => movie.id === activeMovieId);
-
       return (<MoviePage
-        movie={activeMovie}
-        films={this._getSameGenreFilms(films, activeMovie)}
+        movie={activeFilm}
+        films={films}
         onMovieCardClick={onMovieCardClick}
         playingFilm={playingFilm}
         setPlayingFilm={setPlayingFilm}
@@ -42,7 +35,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const {films, onMovieCardClick, playingFilm, setPlayingFilm} = this.props;
+    const {films, onMovieCardClick, playingFilm, setPlayingFilm, heroMovie} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -51,8 +44,8 @@ class App extends PureComponent {
           </Route>
           <Route exact path="/movie-page">
             <MoviePage
-              movie={films[0]}
-              films={this._getSameGenreFilms(films, films[0])}
+              movie={heroMovie}
+              films={films}
               onMovieCardClick={onMovieCardClick}
               playingFilm={playingFilm}
               setPlayingFilm={setPlayingFilm}
