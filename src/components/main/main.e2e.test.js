@@ -1,10 +1,11 @@
 import React from "react";
 import Enzyme, {mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import {Main} from "./main";
+import Main from "./main";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import {INITIAL_CARDS_COUNT} from "../../constants";
+import NameSpace from "../../reducer/name-space";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -25,7 +26,7 @@ const heroMovie = {
   starring: [`Keanu Reeves`, `Laurence Fishburne`, `Carrie-Anne Moss`],
   runTime: 136,
   genre: `Action`,
-  year: 1999,
+  released: 1999,
   id: 19,
   videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
@@ -237,8 +238,12 @@ it(`Should movie card title be pressed`, () => {
     preventDefault: jest.fn()
   };
   const store = mockStore({
-    activeGenre: `All genres`,
-    genresList: genres,
+    [NameSpace.DATA]: {
+      genresList: genres,
+    },
+    [NameSpace.STATE]: {
+      activeGenre: `All genres`,
+    }
   });
 
   const mainScreen = mount(
@@ -268,8 +273,12 @@ it(`Should show more button be pressed`, () => {
     preventDefault: jest.fn()
   };
   const store = mockStore({
-    activeGenre: `All genres`,
-    genresList: genres,
+    [NameSpace.DATA]: {
+      genresList: genres,
+    },
+    [NameSpace.STATE]: {
+      activeGenre: `All genres`,
+    }
   });
 
   const mainScreen = mount(

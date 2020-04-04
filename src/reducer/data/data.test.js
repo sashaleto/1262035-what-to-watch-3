@@ -1,32 +1,11 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import Main from "./main";
-import configureStore from "redux-mock-store";
-import {Provider} from "react-redux";
-import {INITIAL_CARDS_COUNT} from "../../constants";
-import NameSpace from "../../reducer/name-space";
+import MockAdapter from "axios-mock-adapter";
+import {createAPI} from "../../api.js";
+import {ActionType, Operation, makeGenresSet, reducer} from "../data/data";
+import Film from "../../film";
 
-const heroMovie = {
-  title: `Matrix`,
-  posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/matrix.jpg`,
-  previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/matrix.jpg`,
-  backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/matrix.jpg`,
-  backgroundColor: `#B9B27E`,
-  description: `A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.`,
-  rating: {
-    score: 9.6,
-    count: 12292,
-  },
-  director: `Wachowski Brothers`,
-  starring: [`Keanu Reeves`, `Laurence Fishburne`, `Carrie-Anne Moss`],
-  runTime: 136,
-  genre: `Action`,
-  released: 1999,
-  id: 19,
-  videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
-  trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
-};
-const films = [
+const api = createAPI(() => {});
+
+const films = Film.mapIdToFilms([
   {
     title: `Gangs of new york`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
@@ -39,10 +18,12 @@ const films = [
     },
     director: `Martin Scorsese`,
     starring: [`Leonardo DiCaprio`, `Cameron Diaz`, `Daniel Day-Lewis`],
+    runTime: 136,
     genre: `Crime`,
     released: 2002,
     id: 1,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Seven Years in Tibet`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
@@ -55,10 +36,12 @@ const films = [
     },
     director: `Jean-Jacques Annaud`,
     starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
+    runTime: 10,
     genre: `Adventure`,
     released: 1997,
     id: 2,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Orlando`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Orlando.jpg`,
@@ -71,10 +54,12 @@ const films = [
     },
     director: `Sally Potter`,
     starring: [`Tilda Swinton`, `Billy Zane`, `Quentin Crisp`],
+    runTime: 85,
     genre: `Drama`,
     released: 1992,
     id: 3,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `A Star Is Born`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/A_Star_Is_Born.jpg`,
@@ -87,10 +72,12 @@ const films = [
     },
     director: `Bradley Cooper`,
     starring: [`Lady Gaga`, `Bradley Cooper`, `Sam Elliott`],
+    runTime: 90,
     genre: `Drama`,
     released: 2018,
     id: 4,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Pulp Fiction`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Pulp_Fiction.jpg`,
@@ -103,10 +90,12 @@ const films = [
     },
     director: `Quentin Tarantino`,
     starring: [`John Travolta`, `Uma Thurman`, `Samuel L. Jackson`],
+    runTime: 124,
     genre: `Crime`,
     released: 1994,
     id: 5,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `What We Do in the Shadows`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/What-We-Do-in-the-Shadows.jpg`,
@@ -119,10 +108,12 @@ const films = [
     },
     director: `Jemaine Clement`,
     starring: [`Kayvan Novak`, `Matt Berry`, `Natasia Demetriou`],
+    runTime: 65,
     genre: `Comedy`,
     released: 2019,
     id: 6,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/c/cf/2018-12-25_savoureuse-belfort.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Johnny English`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Johnny_English.jpg`,
@@ -135,10 +126,12 @@ const films = [
     },
     director: `Peter Howitt`,
     starring: [`Rowan Atkinson`, `John Malkovich`, `Natalie Imbruglia`],
+    runTime: 98,
     genre: `Comedy`,
     released: 2003,
     id: 7,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/5/53/Diversity_2019_11.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Snatch`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Snatch.jpg`,
@@ -151,10 +144,12 @@ const films = [
     },
     director: `Guy Ritchie`,
     starring: [`Jason Statham`, `Brad Pitt`, `Benicio Del Toro`],
+    runTime: 120,
     genre: `Comedy`,
     released: 2000,
     id: 8,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   }, {
     title: `Shutter Island`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
@@ -167,40 +162,103 @@ const films = [
     },
     director: `Martin Scorsese`,
     starring: [`Leonardo DiCaprio`, `Emily Mortimer`, `Mark Ruffalo`],
+    runTime: 110,
     genre: `Thriller`,
     released: 2010,
     id: 9,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
+    videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   },
-];
-const mockStore = configureStore([]);
-const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
+]);
+const promoFilm = Object.values(films)[2];
+const promoResponse = {
+  "id": 1,
+  "name": `The Grand Budapest Hotel`,
+  "poster_image": `img/the-grand-budapest-hotel-poster.jpg`,
+  "preview_image": `img/the-grand-budapest-hotel.jpg`,
+  "background_image": `img/the-grand-budapest-hotel-bg.jpg`,
+  "background_color": `#ffffff`,
+  "video_link": `https://some-link`,
+  "preview_video_link": `https://some-link`,
+  "description": `In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave's friend and protege.`,
+  "rating": 8.9,
+  "scores_count": 240,
+  "director": `Wes Andreson`,
+  "starring": [`Bill Murray`, `Edward Norton`, `Jude Law`, `Willem Dafoe`, `Saoirse Ronan`],
+  "run_time": 99,
+  "genre": `Comedy`,
+  "released": 2014,
+  "is_favorite": false
+};
 
-it(`Render Main page`, () => {
-  const store = mockStore({
-    [NameSpace.DATA]: {
-      genresList: genres,
-    },
-    [NameSpace.STATE]: {
-      activeGenre: `All genres`,
-    }
+it(`Reducer without additional parameters should return initial state`, () => {
+  expect(reducer(void 0, {})).toEqual({
+    films: {},
+    promoFilm: null,
+    genresList: [],
+  });
+});
+
+it(`Reducer should update films with a loaded films`, () => {
+  expect(reducer({
+    films: {},
+    genresList: [],
+  }, {
+    type: ActionType.LOAD_FILMS,
+    payload: films,
+  })).toEqual({
+    films,
+    genresList: makeGenresSet(films),
+  });
+});
+
+it(`Reducer should update promo film with a loaded film`, () => {
+  expect(reducer({
+    promoFilm: null,
+  }, {
+    type: ActionType.LOAD_PROMO_FILM,
+    payload: promoFilm,
+  })).toEqual({
+    promoFilm,
+  });
+});
+
+describe(`Operation work correctly`, () => {
+  it(`Should make a correct API call to /films`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const filmsLoader = Operation.loadFilms();
+
+    apiMock
+      .onGet(`/films`)
+      .reply(200, []);
+
+    return filmsLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.LOAD_FILMS,
+          payload: {},
+        });
+      });
   });
 
-  const tree = renderer
-    .create(
-        <Provider store={store}>
-          <Main
-            films={films}
-            heroMovie={heroMovie}
-            onMovieCardClick={() => {}}
-            shownCardsBound={INITIAL_CARDS_COUNT}
-            onShowMoreClick={() => {}}
-            playingFilm={null}
-            setPlayingFilm={() => {}}
-          />
-        </Provider>
-    )
-    .toJSON();
+  it(`Should make a correct API call to /films/promo`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const promoFilmLoader = Operation.loadPromoFilm();
 
-  expect(tree).toMatchSnapshot();
+    apiMock
+      .onGet(`/films/promo`)
+      .reply(200, promoResponse);
+
+    return promoFilmLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.LOAD_PROMO_FILM,
+          payload: Film.parseFilm(promoResponse),
+        });
+      });
+  });
 });

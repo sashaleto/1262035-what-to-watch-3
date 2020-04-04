@@ -11,8 +11,9 @@ const TabsWrapped = withActiveItem(Tabs);
 const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 const MoviePage = ({movie, films, onMovieCardClick, playingFilm, setPlayingFilm}) => {
+
   return playingFilm
-    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)}/>)
+    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={() => setPlayingFilm(null)}/>)
     : (<React.Fragment>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">

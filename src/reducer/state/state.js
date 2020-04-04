@@ -1,26 +1,15 @@
-import {extend} from "./utils.js";
-import {films} from "./mocks/films.js";
-import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "./constants";
-
-export const makeGenresSet = (filmsList) => {
-  const genres = new Set();
-  filmsList.forEach((film) => genres.add(film.genre));
-  return [GENRES_TITLES.ALL_GENRES].concat(Array.from(genres));
-};
+import {extend} from "../../utils.js";
+import {CARDS_SHOWING_STEP, GENRES_TITLES, INITIAL_CARDS_COUNT} from "../../constants";
 
 const initialState = {
   activeGenre: GENRES_TITLES.ALL_GENRES,
-  allFilms: films,
-  films,
-  genresList: makeGenresSet(films),
   shownCardsBound: INITIAL_CARDS_COUNT,
-  activeFilm: null,
+  activeFilm: -1,
   playingFilm: null,
 };
 
 const ActionType = {
   SET_GENRE: `SET_GENRE`,
-  SET_FILMS_BY_GENRE: `SET_FILMS_BY_GENRE`,
   EXPAND_CARDS_BOUND: `EXPAND_CARDS_BOUND`,
   RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
   SET_ACTIVE_FILM: `SET_ACTIVE_FILM`,
@@ -28,11 +17,6 @@ const ActionType = {
 };
 
 const ActionCreator = {
-  setFilmsByGenre: (genre) => ({
-    type: ActionType.SET_FILMS_BY_GENRE,
-    payload: genre,
-  }),
-
   setGenre: (genre) => ({
     type: ActionType.SET_GENRE,
     payload: genre,
@@ -48,9 +32,9 @@ const ActionCreator = {
     payload: null,
   }),
 
-  setActiveFilm: (film) => ({
+  setActiveFilm: (id) => ({
     type: ActionType.SET_ACTIVE_FILM,
-    payload: film,
+    payload: id,
   }),
 
   setPlayingFilm: (film) => ({
@@ -59,26 +43,11 @@ const ActionCreator = {
   }),
 };
 
-const filterFilmsByGenre = (movies, genre) => {
-  return movies.filter((movie) => movie.genre === genre);
-};
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.SET_GENRE:
       return extend(state, {
         activeGenre: action.payload,
-      });
-
-    case ActionType.SET_FILMS_BY_GENRE:
-      if (action.payload === GENRES_TITLES.ALL_GENRES) {
-        return extend(state, {
-          films: state.allFilms,
-        });
-      }
-
-      return extend(state, {
-        films: filterFilmsByGenre(state.allFilms, action.payload),
       });
 
     case ActionType.EXPAND_CARDS_BOUND:

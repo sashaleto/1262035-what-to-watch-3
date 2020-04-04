@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import MoviesList from '../movies-list/movies-list.jsx';
 import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
-import {ActionCreator} from "../../reducer";
-import {connect} from "react-redux";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
 import withVideo from "../../hocs/with-video/with-video";
 import MoviePlayer from "../movie-player/movie-player.jsx";
@@ -51,7 +49,7 @@ const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreCl
               <h2 className="movie-card__title">{heroMovie.title}</h2>
               <p className="movie-card__meta">
                 <span className="movie-card__genre">{heroMovie.genre}</span>
-                <span className="movie-card__year">{heroMovie.year}</span>
+                <span className="movie-card__year">{heroMovie.released}</span>
               </p>
 
               <div className="movie-card__buttons">
@@ -110,7 +108,7 @@ Main.propTypes = {
   heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
+    released: PropTypes.number.isRequired,
     backgroundImage: PropTypes.string.isRequired,
     posterImage: PropTypes.string.isRequired,
   }),
@@ -121,16 +119,4 @@ Main.propTypes = {
   playingFilm: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  shownCardsBound: state.shownCardsBound,
-  films: state.films,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onShowMoreClick() {
-    dispatch(ActionCreator.expandCardsBound());
-  },
-});
-
-export {Main};
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default Main;

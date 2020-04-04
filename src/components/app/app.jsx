@@ -4,45 +4,58 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
-import {ActionCreator} from "../../reducer";
+import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
+import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
+import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
+import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
   }
 
-  _getSameGenreFilms(films, activeMovie) {
-    return films.filter((film) => film.genre === activeMovie.genre).filter((film) => film.id !== activeMovie.id).slice(0, 4);
-  }
-
   _renderMainScreen() {
-    const {films, heroMovie, onMovieCardClick, activeFilm, playingFilm, setPlayingFilm} = this.props;
+    const {
+      mainFilms,
+      moviePageFilms,
+      heroMovie,
+      onMovieCardClick,
+      activeFilm,
+      playingFilm,
+      setPlayingFilm,
+      onShowMoreClick,
+      shownCardsBound
+    } = this.props;
 
-    if (activeFilm !== null) {
-      const activeMovieId = activeFilm.id;
-      const activeMovie = films.find((movie) => movie.id === activeMovieId);
-
+    if (typeof activeFilm !== `undefined`) {
       return (<MoviePage
-        movie={activeMovie}
-        films={this._getSameGenreFilms(films, activeMovie)}
+        movie={activeFilm}
+        films={moviePageFilms}
         onMovieCardClick={onMovieCardClick}
         playingFilm={playingFilm}
         setPlayingFilm={setPlayingFilm}
       />);
     }
 
-    return (
-      <Main
-        heroMovie={heroMovie}
-        onMovieCardClick={onMovieCardClick}
-        playingFilm={playingFilm}
-        setPlayingFilm={setPlayingFilm}
-      />
-    );
+    if (heroMovie) {
+      return (
+        <Main
+          films={mainFilms}
+          heroMovie={heroMovie}
+          onMovieCardClick={onMovieCardClick}
+          onShowMoreClick={onShowMoreClick}
+          shownCardsBound={shownCardsBound}
+          playingFilm={playingFilm}
+          setPlayingFilm={setPlayingFilm}
+        />
+      );
+    }
+
+    return null;
   }
 
   render() {
-    const {films, onMovieCardClick, playingFilm, setPlayingFilm} = this.props;
+    const {moviePageFilms, onMovieCardClick, playingFilm, setPlayingFilm, heroMovie} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -50,13 +63,17 @@ class App extends PureComponent {
             {this._renderMainScreen()}
           </Route>
           <Route exact path="/movie-page">
-            <MoviePage
-              movie={films[0]}
-              films={this._getSameGenreFilms(films, films[0])}
-              onMovieCardClick={onMovieCardClick}
-              playingFilm={playingFilm}
-              setPlayingFilm={setPlayingFilm}
-            />
+            {
+              (heroMovie)
+                ? <MoviePage
+                  movie={heroMovie}
+                  films={moviePageFilms}
+                  onMovieCardClick={onMovieCardClick}
+                  playingFilm={playingFilm}
+                  setPlayingFilm={setPlayingFilm}
+                />
+                : null
+            }
           </Route>
         </Switch>
       </BrowserRouter>
@@ -65,33 +82,42 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
-  films: PropTypes.array.isRequired,
+  mainFilms: PropTypes.array.isRequired,
+  moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
+    released: PropTypes.number.isRequired,
     backgroundImage: PropTypes.string.isRequired,
     posterImage: PropTypes.string.isRequired,
     videoLink: PropTypes.string.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
   setPlayingFilm: PropTypes.func.isRequired,
+  onShowMoreClick: PropTypes.func.isRequired,
+  shownCardsBound: PropTypes.number.isRequired,
   activeFilm: PropTypes.object,
   playingFilm: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
-  films: state.films,
-  activeFilm: state.activeFilm,
-  playingFilm: state.playingFilm,
+  mainFilms: getMainFilms(state),
+  moviePageFilms: getMoviePageFilms(state),
+  shownCardsBound: getShownCardsBound(state),
+  activeFilm: getFilms(state)[getActiveFilmId(state)],
+  playingFilm: getPlayingFilm(state),
+  heroMovie: getPromoFilm(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onMovieCardClick(film) {
-    dispatch(ActionCreator.setActiveFilm(film));
+  onMovieCardClick(filmId) {
+    dispatch(ActionCreatorState.setActiveFilm(filmId));
   },
   setPlayingFilm(film) {
-    dispatch(ActionCreator.setPlayingFilm(film));
+    dispatch(ActionCreatorState.setPlayingFilm(film));
+  },
+  onShowMoreClick() {
+    dispatch(ActionCreatorState.expandCardsBound());
   },
 });
 
