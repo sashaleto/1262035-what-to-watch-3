@@ -5,9 +5,9 @@ import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
-import {ActionCreator as ActionCreatorData} from "../../reducer/data/data";
-import {getActiveFilm, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
+import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getFilms} from "../../reducer/data/selectors";
+import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 
 class App extends PureComponent {
   constructor(props) {
@@ -15,12 +15,22 @@ class App extends PureComponent {
   }
 
   _renderMainScreen() {
-    const {films, heroMovie, onMovieCardClick, activeFilm, playingFilm, setPlayingFilm, onShowMoreClick, shownCardsBound} = this.props;
+    const {
+      mainFilms,
+      moviePageFilms,
+      heroMovie,
+      onMovieCardClick,
+      activeFilm,
+      playingFilm,
+      setPlayingFilm,
+      onShowMoreClick,
+      shownCardsBound
+    } = this.props;
 
-    if (activeFilm !== null) {
+    if (typeof activeFilm !== `undefined`) {
       return (<MoviePage
         movie={activeFilm}
-        films={films}
+        films={moviePageFilms}
         onMovieCardClick={onMovieCardClick}
         playingFilm={playingFilm}
         setPlayingFilm={setPlayingFilm}
@@ -29,7 +39,7 @@ class App extends PureComponent {
 
     return (
       <Main
-        films={films}
+        films={mainFilms}
         heroMovie={heroMovie}
         onMovieCardClick={onMovieCardClick}
         onShowMoreClick={onShowMoreClick}
@@ -41,7 +51,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const {films, onMovieCardClick, playingFilm, setPlayingFilm, heroMovie} = this.props;
+    const {moviePageFilms, onMovieCardClick, playingFilm, setPlayingFilm, heroMovie} = this.props;
     return (
       <BrowserRouter>
         <Switch>
@@ -51,7 +61,7 @@ class App extends PureComponent {
           <Route exact path="/movie-page">
             <MoviePage
               movie={heroMovie}
-              films={films}
+              films={moviePageFilms}
               onMovieCardClick={onMovieCardClick}
               playingFilm={playingFilm}
               setPlayingFilm={setPlayingFilm}
@@ -64,34 +74,35 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
-  films: PropTypes.array.isRequired,
+  mainFilms: PropTypes.array.isRequired,
+  moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
+    released: PropTypes.number.isRequired,
     backgroundImage: PropTypes.string.isRequired,
     posterImage: PropTypes.string.isRequired,
     videoLink: PropTypes.string.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
   setPlayingFilm: PropTypes.func.isRequired,
-  activeFilm: PropTypes.object,
-  playingFilm: PropTypes.object,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
+  activeFilm: PropTypes.object,
+  playingFilm: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
-  films: getFilms(state),
-  activeFilm: getActiveFilm(state),
-  playingFilm: getPlayingFilm(state),
+  mainFilms: getMainFilms(state),
+  moviePageFilms: getMoviePageFilms(state),
   shownCardsBound: getShownCardsBound(state),
+  activeFilm: getFilms(state)[getActiveFilmId(state)],
+  playingFilm: getPlayingFilm(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onMovieCardClick(film) {
-    dispatch(ActionCreatorState.setActiveFilm(film));
-    dispatch(ActionCreatorData.setFilmsByGenre(film.genre));
+  onMovieCardClick(filmId) {
+    dispatch(ActionCreatorState.setActiveFilm(filmId));
   },
   setPlayingFilm(film) {
     dispatch(ActionCreatorState.setPlayingFilm(film));

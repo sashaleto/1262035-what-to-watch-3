@@ -4,7 +4,7 @@ import {CARDS_SHOWING_STEP, GENRES_TITLES, INITIAL_CARDS_COUNT} from "../../cons
 const initialState = {
   activeGenre: GENRES_TITLES.ALL_GENRES,
   shownCardsBound: INITIAL_CARDS_COUNT,
-  activeFilm: null,
+  activeFilm: -1,
   playingFilm: null,
 };
 
@@ -32,9 +32,9 @@ const ActionCreator = {
     payload: null,
   }),
 
-  setActiveFilm: (film) => ({
+  setActiveFilm: (id) => ({
     type: ActionType.SET_ACTIVE_FILM,
-    payload: film,
+    payload: id,
   }),
 
   setPlayingFilm: (film) => ({

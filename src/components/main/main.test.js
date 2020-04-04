@@ -1,9 +1,10 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import {Main} from "./main";
+import Main from "./main";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import {INITIAL_CARDS_COUNT} from "../../constants";
+import NameSpace from "../../reducer/name-space";
 
 const heroMovie = {
   title: `Matrix`,
@@ -20,7 +21,7 @@ const heroMovie = {
   starring: [`Keanu Reeves`, `Laurence Fishburne`, `Carrie-Anne Moss`],
   runTime: 136,
   genre: `Action`,
-  year: 1999,
+  released: 1999,
   id: 19,
   videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
@@ -177,8 +178,12 @@ const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
 
 it(`Render Main page`, () => {
   const store = mockStore({
-    activeGenre: `All genres`,
-    genresList: genres,
+    [NameSpace.DATA]: {
+      genresList: genres,
+    },
+    [NameSpace.STATE]: {
+      activeGenre: `All genres`,
+    }
   });
 
   const tree = renderer

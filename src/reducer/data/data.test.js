@@ -1,11 +1,11 @@
 import MockAdapter from "axios-mock-adapter";
 import {createAPI} from "../../api.js";
-import {ActionCreator, ActionType, Operation, makeGenresSet, reducer} from "../data/data";
-import {GENRES_TITLES} from "../../constants";
+import {ActionType, Operation, makeGenresSet, reducer} from "../data/data";
+import Film from "../../film";
 
 const api = createAPI(() => {});
 
-const films = [
+const films = Film.mapIdToFilms([
   {
     title: `Gangs of new york`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
@@ -169,99 +169,25 @@ const films = [
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
   },
-];
+]);
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
-    allFilms: [],
-    films: [],
+    films: {},
     genresList: [],
   });
 });
 
 it(`Reducer should update films with a loaded films`, () => {
   expect(reducer({
-    allFilms: [],
-    films: [],
+    films: {},
     genresList: [],
   }, {
     type: ActionType.LOAD_FILMS,
     payload: films,
   })).toEqual({
-    allFilms: films,
     films,
     genresList: makeGenresSet(films),
-  });
-});
-
-it(`Reducer should filter films by a given genre`, () => {
-  expect(reducer({
-    allFilms: films,
-    films,
-  }, {
-    type: ActionType.SET_FILMS_BY_GENRE,
-    payload: `Adventure`,
-  })).toEqual({
-    allFilms: films,
-    films: [{
-      title: `Seven Years in Tibet`,
-      posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
-      previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/seven-years-in-tibet.jpg`,
-      backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Seven_Years_in_Tibet.jpg`,
-      description: `True story of Heinrich Harrer, an Austrian mountain climber who became friends with the Dalai Lama at the time of China's takeover of Tibet.`,
-      rating: {
-        score: 3.6,
-        count: 112612,
-      },
-      director: `Jean-Jacques Annaud`,
-      starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
-      runTime: 10,
-      genre: `Adventure`,
-      released: 1997,
-      id: 2,
-      trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
-      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
-    }],
-  });
-});
-
-it(`Reducer should return all films for "All genres"`, () => {
-  expect(reducer({
-    allFilms: films,
-    films: [{
-      title: `Seven Years in Tibet`,
-      posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
-      previewImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/preview/seven-years-in-tibet.jpg`,
-      backgroundImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/background/Seven_Years_in_Tibet.jpg`,
-      description: `True story of Heinrich Harrer, an Austrian mountain climber who became friends with the Dalai Lama at the time of China's takeover of Tibet.`,
-      rating: {
-        score: 3.6,
-        count: 112612,
-      },
-      director: `Jean-Jacques Annaud`,
-      starring: [`Brad Pitt`, `David Thewlis`, `BD Wong`],
-      runTime: 10,
-      genre: `Adventure`,
-      released: 1997,
-      id: 2,
-      trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
-      videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
-    }],
-  }, {
-    type: ActionType.SET_FILMS_BY_GENRE,
-    payload: GENRES_TITLES.ALL_GENRES,
-  })).toEqual({
-    allFilms: films,
-    films,
-  });
-});
-
-describe(`Action creators work correctly`, () => {
-  it(`Action creator for set films by genre returns correct action`, () => {
-    expect(ActionCreator.setFilmsByGenre(`Adventure`)).toEqual({
-      type: ActionType.SET_FILMS_BY_GENRE,
-      payload: `Adventure`,
-    });
   });
 });
 
@@ -280,7 +206,7 @@ describe(`Operation work correctly`, () => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_FILMS,
-          payload: [],
+          payload: {},
         });
       });
   });

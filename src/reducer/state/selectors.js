@@ -3,7 +3,7 @@ import NameSpace from "../name-space.js";
 
 const NAME_SPACE = NameSpace.STATE;
 
-export const getActiveFilm = (state) => {
+export const getActiveFilmId = (state) => {
   return state[NAME_SPACE].activeFilm;
 };
 

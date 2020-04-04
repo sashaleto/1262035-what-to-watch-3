@@ -10,15 +10,10 @@ const MoviesListWrapped = withActiveItem(MoviesList);
 const TabsWrapped = withActiveItem(Tabs);
 const MoviePlayerWrapped = withVideo(MoviePlayer);
 
-const getSameGenreFilms = (films, activeMovie) => {
-  return films.filter((film) => film.genre === activeMovie.genre).filter((film) => film.id !== activeMovie.id).slice(0, 4);
-};
-
 const MoviePage = ({movie, films, onMovieCardClick, playingFilm, setPlayingFilm}) => {
-  const filmsToRender = getSameGenreFilms(films, movie);
 
   return playingFilm
-    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)}/>)
+    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={() => setPlayingFilm(null)}/>)
     : (<React.Fragment>
       <section className="movie-card movie-card--full">
         <div className="movie-card__hero">
@@ -88,7 +83,7 @@ const MoviePage = ({movie, films, onMovieCardClick, playingFilm, setPlayingFilm}
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <MoviesListWrapped films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
+          <MoviesListWrapped films={films} onMovieCardClick={onMovieCardClick}/>
         </section>
 
         <footer className="page-footer">

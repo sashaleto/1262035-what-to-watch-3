@@ -38,12 +38,19 @@ export default class Film {
       "run_time": this.runTime,
       "genre": this.genre,
       "released": this.released,
-      "is_favorite": this.isFavorite
+      "is_favorite": this.isFavorite,
     };
   }
 
   static parseFilm(film) {
     return new Film(film);
+  }
+
+  static mapIdToFilms(films) {
+    return films.reduce((accumulator, film) => {
+      accumulator[film.id] = film;
+      return accumulator;
+    }, {});
   }
 
   static parseFilms(films) {
