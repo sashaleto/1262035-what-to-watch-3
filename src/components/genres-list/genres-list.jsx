@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {GENRES_TO_RENDER_COUNT} from "../../constants";
-import {ActionCreator} from "../../reducer";
+import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
+import {ActionCreator as ActionCreatorData} from "../../reducer/data/data";
+import {getActiveGenre} from "../../reducer/state/selectors";
+import {getGenresList} from "../../reducer/data/selectors";
 
 const GenresList = (props) => {
   const {genresList, onGenreTitleClick, activeGenre} = props;
@@ -26,16 +29,16 @@ GenresList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  activeGenre: state.activeGenre,
-  genresList: state.genresList,
+  activeGenre: getActiveGenre(state),
+  genresList: getGenresList(state),
 });
 
 
 const mapDispatchToProps = (dispatch) => ({
   onGenreTitleClick(genre) {
-    dispatch(ActionCreator.setGenre(genre));
-    dispatch(ActionCreator.setFilmsByGenre(genre));
-    dispatch(ActionCreator.resetCardsBound());
+    dispatch(ActionCreatorState.setGenre(genre));
+    dispatch(ActionCreatorData.setFilmsByGenre(genre));
+    dispatch(ActionCreatorState.resetCardsBound());
   },
 });
 

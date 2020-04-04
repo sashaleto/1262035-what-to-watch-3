@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import MoviesList from '../movies-list/movies-list.jsx';
 import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
-import {ActionCreator} from "../../reducer";
+import {ActionCreator} from "../../reducer/state/state";
 import {connect} from "react-redux";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
 import withVideo from "../../hocs/with-video/with-video";
 import MoviePlayer from "../movie-player/movie-player.jsx";
+import {getShownCardsBound} from "../../reducer/state/selectors";
+import {getFilms} from "../../reducer/data/selectors";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 const MoviePlayerWrapped = withVideo(MoviePlayer);
@@ -122,8 +124,8 @@ Main.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  shownCardsBound: state.shownCardsBound,
-  films: state.films,
+  shownCardsBound: getShownCardsBound(state),
+  films: getFilms(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

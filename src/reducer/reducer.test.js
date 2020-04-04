@@ -1,5 +1,5 @@
 import {reducer, makeGenresSet, ActionCreator, ActionType} from "./reducer.js";
-import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "./constants";
+import {GENRES_TITLES, INITIAL_CARDS_COUNT, CARDS_SHOWING_STEP} from "../constants";
 
 const films = [
   {

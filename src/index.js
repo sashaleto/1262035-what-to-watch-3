@@ -4,8 +4,8 @@ import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
 import App from './components/app/app.jsx';
-import {reducer} from './reducer';
-import {Operation as DataOperation} from "./reducer";
+import reducer from './reducer/reducer.js';
+import {Operation as DataOperation} from "./reducer/data/data";
 import {heroMovie} from "./mocks/hero-movie";
 import {createAPI} from "./api.js";
 

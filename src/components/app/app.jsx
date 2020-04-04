@@ -4,7 +4,10 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
-import {ActionCreator} from "../../reducer";
+import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
+import {ActionCreator as ActionCreatorData} from "../../reducer/data/data";
+import {getActiveFilm, getPlayingFilm} from "../../reducer/state/selectors";
+import {getFilms} from "../../reducer/data/selectors";
 
 class App extends PureComponent {
   constructor(props) {
@@ -74,17 +77,18 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  films: state.films,
-  activeFilm: state.activeFilm,
-  playingFilm: state.playingFilm,
+  films: getFilms(state),
+  activeFilm: getActiveFilm(state),
+  playingFilm: getPlayingFilm(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onMovieCardClick(film) {
-    dispatch(ActionCreator.setActiveFilm(film));
+    dispatch(ActionCreatorState.setActiveFilm(film));
+    dispatch(ActionCreatorData.setFilmsByGenre(film.genre));
   },
   setPlayingFilm(film) {
-    dispatch(ActionCreator.setPlayingFilm(film));
+    dispatch(ActionCreatorState.setPlayingFilm(film));
   },
 });
 
