@@ -6,7 +6,7 @@ import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
-import {getFilms} from "../../reducer/data/selectors";
+import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
 import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 
 class App extends PureComponent {
@@ -37,17 +37,21 @@ class App extends PureComponent {
       />);
     }
 
-    return (
-      <Main
-        films={mainFilms}
-        heroMovie={heroMovie}
-        onMovieCardClick={onMovieCardClick}
-        onShowMoreClick={onShowMoreClick}
-        shownCardsBound={shownCardsBound}
-        playingFilm={playingFilm}
-        setPlayingFilm={setPlayingFilm}
-      />
-    );
+    if (heroMovie) {
+      return (
+        <Main
+          films={mainFilms}
+          heroMovie={heroMovie}
+          onMovieCardClick={onMovieCardClick}
+          onShowMoreClick={onShowMoreClick}
+          shownCardsBound={shownCardsBound}
+          playingFilm={playingFilm}
+          setPlayingFilm={setPlayingFilm}
+        />
+      );
+    }
+
+    return null;
   }
 
   render() {
@@ -59,13 +63,17 @@ class App extends PureComponent {
             {this._renderMainScreen()}
           </Route>
           <Route exact path="/movie-page">
-            <MoviePage
-              movie={heroMovie}
-              films={moviePageFilms}
-              onMovieCardClick={onMovieCardClick}
-              playingFilm={playingFilm}
-              setPlayingFilm={setPlayingFilm}
-            />
+            {
+              (heroMovie)
+                ? <MoviePage
+                  movie={heroMovie}
+                  films={moviePageFilms}
+                  onMovieCardClick={onMovieCardClick}
+                  playingFilm={playingFilm}
+                  setPlayingFilm={setPlayingFilm}
+                />
+                : null
+            }
           </Route>
         </Switch>
       </BrowserRouter>
@@ -98,6 +106,7 @@ const mapStateToProps = (state) => ({
   shownCardsBound: getShownCardsBound(state),
   activeFilm: getFilms(state)[getActiveFilmId(state)],
   playingFilm: getPlayingFilm(state),
+  heroMovie: getPromoFilm(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

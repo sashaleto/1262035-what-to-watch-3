@@ -13,6 +13,10 @@ export const getGenresList = (state) => {
   return state[NAME_SPACE].genresList;
 };
 
+export const getPromoFilm = (state) => {
+  return state[NAME_SPACE].promoFilm;
+};
+
 export const getMainFilms = createSelector(
     [getActiveGenre, getFilms],
     (genre, allFilms) => {

@@ -7,7 +7,6 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import App from './components/app/app.jsx';
 import reducer from './reducer/reducer.js';
 import {Operation as DataOperation} from "./reducer/data/data";
-import {heroMovie} from "./mocks/hero-movie";
 import {createAPI} from "./api.js";
 
 const api = createAPI(() => {});
@@ -20,10 +19,11 @@ const store = createStore(
 );
 
 store.dispatch(DataOperation.loadFilms());
+store.dispatch(DataOperation.loadPromoFilm());
 
 ReactDOM.render(
     <Provider store={store}>
-      <App heroMovie={heroMovie}/>
+      <App />
     </Provider>,
     document.querySelector(`#root`)
 );

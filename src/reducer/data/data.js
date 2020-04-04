@@ -10,17 +10,23 @@ export const makeGenresSet = (films) => {
 
 const initialState = {
   films: {},
+  promoFilm: null,
   genresList: [],
 };
 
 const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
+  LOAD_PROMO_FILM: `LOAD_PROMO_FILM`,
 };
 
 const ActionCreator = {
   loadFilms: (films) => ({
     type: ActionType.LOAD_FILMS,
     payload: films,
+  }),
+  loadPromoFilm: (film) => ({
+    type: ActionType.LOAD_PROMO_FILM,
+    payload: film,
   }),
 };
 
@@ -32,6 +38,14 @@ const Operation = {
         dispatch(ActionCreator.loadFilms(films));
       });
   },
+
+  loadPromoFilm: () => (dispatch, getState, api) => {
+    return api.get(`/films/promo`)
+      .then((response) => {
+        const promoFilm = Film.parseFilm(response.data);
+        dispatch(ActionCreator.loadPromoFilm(promoFilm));
+      });
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +54,11 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         films: action.payload,
         genresList: makeGenresSet(action.payload),
+      });
+
+    case ActionType.LOAD_PROMO_FILM:
+      return extend(state, {
+        promoFilm: action.payload,
       });
   }
 
