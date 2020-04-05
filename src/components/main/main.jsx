@@ -6,11 +6,23 @@ import ShowMore from "../show-more/show-more.jsx";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
 import withVideo from "../../hocs/with-video/with-video";
 import MoviePlayer from "../movie-player/movie-player.jsx";
+import Header from "../header/header.jsx";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 const MoviePlayerWrapped = withVideo(MoviePlayer);
 
-const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreClick, playingFilm, setPlayingFilm}) => {
+const Main = (props) => {
+  const {
+    films,
+    heroMovie,
+    shownCardsBound,
+    onMovieCardClick,
+    onShowMoreClick,
+    playingFilm,
+    setPlayingFilm,
+    userAvatarUrl,
+    authStatus
+  } = props;
   const filmsToRender = films.slice(0, shownCardsBound);
 
   return playingFilm
@@ -23,21 +35,7 @@ const Main = ({films, heroMovie, shownCardsBound, onMovieCardClick, onShowMoreCl
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <header className="page-header movie-card__head">
-          <div className="logo">
-            <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
-
-          <div className="user-block">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-            </div>
-          </div>
-        </header>
+        <Header userAuthStatus={authStatus} userAvatarUrl={userAvatarUrl}/>
 
         <div className="movie-card__wrap">
           <div className="movie-card__info">
@@ -117,6 +115,8 @@ Main.propTypes = {
   shownCardsBound: PropTypes.number.isRequired,
   setPlayingFilm: PropTypes.func.isRequired,
   playingFilm: PropTypes.object,
+  userAvatarUrl: PropTypes.string.isRequired,
+  authStatus: PropTypes.string.isRequired,
 };
 
 export default Main;

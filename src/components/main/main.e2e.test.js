@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import {INITIAL_CARDS_COUNT} from "../../constants";
 import NameSpace from "../../reducer/name-space";
+import {AuthorizationStatus} from "../../reducer/user/user";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -231,6 +232,7 @@ const filmsAll = [
 ];
 const mockStore = configureStore([]);
 const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
+const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Should movie card title be pressed`, () => {
   const onMovieCardClick = jest.fn();
@@ -256,6 +258,8 @@ it(`Should movie card title be pressed`, () => {
           shownCardsBound={INITIAL_CARDS_COUNT}
           playingFilm={null}
           setPlayingFilm={() => {}}
+          userAvatarUrl={userAvatarUrl}
+          authStatus={AuthorizationStatus.AUTH}
         />
       </Provider>
   );
@@ -291,6 +295,8 @@ it(`Should show more button be pressed`, () => {
           shownCardsBound={INITIAL_CARDS_COUNT}
           playingFilm={null}
           setPlayingFilm={() => {}}
+          userAvatarUrl={userAvatarUrl}
+          authStatus={AuthorizationStatus.AUTH}
         />
       </Provider>
   );
