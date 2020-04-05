@@ -5,9 +5,12 @@ import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
+import {Operation as UserOperation} from "../../reducer/user/user";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
+import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
 import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
+import SignIn from "../sign-in/sign-in.jsx";
 
 class App extends PureComponent {
   constructor(props) {
@@ -24,20 +27,26 @@ class App extends PureComponent {
       playingFilm,
       setPlayingFilm,
       onShowMoreClick,
-      shownCardsBound
+      shownCardsBound,
+      userInfo,
+      authorizationStatus
     } = this.props;
 
     if (typeof activeFilm !== `undefined`) {
+      const avatar = userInfo ? userInfo.avatarUrl : ``;
       return (<MoviePage
         movie={activeFilm}
         films={moviePageFilms}
         onMovieCardClick={onMovieCardClick}
         playingFilm={playingFilm}
         setPlayingFilm={setPlayingFilm}
+        userAvatarUrl={avatar}
+        authStatus={authorizationStatus}
       />);
     }
 
     if (heroMovie) {
+      const avatar = userInfo ? userInfo.avatarUrl : ``;
       return (
         <Main
           films={mainFilms}
@@ -47,6 +56,8 @@ class App extends PureComponent {
           shownCardsBound={shownCardsBound}
           playingFilm={playingFilm}
           setPlayingFilm={setPlayingFilm}
+          userAvatarUrl={avatar}
+          authStatus={authorizationStatus}
         />
       );
     }
@@ -55,7 +66,17 @@ class App extends PureComponent {
   }
 
   render() {
-    const {moviePageFilms, onMovieCardClick, playingFilm, setPlayingFilm, heroMovie} = this.props;
+    const {
+      moviePageFilms,
+      onMovieCardClick,
+      playingFilm,
+      setPlayingFilm,
+      heroMovie,
+      userInfo,
+      authorizationStatus,
+      login
+    } = this.props;
+    const avatar = userInfo ? userInfo.avatarUrl : ``;
     return (
       <BrowserRouter>
         <Switch>
@@ -71,9 +92,14 @@ class App extends PureComponent {
                   onMovieCardClick={onMovieCardClick}
                   playingFilm={playingFilm}
                   setPlayingFilm={setPlayingFilm}
+                  userAvatarUrl={avatar}
+                  authStatus={authorizationStatus}
                 />
                 : null
             }
+          </Route>
+          <Route exact path="/sign-in">
+            <SignIn onSubmit={login}/>
           </Route>
         </Switch>
       </BrowserRouter>
@@ -82,6 +108,7 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
+  authorizationStatus: PropTypes.string.isRequired,
   mainFilms: PropTypes.array.isRequired,
   moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
@@ -96,11 +123,15 @@ App.propTypes = {
   setPlayingFilm: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
+  login: PropTypes.func.isRequired,
   activeFilm: PropTypes.object,
   playingFilm: PropTypes.object,
+  userInfo: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
+  authorizationStatus: getAuthorizationStatus(state),
+  userInfo: getUserInfo(state),
   mainFilms: getMainFilms(state),
   moviePageFilms: getMoviePageFilms(state),
   shownCardsBound: getShownCardsBound(state),
@@ -110,6 +141,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  login(authData) {
+    dispatch(UserOperation.login(authData));
+  },
   onMovieCardClick(filmId) {
     dispatch(ActionCreatorState.setActiveFilm(filmId));
   },

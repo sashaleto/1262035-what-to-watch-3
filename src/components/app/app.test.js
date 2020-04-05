@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import {App} from "./app.jsx";
 import {INITIAL_CARDS_COUNT} from "../../constants";
 import NameSpace from "../../reducer/name-space";
+import {AuthorizationStatus} from "../../reducer/user/user";
 
 const mockStore = configureStore([]);
 
@@ -227,6 +228,9 @@ const crimeFilms = [
   },
 ];
 const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
+const userInfo = {
+  avatarUrl: `img/avatar.jpg`
+};
 
 it(`Render App`, () => {
   const store = mockStore({
@@ -236,7 +240,7 @@ it(`Render App`, () => {
     },
     [NameSpace.STATE]: {
       activeGenre: `All genres`,
-    }
+    },
   });
 
   const tree = renderer
@@ -251,6 +255,9 @@ it(`Render App`, () => {
             onShowMoreClick={() => {}}
             shownCardsBound={INITIAL_CARDS_COUNT}
             playingFilm={null}
+            login={() => {}}
+            authorizationStatus={AuthorizationStatus.AUTH}
+            userInfo={userInfo}
           />
         </Provider>
     )

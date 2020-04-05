@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import {INITIAL_CARDS_COUNT} from "../../constants";
 import NameSpace from "../../reducer/name-space";
+import {AuthorizationStatus} from "../../reducer/user/user";
 
 const heroMovie = {
   title: `Matrix`,
@@ -175,6 +176,7 @@ const films = [
 ];
 const mockStore = configureStore([]);
 const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
+const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Render Main page`, () => {
   const store = mockStore({
@@ -197,6 +199,8 @@ it(`Render Main page`, () => {
             onShowMoreClick={() => {}}
             playingFilm={null}
             setPlayingFilm={() => {}}
+            userAvatarUrl={userAvatarUrl}
+            authStatus={AuthorizationStatus.AUTH}
           />
         </Provider>
     )

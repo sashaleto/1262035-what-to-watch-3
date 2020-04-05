@@ -1,6 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import MoviePage from "./movie-page";
+import {AuthorizationStatus} from "../../reducer/user/user";
 
 const movie = {
   title: `Gangs of new york`,
@@ -18,7 +19,6 @@ const movie = {
   released: 2002,
   id: 1,
 };
-
 const films = [
   {
     title: `Gangs of new york`,
@@ -54,6 +54,7 @@ const films = [
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
   },
 ];
+const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Render MoviePage`, () => {
   const tree = renderer
@@ -63,6 +64,8 @@ it(`Render MoviePage`, () => {
           onMovieCardClick={() => {}}
           playingFilm={null}
           setPlayingFilm={() => {}}
+          userAvatarUrl={userAvatarUrl}
+          authStatus={AuthorizationStatus.AUTH}
         />)
         .toJSON();
 
