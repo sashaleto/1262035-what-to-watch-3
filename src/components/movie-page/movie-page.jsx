@@ -12,7 +12,17 @@ const TabsWrapped = withActiveItem(Tabs);
 const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 const MoviePage = (props) => {
-  const {movie, films, onMovieCardClick, playingFilm, setPlayingFilm, userAvatarUrl, authStatus} = props;
+  const {
+    movie,
+    films,
+    onMovieCardClick,
+    playingFilm,
+    setPlayingFilm,
+    userAvatarUrl,
+    authStatus,
+    addToMyList,
+    removeFromMyList,
+  } = props;
 
   return playingFilm
     ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={() => setPlayingFilm(null)}/>)
@@ -42,12 +52,21 @@ const MoviePage = (props) => {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list movie-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                {
+                  (movie.isFavorite)
+                    ? <button className="btn btn--list movie-card__button" type="button" onClick={() => removeFromMyList(movie.id)}>
+                      <svg viewBox="0 0 18 14" width="18" height="14">
+                        <use xlinkHref="#in-list"/>
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                    : <button className="btn btn--list movie-card__button" type="button" onClick={() => addToMyList(movie.id)}>
+                      <svg viewBox="0 0 19 20" width="19" height="20">
+                        <use xlinkHref="#add"/>
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                }
                 <a href="add-review.html" className="btn movie-card__button">Add review</a>
               </div>
             </div>
@@ -93,6 +112,7 @@ const MoviePage = (props) => {
 
 MoviePage.propTypes = {
   movie: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
     released: PropTypes.number.isRequired,
@@ -104,7 +124,8 @@ MoviePage.propTypes = {
     }).isRequired,
     director: PropTypes.string.isRequired,
     starring: PropTypes.arrayOf(PropTypes.string).isRequired,
-    description: PropTypes.string.isRequired
+    description: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
   films: PropTypes.array.isRequired,
   onMovieCardClick: PropTypes.func.isRequired,
@@ -112,6 +133,8 @@ MoviePage.propTypes = {
   playingFilm: PropTypes.object,
   userAvatarUrl: PropTypes.string.isRequired,
   authStatus: PropTypes.string.isRequired,
+  addToMyList: PropTypes.func.isRequired,
+  removeFromMyList: PropTypes.func.isRequired,
 };
 
 export default MoviePage;

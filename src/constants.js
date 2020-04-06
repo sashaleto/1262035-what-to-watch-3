@@ -21,3 +21,10 @@ export const GENRES_TITLES = {
 
 export const INITIAL_CARDS_COUNT = 8;
 export const CARDS_SHOWING_STEP = 8;
+
+export const AppRoutes = {
+  LOGIN: `/login`,
+  MY_LIST: `/mylist`,
+  ROOT: `/`,
+  FILM: `/films`,
+};

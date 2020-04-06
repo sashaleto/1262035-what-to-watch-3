@@ -21,7 +21,9 @@ const Main = (props) => {
     playingFilm,
     setPlayingFilm,
     userAvatarUrl,
-    authStatus
+    authStatus,
+    addToMyList,
+    removeFromMyList,
   } = props;
   const filmsToRender = films.slice(0, shownCardsBound);
 
@@ -57,12 +59,21 @@ const Main = (props) => {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list movie-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                {
+                  (heroMovie.isFavorite)
+                    ? <button className="btn btn--list movie-card__button" type="button" onClick={() => removeFromMyList(heroMovie.id)}>
+                      <svg viewBox="0 0 18 14" width="18" height="14">
+                        <use xlinkHref="#in-list"/>
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                    : <button className="btn btn--list movie-card__button" type="button" onClick={() => addToMyList(heroMovie.id)}>
+                      <svg viewBox="0 0 19 20" width="19" height="20">
+                        <use xlinkHref="#add"/>
+                      </svg>
+                      <span>My list</span>
+                    </button>
+                }
               </div>
             </div>
           </div>
@@ -109,6 +120,8 @@ Main.propTypes = {
     released: PropTypes.number.isRequired,
     backgroundImage: PropTypes.string.isRequired,
     posterImage: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
   }),
   onMovieCardClick: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
@@ -117,6 +130,8 @@ Main.propTypes = {
   playingFilm: PropTypes.object,
   userAvatarUrl: PropTypes.string.isRequired,
   authStatus: PropTypes.string.isRequired,
+  addToMyList: PropTypes.func.isRequired,
+  removeFromMyList: PropTypes.func.isRequired,
 };
 
 export default Main;

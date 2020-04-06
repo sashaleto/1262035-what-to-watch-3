@@ -1,4 +1,6 @@
 import axios from "axios";
+import {AppRoutes} from "./constants";
+import history from "./history.js";
 
 const Error = {
   UNAUTHORIZED: 401
@@ -20,6 +22,11 @@ export const createAPI = (onUnauthorized) => {
 
     if (response.status === Error.UNAUTHORIZED) {
       onUnauthorized();
+
+      if (response.config.url !== AppRoutes.LOGIN) {
+        history.push(AppRoutes.LOGIN);
+      }
+
       throw err;
     }
 

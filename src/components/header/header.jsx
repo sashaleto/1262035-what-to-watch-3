@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 import {AuthorizationStatus} from "../../reducer/user/user";
+import {AppRoutes} from "../../constants";
 
 const Header = ({userAuthStatus, userAvatarUrl}) => {
 
@@ -15,11 +17,13 @@ const Header = ({userAuthStatus, userAvatarUrl}) => {
     <div className="user-block">
       { (userAuthStatus === AuthorizationStatus.AUTH)
         ? (
-          <div className="user-block__avatar">
-            <img src={userAvatarUrl} alt="User avatar" width="63" height="63"/>
-          </div>
+          <Link to={AppRoutes.MY_LIST}>
+            <div className="user-block__avatar">
+              <img src={userAvatarUrl} alt="User avatar" width="63" height="63"/>
+            </div>
+          </Link>
         )
-        : <a href="sign-in.html" className="user-block__link">Sign in</a>
+        : <Link to={AppRoutes.LOGIN} className="user-block__link">Sign in</Link>
       }
     </div>
   </header>;

@@ -1,16 +1,19 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {Router, Route, Switch} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {Operation as UserOperation} from "../../reducer/user/user";
+import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
 import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
+import {AppRoutes} from "../../constants";
+import history from "../../history.js";
 
 class App extends PureComponent {
   constructor(props) {
@@ -29,7 +32,9 @@ class App extends PureComponent {
       onShowMoreClick,
       shownCardsBound,
       userInfo,
-      authorizationStatus
+      authorizationStatus,
+      addToMyList,
+      removeFromMyList
     } = this.props;
 
     if (typeof activeFilm !== `undefined`) {
@@ -42,6 +47,8 @@ class App extends PureComponent {
         setPlayingFilm={setPlayingFilm}
         userAvatarUrl={avatar}
         authStatus={authorizationStatus}
+        addToMyList={addToMyList}
+        removeFromMyList={removeFromMyList}
       />);
     }
 
@@ -58,6 +65,8 @@ class App extends PureComponent {
           setPlayingFilm={setPlayingFilm}
           userAvatarUrl={avatar}
           authStatus={authorizationStatus}
+          addToMyList={addToMyList}
+          removeFromMyList={removeFromMyList}
         />
       );
     }
@@ -74,13 +83,15 @@ class App extends PureComponent {
       heroMovie,
       userInfo,
       authorizationStatus,
-      login
+      login,
+      addToMyList,
+      removeFromMyList
     } = this.props;
     const avatar = userInfo ? userInfo.avatarUrl : ``;
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <Switch>
-          <Route exact path="/">
+          <Route exact path={AppRoutes.ROOT}>
             {this._renderMainScreen()}
           </Route>
           <Route exact path="/movie-page">
@@ -94,15 +105,17 @@ class App extends PureComponent {
                   setPlayingFilm={setPlayingFilm}
                   userAvatarUrl={avatar}
                   authStatus={authorizationStatus}
+                  addToMyList={addToMyList}
+                  removeFromMyList={removeFromMyList}
                 />
                 : null
             }
           </Route>
-          <Route exact path="/sign-in">
+          <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
           </Route>
         </Switch>
-      </BrowserRouter>
+      </Router>
     );
   }
 }
@@ -127,6 +140,8 @@ App.propTypes = {
   activeFilm: PropTypes.object,
   playingFilm: PropTypes.object,
   userInfo: PropTypes.object,
+  addToMyList: PropTypes.func.isRequired,
+  removeFromMyList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -152,6 +167,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onShowMoreClick() {
     dispatch(ActionCreatorState.expandCardsBound());
+  },
+  addToMyList(filmId) {
+    dispatch(DataOperation.addFilmToUserList(filmId));
+  },
+  removeFromMyList(filmId) {
+    dispatch(DataOperation.removeFilmFromUserList(filmId));
   },
 });
 

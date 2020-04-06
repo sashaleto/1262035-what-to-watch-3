@@ -2,6 +2,8 @@ import React from "react";
 import renderer from "react-test-renderer";
 import MoviePage from "./movie-page";
 import {AuthorizationStatus} from "../../reducer/user/user";
+import history from "../../history";
+import {Router} from "react-router-dom";
 
 const movie = {
   title: `Gangs of new york`,
@@ -18,6 +20,7 @@ const movie = {
   genre: `Crime`,
   released: 2002,
   id: 1,
+  isFavorite: false,
 };
 const films = [
   {
@@ -58,15 +61,21 @@ const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Render MoviePage`, () => {
   const tree = renderer
-        .create(<MoviePage
-          movie={movie}
-          films={films}
-          onMovieCardClick={() => {}}
-          playingFilm={null}
-          setPlayingFilm={() => {}}
-          userAvatarUrl={userAvatarUrl}
-          authStatus={AuthorizationStatus.AUTH}
-        />)
+        .create(
+            <Router history={history}>
+              <MoviePage
+                movie={movie}
+                films={films}
+                onMovieCardClick={() => {}}
+                playingFilm={null}
+                setPlayingFilm={() => {}}
+                userAvatarUrl={userAvatarUrl}
+                authStatus={AuthorizationStatus.AUTH}
+                addToMyList={() => {}}
+                removeFromMyList={() => {}}
+              />
+            </Router>
+        )
         .toJSON();
 
   expect(tree).toMatchSnapshot();
