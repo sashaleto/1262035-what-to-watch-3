@@ -12,7 +12,6 @@ import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors"
 import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
 import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
-import MyList from "../my-list/my-list.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
 
@@ -78,7 +77,6 @@ class App extends PureComponent {
   render() {
     const {
       moviePageFilms,
-      mainFilms,
       onMovieCardClick,
       playingFilm,
       setPlayingFilm,
@@ -115,9 +113,6 @@ class App extends PureComponent {
           </Route>
           <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
-          </Route>
-          <Route exact path={AppRoutes.MY_LIST}>
-            <MyList films={mainFilms} onMovieCardClick={onMovieCardClick}/>
           </Route>
         </Switch>
       </Router>
