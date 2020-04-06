@@ -3,6 +3,8 @@ import renderer from "react-test-renderer";
 import Main from "./main";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
+import {Router} from "react-router-dom";
+import history from "../../history.js";
 import {INITIAL_CARDS_COUNT} from "../../constants";
 import NameSpace from "../../reducer/name-space";
 import {AuthorizationStatus} from "../../reducer/user/user";
@@ -25,7 +27,8 @@ const heroMovie = {
   released: 1999,
   id: 19,
   videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
-  trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
+  trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
+  isFavorite: false,
 };
 const films = [
   {
@@ -191,17 +194,21 @@ it(`Render Main page`, () => {
   const tree = renderer
     .create(
         <Provider store={store}>
-          <Main
-            films={films}
-            heroMovie={heroMovie}
-            onMovieCardClick={() => {}}
-            shownCardsBound={INITIAL_CARDS_COUNT}
-            onShowMoreClick={() => {}}
-            playingFilm={null}
-            setPlayingFilm={() => {}}
-            userAvatarUrl={userAvatarUrl}
-            authStatus={AuthorizationStatus.AUTH}
-          />
+          <Router history={history}>
+            <Main
+              films={films}
+              heroMovie={heroMovie}
+              onMovieCardClick={() => {}}
+              shownCardsBound={INITIAL_CARDS_COUNT}
+              onShowMoreClick={() => {}}
+              playingFilm={null}
+              setPlayingFilm={() => {}}
+              userAvatarUrl={userAvatarUrl}
+              authStatus={AuthorizationStatus.AUTH}
+              addToMyList={() => {}}
+              removeFromMyList={() => {}}
+            />
+          </Router>
         </Provider>
     )
     .toJSON();

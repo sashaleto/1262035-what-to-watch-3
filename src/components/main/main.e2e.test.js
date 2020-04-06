@@ -7,6 +7,8 @@ import {Provider} from "react-redux";
 import {INITIAL_CARDS_COUNT} from "../../constants";
 import NameSpace from "../../reducer/name-space";
 import {AuthorizationStatus} from "../../reducer/user/user";
+import history from "../../history";
+import {Router} from "react-router-dom";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -30,7 +32,8 @@ const heroMovie = {
   released: 1999,
   id: 19,
   videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
-  trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
+  trailerLink: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
+  isFavorite: false,
 };
 const filmsPart = [
   {
@@ -250,17 +253,21 @@ it(`Should movie card title be pressed`, () => {
 
   const mainScreen = mount(
       <Provider store={store}>
-        <Main
-          films={filmsPart}
-          heroMovie={heroMovie}
-          onMovieCardClick={onMovieCardClick}
-          onShowMoreClick={() => {}}
-          shownCardsBound={INITIAL_CARDS_COUNT}
-          playingFilm={null}
-          setPlayingFilm={() => {}}
-          userAvatarUrl={userAvatarUrl}
-          authStatus={AuthorizationStatus.AUTH}
-        />
+        <Router history={history}>
+          <Main
+            films={filmsPart}
+            heroMovie={heroMovie}
+            onMovieCardClick={onMovieCardClick}
+            onShowMoreClick={() => {}}
+            shownCardsBound={INITIAL_CARDS_COUNT}
+            playingFilm={null}
+            setPlayingFilm={() => {}}
+            userAvatarUrl={userAvatarUrl}
+            authStatus={AuthorizationStatus.AUTH}
+            addToMyList={() => {}}
+            removeFromMyList={() => {}}
+          />
+        </Router>
       </Provider>
   );
 
@@ -287,17 +294,21 @@ it(`Should show more button be pressed`, () => {
 
   const mainScreen = mount(
       <Provider store={store}>
-        <Main
-          films={filmsAll}
-          heroMovie={heroMovie}
-          onMovieCardClick={() => {}}
-          onShowMoreClick={handleShowMoreClick}
-          shownCardsBound={INITIAL_CARDS_COUNT}
-          playingFilm={null}
-          setPlayingFilm={() => {}}
-          userAvatarUrl={userAvatarUrl}
-          authStatus={AuthorizationStatus.AUTH}
-        />
+        <Router history={history}>
+          <Main
+            films={filmsAll}
+            heroMovie={heroMovie}
+            onMovieCardClick={() => {}}
+            onShowMoreClick={handleShowMoreClick}
+            shownCardsBound={INITIAL_CARDS_COUNT}
+            playingFilm={null}
+            setPlayingFilm={() => {}}
+            userAvatarUrl={userAvatarUrl}
+            authStatus={AuthorizationStatus.AUTH}
+            addToMyList={() => {}}
+            removeFromMyList={() => {}}
+          />
+        </Router>
       </Provider>
   );
 
