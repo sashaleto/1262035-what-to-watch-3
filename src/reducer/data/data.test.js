@@ -24,6 +24,7 @@ const films = Film.mapIdToFilms([
     id: 1,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/0/05/Leipzig_Hauptbahnhof_Time_Lapse_with_iPhone_4s_2012.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Seven Years in Tibet`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Seven_Years_in_Tibet.jpg`,
@@ -42,6 +43,7 @@ const films = Film.mapIdToFilms([
     id: 2,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/7/75/2018-01_Ill_flood_drone.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Orlando`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Orlando.jpg`,
@@ -60,6 +62,7 @@ const films = Film.mapIdToFilms([
     id: 3,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/80/The_Cry_Of_Jazz_%281959%29.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `A Star Is Born`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/A_Star_Is_Born.jpg`,
@@ -78,6 +81,7 @@ const films = Film.mapIdToFilms([
     id: 4,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/84/Funicular_Train_Adventure_in_Barcelona..webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Pulp Fiction`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Pulp_Fiction.jpg`,
@@ -96,6 +100,7 @@ const films = Film.mapIdToFilms([
     id: 5,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `What We Do in the Shadows`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/What-We-Do-in-the-Shadows.jpg`,
@@ -114,6 +119,7 @@ const films = Film.mapIdToFilms([
     id: 6,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/c/cf/2018-12-25_savoureuse-belfort.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Johnny English`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Johnny_English.jpg`,
@@ -132,6 +138,7 @@ const films = Film.mapIdToFilms([
     id: 7,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/5/53/Diversity_2019_11.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Snatch`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Snatch.jpg`,
@@ -150,6 +157,7 @@ const films = Film.mapIdToFilms([
     id: 8,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/8/89/Bauern-Demonstration_Berlin_2019.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   }, {
     title: `Shutter Island`,
     posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Shutter_Island.jpg`,
@@ -168,10 +176,11 @@ const films = Film.mapIdToFilms([
     id: 9,
     trailerLink: `https://upload.wikimedia.org/wikipedia/commons/b/b5/RainingWebm.webm`,
     videoLink: `http://media.xiph.org/mango/tears_of_steel_1080p.webm`,
+    isFavorite: false,
   },
 ]);
 const promoFilm = Object.values(films)[2];
-const promoResponse = {
+const fakeResponse = {
   "id": 1,
   "name": `The Grand Budapest Hotel`,
   "poster_image": `img/the-grand-budapest-hotel-poster.jpg`,
@@ -190,6 +199,7 @@ const promoResponse = {
   "released": 2014,
   "is_favorite": false
 };
+const favoriteFilmMock = Object.assign({}, fakeResponse, {"is_favorite": true});
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
@@ -223,7 +233,19 @@ it(`Reducer should update promo film with a loaded film`, () => {
   });
 });
 
-describe(`Operation work correctly`, () => {
+it(`Reducer should update films when user add film to favorites`, () => {
+  const updatedFilm = Object.assign({}, films[1], {isFavorite: true});
+
+  expect(reducer({
+    films,
+    promoFilm: null,
+  }, {
+    type: ActionType.UPDATE_FILMS,
+    payload: updatedFilm,
+  })).toHaveProperty(`films.1`, updatedFilm);
+});
+
+describe(`Operations work correctly`, () => {
   it(`Should make a correct API call to /films`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
@@ -250,14 +272,33 @@ describe(`Operation work correctly`, () => {
 
     apiMock
       .onGet(`/films/promo`)
-      .reply(200, promoResponse);
+      .reply(200, fakeResponse);
 
     return promoFilmLoader(dispatch, () => {}, api)
       .then(() => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_PROMO_FILM,
-          payload: Film.parseFilm(promoResponse),
+          payload: Film.parseFilm(fakeResponse),
+        });
+      });
+  });
+
+  it(`Should make a correct API call to /favorite`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const addFilmToUserListLoader = Operation.addFilmToUserList(fakeResponse.id);
+
+    apiMock
+      .onPost(`/favorite/${fakeResponse.id}/1`)
+      .reply(200, favoriteFilmMock);
+
+    return addFilmToUserListLoader(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.UPDATE_FILMS,
+          payload: Film.parseFilm(favoriteFilmMock),
         });
       });
   });
