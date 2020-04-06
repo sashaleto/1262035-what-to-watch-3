@@ -8,7 +8,6 @@ import NameSpace from "../../reducer/name-space";
 import {AuthorizationStatus} from "../../reducer/user/user";
 import {Router} from "react-router-dom";
 import history from "../../history";
-import Main from "../main/main";
 
 const mockStore = configureStore([]);
 
