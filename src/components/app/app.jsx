@@ -14,6 +14,7 @@ import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
+import AddReviewPage from "../add-review-page/add-review-page.jsx";
 
 class App extends PureComponent {
   constructor(props) {
@@ -77,6 +78,7 @@ class App extends PureComponent {
   render() {
     const {
       moviePageFilms,
+      allFilms,
       onMovieCardClick,
       playingFilm,
       setPlayingFilm,
@@ -114,6 +116,15 @@ class App extends PureComponent {
           <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
           </Route>
+          <Route exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
+            render={(props) => {
+              return (Object.keys(allFilms).length)
+                ? <AddReviewPage movie={allFilms[props.match.params.id]} userAvatarUrl={avatar} />
+                : null
+              ;
+            }}
+          >
+          </Route>
         </Switch>
       </Router>
     );
@@ -122,6 +133,7 @@ class App extends PureComponent {
 
 App.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
+  allFilms: PropTypes.object.isRequired,
   mainFilms: PropTypes.array.isRequired,
   moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
@@ -146,6 +158,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
+  allFilms: getFilms(state),
   userInfo: getUserInfo(state),
   mainFilms: getMainFilms(state),
   moviePageFilms: getMoviePageFilms(state),
