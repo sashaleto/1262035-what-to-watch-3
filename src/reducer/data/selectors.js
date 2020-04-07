@@ -17,6 +17,10 @@ export const getPromoFilm = (state) => {
   return state[NAME_SPACE].promoFilm;
 };
 
+export const getReviewError = (state) => {
+  return state[NAME_SPACE].reviewError;
+};
+
 export const getMainFilms = createSelector(
     [getActiveGenre, getFilms],
     (genre, allFilms) => {

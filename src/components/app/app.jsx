@@ -9,11 +9,12 @@ import {Operation as UserOperation} from "../../reducer/user/user";
 import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
-import {getFilms, getPromoFilm} from "../../reducer/data/selectors";
+import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
 import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
+import AddReviewPage from "../add-review-page/add-review-page.jsx";
 
 class App extends PureComponent {
   constructor(props) {
@@ -77,6 +78,7 @@ class App extends PureComponent {
   render() {
     const {
       moviePageFilms,
+      allFilms,
       onMovieCardClick,
       playingFilm,
       setPlayingFilm,
@@ -85,7 +87,9 @@ class App extends PureComponent {
       authorizationStatus,
       login,
       addToMyList,
-      removeFromMyList
+      removeFromMyList,
+      onSubmitReview,
+      reviewError
     } = this.props;
     const avatar = userInfo ? userInfo.avatarUrl : ``;
     return (
@@ -94,7 +98,7 @@ class App extends PureComponent {
           <Route exact path={AppRoutes.ROOT}>
             {this._renderMainScreen()}
           </Route>
-          <Route exact path="/movie-page">
+          <Route exact path={`${AppRoutes.FILM}/:id`}>
             {
               (heroMovie)
                 ? <MoviePage
@@ -114,6 +118,20 @@ class App extends PureComponent {
           <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
           </Route>
+          <Route exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
+            render={(props) => {
+              return (Object.keys(allFilms).length)
+                ? <AddReviewPage
+                  movie={allFilms[props.match.params.id]}
+                  userAvatarUrl={avatar}
+                  submitReviewHandler={onSubmitReview}
+                  apiError={reviewError}
+                />
+                : null
+              ;
+            }}
+          >
+          </Route>
         </Switch>
       </Router>
     );
@@ -122,6 +140,7 @@ class App extends PureComponent {
 
 App.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
+  allFilms: PropTypes.object.isRequired,
   mainFilms: PropTypes.array.isRequired,
   moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
@@ -142,10 +161,13 @@ App.propTypes = {
   userInfo: PropTypes.object,
   addToMyList: PropTypes.func.isRequired,
   removeFromMyList: PropTypes.func.isRequired,
+  onSubmitReview: PropTypes.func.isRequired,
+  reviewError: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
+  allFilms: getFilms(state),
   userInfo: getUserInfo(state),
   mainFilms: getMainFilms(state),
   moviePageFilms: getMoviePageFilms(state),
@@ -153,6 +175,7 @@ const mapStateToProps = (state) => ({
   activeFilm: getFilms(state)[getActiveFilmId(state)],
   playingFilm: getPlayingFilm(state),
   heroMovie: getPromoFilm(state),
+  reviewError: getReviewError(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -173,6 +196,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   removeFromMyList(filmId) {
     dispatch(DataOperation.removeFilmFromUserList(filmId));
+  },
+  onSubmitReview(filmId, review) {
+    dispatch(DataOperation.postCommentToFilm(filmId, review));
   },
 });
 

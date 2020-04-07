@@ -27,4 +27,5 @@ export const AppRoutes = {
   MY_LIST: `/mylist`,
   ROOT: `/`,
   FILM: `/films`,
+  ADD_REVIEW: `/review`,
 };

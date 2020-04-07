@@ -180,7 +180,7 @@ const films = Film.mapIdToFilms([
   },
 ]);
 const promoFilm = Object.values(films)[2];
-const fakeResponse = {
+const fakeResponseFilm = {
   "id": 1,
   "name": `The Grand Budapest Hotel`,
   "poster_image": `img/the-grand-budapest-hotel-poster.jpg`,
@@ -199,13 +199,46 @@ const fakeResponse = {
   "released": 2014,
   "is_favorite": false
 };
-const favoriteFilmMock = Object.assign({}, fakeResponse, {"is_favorite": true});
+const fakeResponseComments = [
+  {
+    "id": 1,
+    "user": {
+      "id": 18,
+      "name": `Sophie`
+    },
+    "rating": 4.5,
+    "comment": `This movie is just plain bad. There must be some big payola going round this awards season. Badly written, average acting at best, all the characters are unrelatable and inlikeable. 2 hours of my life wasted.`,
+    "date": `2020-03-23T13:11:18.497Z`
+  }, {
+    "id": 2,
+    "user": {
+      "id": 12,
+      "name": `Isaac`
+    },
+    "rating": 4.7,
+    "comment": `I personally found this movie to be boring. Definitely one of the most boring movies I've ever seen.`,
+    "date": `2020-03-23T13:11:18.497Z`
+  },
+];
+const mockComment = {
+  "id": 123,
+  "user": {
+    "id": 234,
+    "name": `Alice`
+  },
+  "rating": 3.5,
+  "comment": `Review text`,
+  "date": `2020-01-23T13:11:18.497Z`
+};
+const favoriteFilmMock = Object.assign({}, fakeResponseFilm, {"is_favorite": true});
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
     films: {},
     promoFilm: null,
     genresList: [],
+    currentComments: [],
+    reviewError: null,
   });
 });
 
@@ -245,6 +278,19 @@ it(`Reducer should update films when user add film to favorites`, () => {
   })).toHaveProperty(`films.1`, updatedFilm);
 });
 
+it(`Reducer should update comments when user post comment to film`, () => {
+  const newComments = Object.assign({}, fakeResponseComments, mockComment);
+
+  expect(reducer({
+    currentComments: fakeResponseComments,
+  }, {
+    type: ActionType.UPDATE_COMMENTS,
+    payload: newComments,
+  })).toEqual({
+    currentComments: newComments,
+  });
+});
+
 describe(`Operations work correctly`, () => {
   it(`Should make a correct API call to /films`, function () {
     const apiMock = new MockAdapter(api);
@@ -272,14 +318,14 @@ describe(`Operations work correctly`, () => {
 
     apiMock
       .onGet(`/films/promo`)
-      .reply(200, fakeResponse);
+      .reply(200, fakeResponseFilm);
 
     return promoFilmLoader(dispatch, () => {}, api)
       .then(() => {
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_PROMO_FILM,
-          payload: Film.parseFilm(fakeResponse),
+          payload: Film.parseFilm(fakeResponseFilm),
         });
       });
   });
@@ -287,10 +333,10 @@ describe(`Operations work correctly`, () => {
   it(`Should make a correct API call to /favorite`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
-    const addFilmToUserListLoader = Operation.addFilmToUserList(fakeResponse.id);
+    const addFilmToUserListLoader = Operation.addFilmToUserList(fakeResponseFilm.id);
 
     apiMock
-      .onPost(`/favorite/${fakeResponse.id}/1`)
+      .onPost(`/favorite/${fakeResponseFilm.id}/1`)
       .reply(200, favoriteFilmMock);
 
     return addFilmToUserListLoader(dispatch, () => {}, api)
@@ -299,6 +345,29 @@ describe(`Operations work correctly`, () => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.UPDATE_FILMS,
           payload: Film.parseFilm(favoriteFilmMock),
+        });
+      });
+  });
+
+  it(`Should make a correct API call to /comments/:id`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const updateCurrentComments = Operation.postCommentToFilm(fakeResponseFilm.id, `Fake review`);
+
+    apiMock
+      .onPost(`/comments/${fakeResponseFilm.id}`)
+      .reply(200, fakeResponseComments);
+
+    return updateCurrentComments(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.UPDATE_COMMENTS,
+          payload: fakeResponseComments,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.SET_COMMENT_ERROR,
+          payload: null,
         });
       });
   });

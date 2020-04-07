@@ -1,6 +1,7 @@
 import {extend} from "../../utils.js";
 import Film from "../../film";
-import {GENRES_TITLES} from "../../constants";
+import {AppRoutes, GENRES_TITLES} from "../../constants";
+import history from "../../history";
 
 export const makeGenresSet = (films) => {
   const genres = new Set();
@@ -12,12 +13,16 @@ const initialState = {
   films: {},
   promoFilm: null,
   genresList: [],
+  currentComments: [],
+  reviewError: null,
 };
 
 const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
   LOAD_PROMO_FILM: `LOAD_PROMO_FILM`,
   UPDATE_FILMS: `UPDATE_FILMS`,
+  UPDATE_COMMENTS: `UPDATE_COMMENTS`,
+  SET_COMMENT_ERROR: `SET_COMMENT_ERROR`,
 };
 
 const ActionCreator = {
@@ -32,6 +37,14 @@ const ActionCreator = {
   updateFilms: (film) => ({
     type: ActionType.UPDATE_FILMS,
     payload: film,
+  }),
+  updateComments: (comment) => ({
+    type: ActionType.UPDATE_COMMENTS,
+    payload: comment,
+  }),
+  setCommentError: (message) => ({
+    type: ActionType.SET_COMMENT_ERROR,
+    payload: message,
   }),
 };
 
@@ -67,6 +80,22 @@ const Operation = {
         dispatch(ActionCreator.updateFilms(removedFilm));
       });
   },
+
+  postCommentToFilm: (filmId, review) => (dispatch, getState, api) => {
+    return api.post(`/comments/${filmId}`, {
+      rating: review.rating,
+      comment: review.comment,
+    })
+      .then((response) => {
+        const updatedComments = response.data;
+        dispatch(ActionCreator.updateComments(updatedComments));
+        dispatch(ActionCreator.setCommentError(null));
+        history.push(`${AppRoutes.FILM}/${filmId}`);
+      })
+      .catch((err) => {
+        dispatch(ActionCreator.setCommentError(err.response.data.error));
+      });
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -89,6 +118,16 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         films,
         promoFilm: (state.promoFilm && state.promoFilm.id === action.payload.id) ? action.payload : null,
+      });
+
+    case ActionType.UPDATE_COMMENTS:
+      return extend(state, {
+        currentComments: action.payload,
+      });
+
+    case ActionType.SET_COMMENT_ERROR:
+      return extend(state, {
+        reviewError: action.payload,
       });
   }
 
