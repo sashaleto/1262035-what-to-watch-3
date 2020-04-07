@@ -16,6 +16,7 @@ import {AppRoutes} from "../../constants";
 import history from "../../history.js";
 import AddReviewPage from "../add-review-page/add-review-page.jsx";
 import MyList from "../my-list/my-list.jsx";
+import PrivateRoute from "../private-route/private-route.jsx";
 
 class App extends PureComponent {
   constructor(props) {
@@ -134,9 +135,10 @@ class App extends PureComponent {
             }}
           >
           </Route>
-          <Route exact path={AppRoutes.MY_LIST}>
-            <MyList films={userFilmsList} onMovieCardClick={onMovieCardClick} avatarUrl={avatar}/>
-          </Route>
+          <PrivateRoute exact path={AppRoutes.MY_LIST} render={() => {
+            return <MyList films={userFilmsList} onMovieCardClick={onMovieCardClick} avatarUrl={avatar}/>;
+          }}>
+          </PrivateRoute>
         </Switch>
       </Router>
     );
