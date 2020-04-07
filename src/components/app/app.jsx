@@ -94,7 +94,7 @@ class App extends PureComponent {
           <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
           </Route>
-          <Route exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
+          <PrivateRoute exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
             render={(props) => {
               return (Object.keys(allFilms).length)
                 ? <AddReviewPage
@@ -107,7 +107,7 @@ class App extends PureComponent {
               ;
             }}
           >
-          </Route>
+          </PrivateRoute>
           <PrivateRoute exact path={AppRoutes.MY_LIST} render={() => {
             return <MyList films={userFilmsList} avatarUrl={avatar}/>;
           }}>
