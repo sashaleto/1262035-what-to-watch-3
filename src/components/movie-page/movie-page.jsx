@@ -8,6 +8,7 @@ import withActiveItem from "../../hocs/with-active-item/with-active-item";
 import withVideo from "../../hocs/with-video/with-video";
 import {Link} from "react-router-dom";
 import {AppRoutes} from "../../constants";
+import {AuthorizationStatus} from "../../reducer/user/user";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 const TabsWrapped = withActiveItem(Tabs);
@@ -69,7 +70,11 @@ const MoviePage = (props) => {
                       <span>My list</span>
                     </button>
                 }
-                <Link to={`${AppRoutes.FILM}/${movie.id}${AppRoutes.ADD_REVIEW}`} href="add-review.html" className="btn movie-card__button">Add review</Link>
+                {
+                  (authStatus === AuthorizationStatus.AUTH)
+                    ? <Link to={`${AppRoutes.FILM}/${movie.id}${AppRoutes.ADD_REVIEW}`} href="add-review.html" className="btn movie-card__button">Add review</Link>
+                    : null
+                }
               </div>
             </div>
           </div>
