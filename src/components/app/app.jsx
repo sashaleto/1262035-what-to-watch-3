@@ -10,11 +10,12 @@ import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
-import {getMainFilms, getMoviePageFilms} from "../../reducer/data/selectors";
+import {getMainFilms, getMoviePageFilms, getUserListFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
 import AddReviewPage from "../add-review-page/add-review-page.jsx";
+import MyList from "../my-list/my-list.jsx";
 
 class App extends PureComponent {
   constructor(props) {
@@ -89,7 +90,8 @@ class App extends PureComponent {
       addToMyList,
       removeFromMyList,
       onSubmitReview,
-      reviewError
+      reviewError,
+      userFilmsList
     } = this.props;
     const avatar = userInfo ? userInfo.avatarUrl : ``;
     return (
@@ -132,6 +134,9 @@ class App extends PureComponent {
             }}
           >
           </Route>
+          <Route exact path={AppRoutes.MY_LIST}>
+            <MyList films={userFilmsList} onMovieCardClick={onMovieCardClick} avatarUrl={avatar}/>
+          </Route>
         </Switch>
       </Router>
     );
@@ -163,6 +168,7 @@ App.propTypes = {
   removeFromMyList: PropTypes.func.isRequired,
   onSubmitReview: PropTypes.func.isRequired,
   reviewError: PropTypes.string,
+  userFilmsList: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -176,6 +182,7 @@ const mapStateToProps = (state) => ({
   playingFilm: getPlayingFilm(state),
   heroMovie: getPromoFilm(state),
   reviewError: getReviewError(state),
+  userFilmsList: getUserListFilms(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

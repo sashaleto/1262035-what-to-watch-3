@@ -9,6 +9,10 @@ export const getFilms = (state) => {
   return state[NAME_SPACE].films;
 };
 
+export const getUserListFilms = (state) => {
+  return Object.values(state[NAME_SPACE].films).filter((movie) => movie.isFavorite);
+};
+
 export const getGenresList = (state) => {
   return state[NAME_SPACE].genresList;
 };
