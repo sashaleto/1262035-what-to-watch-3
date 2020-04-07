@@ -16,7 +16,6 @@ const Main = (props) => {
     films,
     heroMovie,
     shownCardsBound,
-    onMovieCardClick,
     onShowMoreClick,
     playingFilm,
     setPlayingFilm,
@@ -85,7 +84,7 @@ const Main = (props) => {
 
           <GenresList/>
 
-          <MoviesListWrapped films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
+          <MoviesListWrapped films={filmsToRender}/>
 
           {
             (films.length > shownCardsBound)
@@ -123,7 +122,6 @@ Main.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
   }),
-  onMovieCardClick: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
   setPlayingFilm: PropTypes.func.isRequired,

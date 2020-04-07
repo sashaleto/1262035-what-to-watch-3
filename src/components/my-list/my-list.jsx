@@ -7,7 +7,7 @@ import {AppRoutes} from "../../constants";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 
-const MyList = ({films, onMovieCardClick, avatarUrl}) => {
+const MyList = ({films, avatarUrl}) => {
 
   return <div className="user-page">
     <header className="page-header user-page__head">
@@ -30,7 +30,7 @@ const MyList = ({films, onMovieCardClick, avatarUrl}) => {
 
     <section className="catalog">
       <h2 className="catalog__title visually-hidden">Catalog</h2>
-      <MoviesListWrapped films={films} onMovieCardClick={onMovieCardClick}/>
+      <MoviesListWrapped films={films}/>
     </section>
 
     <footer className="page-footer">
@@ -51,7 +51,6 @@ const MyList = ({films, onMovieCardClick, avatarUrl}) => {
 
 MyList.propTypes = {
   films: PropTypes.array.isRequired,
-  onMovieCardClick: PropTypes.func.isRequired,
   avatarUrl: PropTypes.string.isRequired,
 };
 

@@ -237,47 +237,6 @@ const mockStore = configureStore([]);
 const genres = [`All genres`, `Comedy`, `Drama`, `Crime`, `Romantic`];
 const userAvatarUrl = `img/avatar.jpg`;
 
-it(`Should movie card title be pressed`, () => {
-  const onMovieCardClick = jest.fn();
-  const preventDefault = {
-    preventDefault: jest.fn()
-  };
-  const store = mockStore({
-    [NameSpace.DATA]: {
-      genresList: genres,
-    },
-    [NameSpace.STATE]: {
-      activeGenre: `All genres`,
-    }
-  });
-
-  const mainScreen = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Main
-            films={filmsPart}
-            heroMovie={heroMovie}
-            onMovieCardClick={onMovieCardClick}
-            onShowMoreClick={() => {}}
-            shownCardsBound={INITIAL_CARDS_COUNT}
-            playingFilm={null}
-            setPlayingFilm={() => {}}
-            userAvatarUrl={userAvatarUrl}
-            authStatus={AuthorizationStatus.AUTH}
-            addToMyList={() => {}}
-            removeFromMyList={() => {}}
-          />
-        </Router>
-      </Provider>
-  );
-
-  const movieCardTitles = mainScreen.find(`.small-movie-card__title`);
-
-  movieCardTitles.forEach((card) => card.simulate(`click`, preventDefault));
-
-  expect(onMovieCardClick.mock.calls.length).toBe(filmsPart.length);
-});
-
 it(`Should show more button be pressed`, () => {
   const handleShowMoreClick = jest.fn();
   const preventDefault = {

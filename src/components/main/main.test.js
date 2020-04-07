@@ -198,7 +198,6 @@ it(`Render Main page`, () => {
             <Main
               films={films}
               heroMovie={heroMovie}
-              onMovieCardClick={() => {}}
               shownCardsBound={INITIAL_CARDS_COUNT}
               onShowMoreClick={() => {}}
               playingFilm={null}
