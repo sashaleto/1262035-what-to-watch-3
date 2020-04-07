@@ -20,6 +20,7 @@ const initialState = {
 const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
   LOAD_PROMO_FILM: `LOAD_PROMO_FILM`,
+  LOAD_COMMENTS: `LOAD_COMMENTS`,
   UPDATE_FILMS: `UPDATE_FILMS`,
   UPDATE_COMMENTS: `UPDATE_COMMENTS`,
   SET_COMMENT_ERROR: `SET_COMMENT_ERROR`,
@@ -29,6 +30,10 @@ const ActionCreator = {
   loadFilms: (films) => ({
     type: ActionType.LOAD_FILMS,
     payload: films,
+  }),
+  loadComments: (comments) => ({
+    type: ActionType.LOAD_COMMENTS,
+    payload: comments,
   }),
   loadPromoFilm: (film) => ({
     type: ActionType.LOAD_PROMO_FILM,
@@ -81,6 +86,13 @@ const Operation = {
       });
   },
 
+  getCommentsToFilm: (filmId) => (dispatch, getState, api) => {
+    return api.get(`/comments/${filmId}`)
+      .then((response) => {
+        dispatch(ActionCreator.loadComments(response.data));
+      });
+  },
+
   postCommentToFilm: (filmId, review) => (dispatch, getState, api) => {
     return api.post(`/comments/${filmId}`, {
       rating: review.rating,
@@ -117,7 +129,12 @@ const reducer = (state = initialState, action) => {
 
       return extend(state, {
         films,
-        promoFilm: (state.promoFilm && state.promoFilm.id === action.payload.id) ? action.payload : null,
+        promoFilm: (state.promoFilm && state.promoFilm.id === action.payload.id) ? action.payload : state.promoFilm,
+      });
+
+    case ActionType.LOAD_COMMENTS:
+      return extend(state, {
+        currentComments: action.payload,
       });
 
     case ActionType.UPDATE_COMMENTS:

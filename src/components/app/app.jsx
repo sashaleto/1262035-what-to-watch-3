@@ -10,7 +10,7 @@ import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
-import {getMainFilms, getMoviePageFilms, getUserListFilms} from "../../reducer/data/selectors";
+import {getMainFilms, getUserListFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
@@ -26,10 +26,7 @@ class App extends PureComponent {
   _renderMainScreen() {
     const {
       mainFilms,
-      moviePageFilms,
       heroMovie,
-      onMovieCardClick,
-      activeFilm,
       playingFilm,
       setPlayingFilm,
       onShowMoreClick,
@@ -40,28 +37,12 @@ class App extends PureComponent {
       removeFromMyList
     } = this.props;
 
-    if (typeof activeFilm !== `undefined`) {
-      const avatar = userInfo ? userInfo.avatarUrl : ``;
-      return (<MoviePage
-        movie={activeFilm}
-        films={moviePageFilms}
-        onMovieCardClick={onMovieCardClick}
-        playingFilm={playingFilm}
-        setPlayingFilm={setPlayingFilm}
-        userAvatarUrl={avatar}
-        authStatus={authorizationStatus}
-        addToMyList={addToMyList}
-        removeFromMyList={removeFromMyList}
-      />);
-    }
-
     if (heroMovie) {
       const avatar = userInfo ? userInfo.avatarUrl : ``;
       return (
         <Main
           films={mainFilms}
           heroMovie={heroMovie}
-          onMovieCardClick={onMovieCardClick}
           onShowMoreClick={onShowMoreClick}
           shownCardsBound={shownCardsBound}
           playingFilm={playingFilm}
@@ -79,17 +60,12 @@ class App extends PureComponent {
 
   render() {
     const {
-      moviePageFilms,
       allFilms,
-      onMovieCardClick,
       playingFilm,
       setPlayingFilm,
-      heroMovie,
       userInfo,
       authorizationStatus,
       login,
-      addToMyList,
-      removeFromMyList,
       onSubmitReview,
       reviewError,
       userFilmsList
@@ -101,22 +77,19 @@ class App extends PureComponent {
           <Route exact path={AppRoutes.ROOT}>
             {this._renderMainScreen()}
           </Route>
-          <Route exact path={`${AppRoutes.FILM}/:id`}>
-            {
-              (heroMovie)
+          <Route exact path={`${AppRoutes.FILM}/:id`}
+            render={(props) => {
+              return (Object.keys(allFilms).length)
                 ? <MoviePage
-                  movie={heroMovie}
-                  films={moviePageFilms}
-                  onMovieCardClick={onMovieCardClick}
+                  movie={allFilms[props.match.params.id]}
                   playingFilm={playingFilm}
                   setPlayingFilm={setPlayingFilm}
                   userAvatarUrl={avatar}
                   authStatus={authorizationStatus}
-                  addToMyList={addToMyList}
-                  removeFromMyList={removeFromMyList}
                 />
-                : null
-            }
+                : null;
+            }}
+          >
           </Route>
           <Route exact path={AppRoutes.LOGIN}>
             <SignIn onSubmit={login}/>
@@ -136,7 +109,7 @@ class App extends PureComponent {
           >
           </Route>
           <PrivateRoute exact path={AppRoutes.MY_LIST} render={() => {
-            return <MyList films={userFilmsList} onMovieCardClick={onMovieCardClick} avatarUrl={avatar}/>;
+            return <MyList films={userFilmsList} avatarUrl={avatar}/>;
           }}>
           </PrivateRoute>
         </Switch>
@@ -149,7 +122,6 @@ App.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
   allFilms: PropTypes.object.isRequired,
   mainFilms: PropTypes.array.isRequired,
-  moviePageFilms: PropTypes.array.isRequired,
   heroMovie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
@@ -158,7 +130,6 @@ App.propTypes = {
     posterImage: PropTypes.string.isRequired,
     videoLink: PropTypes.string.isRequired,
   }),
-  onMovieCardClick: PropTypes.func.isRequired,
   setPlayingFilm: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
@@ -178,7 +149,6 @@ const mapStateToProps = (state) => ({
   allFilms: getFilms(state),
   userInfo: getUserInfo(state),
   mainFilms: getMainFilms(state),
-  moviePageFilms: getMoviePageFilms(state),
   shownCardsBound: getShownCardsBound(state),
   activeFilm: getFilms(state)[getActiveFilmId(state)],
   playingFilm: getPlayingFilm(state),
@@ -190,9 +160,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   login(authData) {
     dispatch(UserOperation.login(authData));
-  },
-  onMovieCardClick(filmId) {
-    dispatch(ActionCreatorState.setActiveFilm(filmId));
   },
   setPlayingFilm(film) {
     dispatch(ActionCreatorState.setPlayingFilm(film));
