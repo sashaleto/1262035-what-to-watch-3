@@ -1,7 +1,6 @@
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {movieLevelMapper} from '../../utils';
-import {comments} from "../../mocks/comments";
 import {MONTH_NAMES} from "../../constants";
 
 const TabsTitles = {
@@ -44,7 +43,7 @@ class Tabs extends PureComponent {
   }
 
   render() {
-    const {movie, activeItem} = this.props;
+    const {movie, activeItem, comments} = this.props;
     const firstColumnCommentsLength = Math.ceil(comments.length / 2);
 
     const activeTab = activeItem || TabsTitles.OVERVIEW;
@@ -155,6 +154,7 @@ Tabs.propTypes = {
   }).isRequired,
   activeItem: PropTypes.string,
   onActivateItem: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired,
 };
 
 export default Tabs;
