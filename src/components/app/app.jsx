@@ -1,11 +1,11 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Router, Route, Switch} from 'react-router-dom';
+import {Router, Route, Switch, Redirect} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
-import {Operation as UserOperation} from "../../reducer/user/user";
+import {AuthorizationStatus, Operation as UserOperation} from "../../reducer/user/user";
 import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
@@ -92,7 +92,11 @@ class App extends PureComponent {
           >
           </Route>
           <Route exact path={AppRoutes.LOGIN}>
-            <SignIn onSubmit={login}/>
+            {
+              (authorizationStatus === AuthorizationStatus.AUTH)
+                ? <Redirect to={AppRoutes.ROOT}/>
+                : <SignIn onSubmit={login}/>
+            }
           </Route>
           <PrivateRoute exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
             render={(props) => {
