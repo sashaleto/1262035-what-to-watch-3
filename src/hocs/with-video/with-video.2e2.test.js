@@ -52,7 +52,7 @@ it(`Checks that HOC's callback turn on and turn off the video, set player fullsc
     src={movie}
   />);
 
-  window.HTMLMediaElement.prototype.play = () => {};
+  window.HTMLMediaElement.prototype.play = () => Promise.resolve({});
   window.HTMLMediaElement.prototype.pause = () => {};
   window.HTMLMediaElement.prototype.requestFullscreen = () => {};
 
