@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Tabs from "../tabs/tabs.jsx";
 import MoviesList from "../movies-list/movies-list.jsx";
 import Header from "../header/header.jsx";
-import MoviePlayer from "../movie-player/movie-player.jsx";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
-import withVideo from "../../hocs/with-video/with-video";
 import {Link} from "react-router-dom";
 import {AppRoutes} from "../../constants";
 import {AuthorizationStatus} from "../../reducer/user/user";
@@ -14,10 +12,10 @@ import {getCurrentComments, getMoviePageFilms} from "../../reducer/data/selector
 import {getActiveFilmId} from "../../reducer/state/selectors";
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {Operation as DataOperation} from "../../reducer/data/data";
+import history from "../../history";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
 const TabsWrapped = withActiveItem(Tabs);
-const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 class MoviePage extends PureComponent {
   constructor(props) {
@@ -43,17 +41,14 @@ class MoviePage extends PureComponent {
       movie,
       comments,
       filmsToRender,
-      playingFilm,
-      setPlayingFilm,
       userAvatarUrl,
       authStatus,
       addToMyList,
       removeFromMyList,
     } = this.props;
 
-    return playingFilm
-      ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={() => setPlayingFilm(null)}/>)
-      : (<React.Fragment>
+    return (
+      <React.Fragment>
         <section className="movie-card movie-card--full">
           <div className="movie-card__hero">
             <div className="movie-card__bg">
@@ -73,7 +68,10 @@ class MoviePage extends PureComponent {
                 </p>
 
                 <div className="movie-card__buttons">
-                  <button className="btn btn--play movie-card__button" type="button" onClick={() => setPlayingFilm(movie)}>
+                  <button className="btn btn--play movie-card__button" type="button"
+                    onClick={() => {
+                      history.push(`${AppRoutes.PLAYER}/${movie.id}`);
+                    }}>
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"/>
                     </svg>
@@ -136,7 +134,8 @@ class MoviePage extends PureComponent {
             </div>
           </footer>
         </div>
-      </React.Fragment>);
+      </React.Fragment>
+    );
   }
 }
 
@@ -158,8 +157,6 @@ MoviePage.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
   comments: PropTypes.array.isRequired,
-  setPlayingFilm: PropTypes.func.isRequired,
-  playingFilm: PropTypes.object,
   userAvatarUrl: PropTypes.string.isRequired,
   authStatus: PropTypes.string.isRequired,
   addToMyList: PropTypes.func.isRequired,

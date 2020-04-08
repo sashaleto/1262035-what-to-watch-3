@@ -7,7 +7,7 @@ import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {AuthorizationStatus, Operation as UserOperation} from "../../reducer/user/user";
 import {Operation as DataOperation} from "../../reducer/data/data";
-import {getActiveFilmId, getPlayingFilm, getShownCardsBound} from "../../reducer/state/selectors";
+import {getActiveFilmId, getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
 import {getMainFilms, getUserListFilms} from "../../reducer/data/selectors";
@@ -17,6 +17,10 @@ import history from "../../history.js";
 import AddReviewPage from "../add-review-page/add-review-page.jsx";
 import MyList from "../my-list/my-list.jsx";
 import PrivateRoute from "../private-route/private-route.jsx";
+import withVideo from "../../hocs/with-video/with-video";
+import MoviePlayer from "../movie-player/movie-player.jsx";
+
+const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 class App extends PureComponent {
   constructor(props) {
@@ -27,8 +31,6 @@ class App extends PureComponent {
     const {
       mainFilms,
       heroMovie,
-      playingFilm,
-      setPlayingFilm,
       onShowMoreClick,
       shownCardsBound,
       userInfo,
@@ -45,8 +47,6 @@ class App extends PureComponent {
           heroMovie={heroMovie}
           onShowMoreClick={onShowMoreClick}
           shownCardsBound={shownCardsBound}
-          playingFilm={playingFilm}
-          setPlayingFilm={setPlayingFilm}
           userAvatarUrl={avatar}
           authStatus={authorizationStatus}
           addToMyList={addToMyList}
@@ -61,8 +61,6 @@ class App extends PureComponent {
   render() {
     const {
       allFilms,
-      playingFilm,
-      setPlayingFilm,
       userInfo,
       authorizationStatus,
       login,
@@ -82,14 +80,21 @@ class App extends PureComponent {
               return (Object.keys(allFilms).length)
                 ? <MoviePage
                   movie={allFilms[props.match.params.id]}
-                  playingFilm={playingFilm}
-                  setPlayingFilm={setPlayingFilm}
                   userAvatarUrl={avatar}
                   authStatus={authorizationStatus}
                 />
-                : null;
+                : null
+              ;
             }}
           >
+          </Route>
+          <Route exact path={`${AppRoutes.PLAYER}/:id`}
+            render={(props) => {
+              return (Object.keys(allFilms).length)
+                ? <MoviePlayerWrapped movie={allFilms[props.match.params.id]}/>
+                : null
+              ;
+            }}>
           </Route>
           <Route exact path={AppRoutes.LOGIN}>
             {
@@ -134,12 +139,10 @@ App.propTypes = {
     posterImage: PropTypes.string.isRequired,
     videoLink: PropTypes.string.isRequired,
   }),
-  setPlayingFilm: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
   login: PropTypes.func.isRequired,
   activeFilm: PropTypes.object,
-  playingFilm: PropTypes.object,
   userInfo: PropTypes.object,
   addToMyList: PropTypes.func.isRequired,
   removeFromMyList: PropTypes.func.isRequired,
@@ -155,7 +158,6 @@ const mapStateToProps = (state) => ({
   mainFilms: getMainFilms(state),
   shownCardsBound: getShownCardsBound(state),
   activeFilm: getFilms(state)[getActiveFilmId(state)],
-  playingFilm: getPlayingFilm(state),
   heroMovie: getPromoFilm(state),
   reviewError: getReviewError(state),
   userFilmsList: getUserListFilms(state),
@@ -164,9 +166,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   login(authData) {
     dispatch(UserOperation.login(authData));
-  },
-  setPlayingFilm(film) {
-    dispatch(ActionCreatorState.setPlayingFilm(film));
   },
   onShowMoreClick() {
     dispatch(ActionCreatorState.expandCardsBound());

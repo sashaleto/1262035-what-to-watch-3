@@ -4,12 +4,11 @@ import MoviesList from '../movies-list/movies-list.jsx';
 import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
-import withVideo from "../../hocs/with-video/with-video";
-import MoviePlayer from "../movie-player/movie-player.jsx";
 import Header from "../header/header.jsx";
+import history from "../../history";
+import {AppRoutes} from "../../constants";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
-const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 const Main = (props) => {
   const {
@@ -17,8 +16,6 @@ const Main = (props) => {
     heroMovie,
     shownCardsBound,
     onShowMoreClick,
-    playingFilm,
-    setPlayingFilm,
     userAvatarUrl,
     authStatus,
     addToMyList,
@@ -26,9 +23,8 @@ const Main = (props) => {
   } = props;
   const filmsToRender = films.slice(0, shownCardsBound);
 
-  return playingFilm
-    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} src={playingFilm.videoLink} />)
-    : (<React.Fragment>
+  return (
+    <React.Fragment>
       <section className="movie-card">
         <div className="movie-card__bg">
           <img src={`${heroMovie.backgroundImage}`} alt={heroMovie.title}/>
@@ -52,7 +48,10 @@ const Main = (props) => {
               </p>
 
               <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button" onClick={() => setPlayingFilm(heroMovie)}>
+                <button className="btn btn--play movie-card__button" type="button"
+                  onClick={() => {
+                    history.push(`${AppRoutes.PLAYER}/${heroMovie.id}`);
+                  }}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"/>
                   </svg>
@@ -108,7 +107,8 @@ const Main = (props) => {
           </div>
         </footer>
       </div>
-    </React.Fragment>);
+    </React.Fragment>
+  );
 };
 
 Main.propTypes = {
@@ -124,8 +124,6 @@ Main.propTypes = {
   }),
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
-  setPlayingFilm: PropTypes.func.isRequired,
-  playingFilm: PropTypes.object,
   userAvatarUrl: PropTypes.string.isRequired,
   authStatus: PropTypes.string.isRequired,
   addToMyList: PropTypes.func.isRequired,

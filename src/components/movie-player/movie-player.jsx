@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {formatPlayerTime} from "../../utils";
+import history from "../../history";
 
 const MoviePlayer = (props) => {
   const {
     movie,
-    onExitClick,
     progress,
     isPlaying,
     videoRef,
@@ -25,7 +25,9 @@ const MoviePlayer = (props) => {
         ref={videoRef}
       />
 
-      <button type="button" className="player__exit" onClick={onExitClick}>Exit</button>
+      <button type="button" className="player__exit" onClick={() => {
+        history.goBack();
+      }}>Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -73,7 +75,6 @@ MoviePlayer.propTypes = {
     videoLink: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
   }).isRequired,
-  onExitClick: PropTypes.func.isRequired,
   progress: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
   videoRef: PropTypes.object.isRequired,
