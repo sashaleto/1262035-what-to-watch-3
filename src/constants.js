@@ -28,4 +28,5 @@ export const AppRoutes = {
   ROOT: `/`,
   FILM: `/films`,
   ADD_REVIEW: `/review`,
+  PLAYER: `/player`,
 };

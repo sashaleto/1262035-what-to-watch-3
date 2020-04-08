@@ -9,6 +9,14 @@ export const getFilms = (state) => {
   return state[NAME_SPACE].films;
 };
 
+export const getUserListFilms = (state) => {
+  return state[NAME_SPACE].userFilmsList;
+};
+
+export const getCurrentComments = (state) => {
+  return state[NAME_SPACE].currentComments;
+};
+
 export const getGenresList = (state) => {
   return state[NAME_SPACE].genresList;
 };

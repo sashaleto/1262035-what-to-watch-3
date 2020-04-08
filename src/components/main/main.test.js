@@ -198,11 +198,8 @@ it(`Render Main page`, () => {
             <Main
               films={films}
               heroMovie={heroMovie}
-              onMovieCardClick={() => {}}
-              shownCardsBound={INITIAL_CARDS_COUNT}
               onShowMoreClick={() => {}}
-              playingFilm={null}
-              setPlayingFilm={() => {}}
+              shownCardsBound={INITIAL_CARDS_COUNT}
               userAvatarUrl={userAvatarUrl}
               authStatus={AuthorizationStatus.AUTH}
               addToMyList={() => {}}

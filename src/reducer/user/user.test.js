@@ -11,11 +11,17 @@ const authInfoResponse = {
   "name": `Oliver.conner`,
   "avatar_url": `img/1.png`
 };
+const fakeAuthRequest = {
+  email: `Oliver.conner@gmail.com`,
+  password: ``,
+};
+const fakeSignInError = `child "email" fails because ["email" must be a valid email]`;
 
 it(`Reducer without additional parameters should return initial state`, () => {
   expect(reducer(void 0, {})).toEqual({
     authorizationStatus: AuthorizationStatus.NO_AUTH,
     authInfo: null,
+    signInError: ``,
   });
 });
 
@@ -79,7 +85,7 @@ describe(`Action creators work correctly`, () => {
 });
 
 describe(`Operation work correctly`, () => {
-  it(`Should make a incorrect API call to /login`, function () {
+  it(`Should make an incorrect API call to check auth by /login`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
     const checkAuth = Operation.checkAuth();
@@ -114,6 +120,52 @@ describe(`Operation work correctly`, () => {
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.SAVE_USER_INFO,
           payload: userDataAdapter(authInfoResponse),
+        });
+      });
+  });
+
+  it(`Should make an incorrect API call to sign in by /login`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const login = Operation.login(fakeAuthRequest);
+
+    apiMock
+      .onPost(`/login`)
+      .reply(400, {error: fakeSignInError});
+
+    return login(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.SET_LOGIN_ERROR,
+          payload: fakeSignInError,
+        });
+      });
+  });
+
+  it(`Should make a correct API call to to sign in by /login`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const login = Operation.login(fakeAuthRequest);
+
+    apiMock
+      .onPost(`/login`)
+      .reply(200, authInfoResponse);
+
+    return login(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(3);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.REQUIRED_AUTHORIZATION,
+          payload: AuthorizationStatus.AUTH,
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(2, {
+          type: ActionType.SAVE_USER_INFO,
+          payload: userDataAdapter(authInfoResponse),
+        });
+        expect(dispatch).toHaveBeenNthCalledWith(3, {
+          type: ActionType.SET_LOGIN_ERROR,
+          payload: null,
         });
       });
   });

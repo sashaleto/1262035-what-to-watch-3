@@ -4,22 +4,19 @@ import MoviesList from '../movies-list/movies-list.jsx';
 import GenresList from "../genres-list/genres-list.jsx";
 import ShowMore from "../show-more/show-more.jsx";
 import withActiveItem from "../../hocs/with-active-item/with-active-item";
-import withVideo from "../../hocs/with-video/with-video";
-import MoviePlayer from "../movie-player/movie-player.jsx";
 import Header from "../header/header.jsx";
+import history from "../../history";
+import {AppRoutes} from "../../constants";
+import {Link} from "react-router-dom";
 
 const MoviesListWrapped = withActiveItem(MoviesList);
-const MoviePlayerWrapped = withVideo(MoviePlayer);
 
 const Main = (props) => {
   const {
     films,
     heroMovie,
     shownCardsBound,
-    onMovieCardClick,
     onShowMoreClick,
-    playingFilm,
-    setPlayingFilm,
     userAvatarUrl,
     authStatus,
     addToMyList,
@@ -27,9 +24,8 @@ const Main = (props) => {
   } = props;
   const filmsToRender = films.slice(0, shownCardsBound);
 
-  return playingFilm
-    ? (<MoviePlayerWrapped movie={playingFilm} onExitClick={()=> setPlayingFilm(null)} src={playingFilm.videoLink} />)
-    : (<React.Fragment>
+  return (
+    <React.Fragment>
       <section className="movie-card">
         <div className="movie-card__bg">
           <img src={`${heroMovie.backgroundImage}`} alt={heroMovie.title}/>
@@ -53,7 +49,10 @@ const Main = (props) => {
               </p>
 
               <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button" onClick={() => setPlayingFilm(heroMovie)}>
+                <button className="btn btn--play movie-card__button" type="button"
+                  onClick={() => {
+                    history.push(`${AppRoutes.PLAYER}/${heroMovie.id}`);
+                  }}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"/>
                   </svg>
@@ -85,7 +84,7 @@ const Main = (props) => {
 
           <GenresList/>
 
-          <MoviesListWrapped films={filmsToRender} onMovieCardClick={onMovieCardClick}/>
+          <MoviesListWrapped films={filmsToRender}/>
 
           {
             (films.length > shownCardsBound)
@@ -97,11 +96,11 @@ const Main = (props) => {
 
         <footer className="page-footer">
           <div className="logo">
-            <a className="logo__link logo__link--light">
+            <Link to={AppRoutes.ROOT} className="logo__link logo__link--light">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
               <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            </Link>
           </div>
 
           <div className="copyright">
@@ -109,7 +108,8 @@ const Main = (props) => {
           </div>
         </footer>
       </div>
-    </React.Fragment>);
+    </React.Fragment>
+  );
 };
 
 Main.propTypes = {
@@ -123,11 +123,8 @@ Main.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
   }),
-  onMovieCardClick: PropTypes.func.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
-  setPlayingFilm: PropTypes.func.isRequired,
-  playingFilm: PropTypes.object,
   userAvatarUrl: PropTypes.string.isRequired,
   authStatus: PropTypes.string.isRequired,
   addToMyList: PropTypes.func.isRequired,

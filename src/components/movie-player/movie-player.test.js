@@ -25,14 +25,16 @@ const movie = {
 
 it(`Render MoviePlayer on pause`, () => {
   const tree = renderer
-    .create(<MoviePlayer
-      movie={movie}
-      onExitClick={() => {}}
-      onPlayButtonClick={() => {}}
-      isPlaying={false}
-      progress={0}
-      onFullscreenButtonClick={() => {}}
-      videoRef={React.createRef()} />)
+    .create(
+        <MoviePlayer
+          movie={movie}
+          progress={0}
+          isPlaying={false}
+          videoRef={React.createRef()}
+          onPlayButtonClick={() => {}}
+          onFullscreenButtonClick={() => {}}
+        />
+    )
     .toJSON();
 
   expect(tree).toMatchSnapshot();

@@ -1,7 +1,6 @@
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {movieLevelMapper} from '../../utils';
-import {comments} from "../../mocks/comments";
 import {MONTH_NAMES} from "../../constants";
 
 const TabsTitles = {
@@ -13,6 +12,8 @@ const TabsTitles = {
 class Tabs extends PureComponent {
   constructor(props) {
     super(props);
+
+    this._handleTabClick = this._handleTabClick.bind(this);
   }
 
   _setTabActiveClass(title) {
@@ -20,7 +21,7 @@ class Tabs extends PureComponent {
     return activeTab === title ? `movie-nav__item--active` : ``;
   }
 
-  _onTabClickHandler(e, newActiveTab) {
+  _handleTabClick(e, newActiveTab) {
     e.preventDefault();
     this.props.onActivateItem(newActiveTab);
   }
@@ -44,7 +45,7 @@ class Tabs extends PureComponent {
   }
 
   render() {
-    const {movie, activeItem} = this.props;
+    const {movie, activeItem, comments} = this.props;
     const firstColumnCommentsLength = Math.ceil(comments.length / 2);
 
     const activeTab = activeItem || TabsTitles.OVERVIEW;
@@ -56,7 +57,7 @@ class Tabs extends PureComponent {
             {Object.values(TabsTitles).map((title) => {
               return <li key={title} className={`movie-nav__item ${this._setTabActiveClass(title)}`}>
                 <a href="#" className="movie-nav__link" onClick={(e) => {
-                  this._onTabClickHandler(e, title);
+                  this._handleTabClick(e, title);
                 }}>{title}</a>
               </li>;
             })}
@@ -155,6 +156,7 @@ Tabs.propTypes = {
   }).isRequired,
   activeItem: PropTypes.string,
   onActivateItem: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired,
 };
 
 export default Tabs;

@@ -5,7 +5,6 @@ const initialState = {
   activeGenre: GENRES_TITLES.ALL_GENRES,
   shownCardsBound: INITIAL_CARDS_COUNT,
   activeFilm: -1,
-  playingFilm: null,
 };
 
 const ActionType = {
@@ -13,7 +12,6 @@ const ActionType = {
   EXPAND_CARDS_BOUND: `EXPAND_CARDS_BOUND`,
   RESET_CARDS_BOUND: `RESET_CARDS_BOUND`,
   SET_ACTIVE_FILM: `SET_ACTIVE_FILM`,
-  SET_PLAYING_FILM: `SET_PLAYING_FILM`,
 };
 
 const ActionCreator = {
@@ -35,11 +33,6 @@ const ActionCreator = {
   setActiveFilm: (id) => ({
     type: ActionType.SET_ACTIVE_FILM,
     payload: id,
-  }),
-
-  setPlayingFilm: (film) => ({
-    type: ActionType.SET_PLAYING_FILM,
-    payload: film,
   }),
 };
 

@@ -14,12 +14,15 @@ const initialState = {
   promoFilm: null,
   genresList: [],
   currentComments: [],
+  userFilmsList: [],
   reviewError: null,
 };
 
 const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
   LOAD_PROMO_FILM: `LOAD_PROMO_FILM`,
+  LOAD_USER_FILMS_LIST: `LOAD_USER_FILMS_LIST`,
+  LOAD_COMMENTS: `LOAD_COMMENTS`,
   UPDATE_FILMS: `UPDATE_FILMS`,
   UPDATE_COMMENTS: `UPDATE_COMMENTS`,
   SET_COMMENT_ERROR: `SET_COMMENT_ERROR`,
@@ -30,9 +33,17 @@ const ActionCreator = {
     type: ActionType.LOAD_FILMS,
     payload: films,
   }),
+  loadComments: (comments) => ({
+    type: ActionType.LOAD_COMMENTS,
+    payload: comments,
+  }),
   loadPromoFilm: (film) => ({
     type: ActionType.LOAD_PROMO_FILM,
     payload: film,
+  }),
+  loadUserFilmsList: (films) => ({
+    type: ActionType.LOAD_USER_FILMS_LIST,
+    payload: films,
   }),
   updateFilms: (film) => ({
     type: ActionType.UPDATE_FILMS,
@@ -65,6 +76,14 @@ const Operation = {
       });
   },
 
+  loadUserFilmsList: () => (dispatch, getState, api) => {
+    return api.get(`/favorite`)
+      .then((response) => {
+        const userList = Film.parseFilms(response.data);
+        dispatch(ActionCreator.loadUserFilmsList(userList));
+      });
+  },
+
   addFilmToUserList: (filmId) => (dispatch, getState, api) => {
     return api.post(`/favorite/${filmId}/1`)
       .then((response) => {
@@ -78,6 +97,13 @@ const Operation = {
       .then((response) => {
         const removedFilm = Film.parseFilm(response.data);
         dispatch(ActionCreator.updateFilms(removedFilm));
+      });
+  },
+
+  getCommentsToFilm: (filmId) => (dispatch, getState, api) => {
+    return api.get(`/comments/${filmId}`)
+      .then((response) => {
+        dispatch(ActionCreator.loadComments(response.data));
       });
   },
 
@@ -111,13 +137,23 @@ const reducer = (state = initialState, action) => {
         promoFilm: action.payload,
       });
 
+    case ActionType.LOAD_USER_FILMS_LIST:
+      return extend(state, {
+        userFilmsList: action.payload,
+      });
+
     case ActionType.UPDATE_FILMS:
       const films = state.films;
       films[action.payload.id] = action.payload;
 
       return extend(state, {
         films,
-        promoFilm: (state.promoFilm && state.promoFilm.id === action.payload.id) ? action.payload : null,
+        promoFilm: (state.promoFilm && state.promoFilm.id === action.payload.id) ? action.payload : state.promoFilm,
+      });
+
+    case ActionType.LOAD_COMMENTS:
+      return extend(state, {
+        currentComments: action.payload,
       });
 
     case ActionType.UPDATE_COMMENTS:

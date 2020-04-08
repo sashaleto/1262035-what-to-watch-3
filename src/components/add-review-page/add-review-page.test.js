@@ -32,6 +32,8 @@ it(`Render Add review page component`, () => {
             movie={movie}
             userAvatarUrl={userAvatarUrl}
             submitReviewHandler={() => {}}
+            onValidateForm={() => {}}
+            validationStatus={false}
           />
         </Router>
     )
