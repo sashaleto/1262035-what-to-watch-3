@@ -238,6 +238,7 @@ it(`Reducer without additional parameters should return initial state`, () => {
     promoFilm: null,
     genresList: [],
     currentComments: [],
+    userFilmsList: [],
     reviewError: null,
   });
 });
@@ -264,6 +265,17 @@ describe(`Reducer works correctly`, () => {
       payload: promoFilm,
     })).toEqual({
       promoFilm,
+    });
+  });
+
+  it(`Reducer should update user films list with a loaded films`, () => {
+    expect(reducer({
+      userFilmsList: [],
+    }, {
+      type: ActionType.LOAD_USER_FILMS_LIST,
+      payload: films,
+    })).toEqual({
+      userFilmsList: films,
     });
   });
 
@@ -339,6 +351,25 @@ describe(`Operations works correctly`, () => {
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.LOAD_PROMO_FILM,
           payload: Film.parseFilm(fakeResponseFilm),
+        });
+      });
+  });
+
+  it(`Should make a correct API call to get /favorite`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const loadUserFilmsList = Operation.loadUserFilmsList();
+
+    apiMock
+      .onGet(`/favorite`)
+      .reply(200, []);
+
+    return loadUserFilmsList(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.LOAD_USER_FILMS_LIST,
+          payload: [],
         });
       });
   });

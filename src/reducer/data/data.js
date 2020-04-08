@@ -14,12 +14,14 @@ const initialState = {
   promoFilm: null,
   genresList: [],
   currentComments: [],
+  userFilmsList: [],
   reviewError: null,
 };
 
 const ActionType = {
   LOAD_FILMS: `LOAD_FILMS`,
   LOAD_PROMO_FILM: `LOAD_PROMO_FILM`,
+  LOAD_USER_FILMS_LIST: `LOAD_USER_FILMS_LIST`,
   LOAD_COMMENTS: `LOAD_COMMENTS`,
   UPDATE_FILMS: `UPDATE_FILMS`,
   UPDATE_COMMENTS: `UPDATE_COMMENTS`,
@@ -38,6 +40,10 @@ const ActionCreator = {
   loadPromoFilm: (film) => ({
     type: ActionType.LOAD_PROMO_FILM,
     payload: film,
+  }),
+  loadUserFilmsList: (films) => ({
+    type: ActionType.LOAD_USER_FILMS_LIST,
+    payload: films,
   }),
   updateFilms: (film) => ({
     type: ActionType.UPDATE_FILMS,
@@ -67,6 +73,14 @@ const Operation = {
       .then((response) => {
         const promoFilm = Film.parseFilm(response.data);
         dispatch(ActionCreator.loadPromoFilm(promoFilm));
+      });
+  },
+
+  loadUserFilmsList: () => (dispatch, getState, api) => {
+    return api.get(`/favorite`)
+      .then((response) => {
+        const userList = Film.parseFilms(response.data);
+        dispatch(ActionCreator.loadUserFilmsList(userList));
       });
   },
 
@@ -121,6 +135,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.LOAD_PROMO_FILM:
       return extend(state, {
         promoFilm: action.payload,
+      });
+
+    case ActionType.LOAD_USER_FILMS_LIST:
+      return extend(state, {
+        userFilmsList: action.payload,
       });
 
     case ActionType.UPDATE_FILMS:

@@ -214,7 +214,6 @@ it(`Render App`, () => {
               onSubmitReview={() => {}}
               reviewError={``}
               signInError={``}
-              userFilmsList={[]}
             />
           </Router>
         </Provider>

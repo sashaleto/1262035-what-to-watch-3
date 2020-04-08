@@ -1,9 +1,12 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MyList from "./my-list.jsx";
+import {MyList} from "./my-list.jsx";
 import history from "../../history";
 import {Router} from "react-router-dom";
+import {Provider} from "react-redux";
+import configureStore from "redux-mock-store";
 
+const mockStore = configureStore([]);
 const films = [
   {
     title: `Gangs of new york`,
@@ -44,14 +47,19 @@ const films = [
 const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Render User's films list component`, () => {
+  const store = mockStore({});
+
   const tree = renderer
     .create(
-        <Router history={history}>
-          <MyList
-            films={films}
-            avatarUrl={userAvatarUrl}
-          />
-        </Router>
+        <Provider store={store}>
+          <Router history={history}>
+            <MyList
+              userFilmsList={films}
+              avatarUrl={userAvatarUrl}
+              loadUserFilmsList={() => {}}
+            />
+          </Router>
+        </Provider>
     )
     .toJSON();
 

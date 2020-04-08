@@ -10,7 +10,7 @@ import {Operation as DataOperation} from "../../reducer/data/data";
 import {getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getSignInError, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
-import {getMainFilms, getUserListFilms} from "../../reducer/data/selectors";
+import {getMainFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
 import {AppRoutes} from "../../constants";
 import history from "../../history.js";
@@ -67,7 +67,6 @@ class App extends PureComponent {
       onSubmitReview,
       reviewError,
       signInError,
-      userFilmsList
     } = this.props;
     const avatar = userInfo ? userInfo.avatarUrl : ``;
     return (
@@ -80,7 +79,7 @@ class App extends PureComponent {
             render={(props) => {
               return (Object.keys(allFilms).length)
                 ? <MoviePage
-                  movie={allFilms[props.match.params.id]}
+                  movieId={+props.match.params.id}
                   userAvatarUrl={avatar}
                   authStatus={authorizationStatus}
                 />
@@ -119,7 +118,7 @@ class App extends PureComponent {
           >
           </PrivateRoute>
           <PrivateRoute exact path={AppRoutes.MY_LIST} render={() => {
-            return <MyList films={userFilmsList} avatarUrl={avatar}/>;
+            return <MyList avatarUrl={avatar}/>;
           }}>
           </PrivateRoute>
           <Route
@@ -163,7 +162,6 @@ App.propTypes = {
   onSubmitReview: PropTypes.func.isRequired,
   reviewError: PropTypes.string,
   signInError: PropTypes.string,
-  userFilmsList: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -175,7 +173,6 @@ const mapStateToProps = (state) => ({
   heroMovie: getPromoFilm(state),
   reviewError: getReviewError(state),
   signInError: getSignInError(state),
-  userFilmsList: getUserListFilms(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -71,6 +71,7 @@ it(`Render MoviePage`, () => {
               <Router history={history}>
                 <MoviePage
                   movie={movie}
+                  movieId={movie.id}
                   comments={[]}
                   userAvatarUrl={userAvatarUrl}
                   authStatus={AuthorizationStatus.AUTH}

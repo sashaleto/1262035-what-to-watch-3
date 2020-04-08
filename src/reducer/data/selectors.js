@@ -10,7 +10,7 @@ export const getFilms = (state) => {
 };
 
 export const getUserListFilms = (state) => {
-  return Object.values(state[NAME_SPACE].films).filter((movie) => movie.isFavorite);
+  return state[NAME_SPACE].userFilmsList;
 };
 
 export const getCurrentComments = (state) => {
