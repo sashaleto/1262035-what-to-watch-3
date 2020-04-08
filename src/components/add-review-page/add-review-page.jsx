@@ -11,10 +11,6 @@ class AddReviewPage extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isFormValid: false,
-    };
-
     this.form = createRef();
     this.reviewTextarea = createRef();
 
@@ -43,7 +39,7 @@ class AddReviewPage extends PureComponent {
   handleReviewChange(e) {
     const comment = e.target.value;
     if (comment.length > MIN_COMMENT_LENGTH && comment.length <= MAX_COMMENT_LENGTH) {
-      this.setState({isFormValid: true});
+      this.props.onValidateForm(true);
     }
   }
 
@@ -55,7 +51,7 @@ class AddReviewPage extends PureComponent {
 
   render() {
     const {movie, userAvatarUrl, apiError} = this.props;
-    const {isFormValid} = this.state;
+    const isFormValid = this.props.validationStatus;
     const {title, backgroundImage, posterImage, id} = movie;
     return <section className="movie-card movie-card--full">
       <div className="movie-card__header">
@@ -135,6 +131,8 @@ AddReviewPage.propTypes = {
   userAvatarUrl: PropTypes.string.isRequired,
   submitReviewHandler: PropTypes.func.isRequired,
   apiError: PropTypes.string,
+  onValidateForm: PropTypes.func.isRequired,
+  validationStatus: PropTypes.bool.isRequired,
 };
 
 export default AddReviewPage;

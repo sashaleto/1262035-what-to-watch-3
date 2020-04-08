@@ -19,8 +19,10 @@ import MyList from "../my-list/my-list.jsx";
 import PrivateRoute from "../private-route/private-route.jsx";
 import withVideo from "../../hocs/with-video/with-video";
 import MoviePlayer from "../movie-player/movie-player.jsx";
+import withValidation from "../../hocs/with-validation/with-validation";
 
 const MoviePlayerWrapped = withVideo(MoviePlayer);
+const AddReviewPageWrapped = withValidation(AddReviewPage);
 
 class App extends PureComponent {
   constructor(props) {
@@ -106,7 +108,7 @@ class App extends PureComponent {
           <PrivateRoute exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
             render={(props) => {
               return (Object.keys(allFilms).length)
-                ? <AddReviewPage
+                ? <AddReviewPageWrapped
                   movie={allFilms[props.match.params.id]}
                   userAvatarUrl={avatar}
                   submitReviewHandler={onSubmitReview}
