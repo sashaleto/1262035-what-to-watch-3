@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MyList from "./my-list";
+import MyList from "./my-list.jsx";
 import history from "../../history";
 import {Router} from "react-router-dom";
 
@@ -47,7 +47,10 @@ it(`Render User's films list component`, () => {
   const tree = renderer
     .create(
         <Router history={history}>
-          <MyList avatarUrl={userAvatarUrl} films={films} onMovieCardClick={() => {}} />
+          <MyList
+            films={films}
+            avatarUrl={userAvatarUrl}
+          />
         </Router>
     )
     .toJSON();

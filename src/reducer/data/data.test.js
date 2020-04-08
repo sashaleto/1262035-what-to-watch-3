@@ -242,57 +242,70 @@ it(`Reducer without additional parameters should return initial state`, () => {
   });
 });
 
-it(`Reducer should update films with a loaded films`, () => {
-  expect(reducer({
-    films: {},
-    genresList: [],
-  }, {
-    type: ActionType.LOAD_FILMS,
-    payload: films,
-  })).toEqual({
-    films,
-    genresList: makeGenresSet(films),
+describe(`Reducer works correctly`, () => {
+  it(`Reducer should update films with a loaded films`, () => {
+    expect(reducer({
+      films: {},
+      genresList: [],
+    }, {
+      type: ActionType.LOAD_FILMS,
+      payload: films,
+    })).toEqual({
+      films,
+      genresList: makeGenresSet(films),
+    });
+  });
+
+  it(`Reducer should update promo film with a loaded film`, () => {
+    expect(reducer({
+      promoFilm: null,
+    }, {
+      type: ActionType.LOAD_PROMO_FILM,
+      payload: promoFilm,
+    })).toEqual({
+      promoFilm,
+    });
+  });
+
+  it(`Reducer should update films when user add film to favorites`, () => {
+    const updatedFilm = Object.assign({}, films[1], {isFavorite: true});
+
+    expect(reducer({
+      films,
+      promoFilm: null,
+    }, {
+      type: ActionType.UPDATE_FILMS,
+      payload: updatedFilm,
+    })).toHaveProperty(`films.1`, updatedFilm);
+  });
+
+  it(`Reducer should update comments when user post comment to film`, () => {
+    const newComments = Object.assign({}, fakeResponseComments, mockComment);
+
+    expect(reducer({
+      currentComments: fakeResponseComments,
+    }, {
+      type: ActionType.UPDATE_COMMENTS,
+      payload: newComments,
+    })).toEqual({
+      currentComments: newComments,
+    });
+  });
+
+  it(`Reducer should update comments when a loaded comments`, () => {
+    expect(reducer({
+      currentComments: fakeResponseComments,
+    }, {
+      type: ActionType.LOAD_COMMENTS,
+      payload: fakeResponseComments,
+    })).toEqual({
+      currentComments: fakeResponseComments,
+    });
   });
 });
 
-it(`Reducer should update promo film with a loaded film`, () => {
-  expect(reducer({
-    promoFilm: null,
-  }, {
-    type: ActionType.LOAD_PROMO_FILM,
-    payload: promoFilm,
-  })).toEqual({
-    promoFilm,
-  });
-});
-
-it(`Reducer should update films when user add film to favorites`, () => {
-  const updatedFilm = Object.assign({}, films[1], {isFavorite: true});
-
-  expect(reducer({
-    films,
-    promoFilm: null,
-  }, {
-    type: ActionType.UPDATE_FILMS,
-    payload: updatedFilm,
-  })).toHaveProperty(`films.1`, updatedFilm);
-});
-
-it(`Reducer should update comments when user post comment to film`, () => {
-  const newComments = Object.assign({}, fakeResponseComments, mockComment);
-
-  expect(reducer({
-    currentComments: fakeResponseComments,
-  }, {
-    type: ActionType.UPDATE_COMMENTS,
-    payload: newComments,
-  })).toEqual({
-    currentComments: newComments,
-  });
-});
-
-describe(`Operations work correctly`, () => {
-  it(`Should make a correct API call to /films`, function () {
+describe(`Operations works correctly`, () => {
+  it(`Should make a correct API call to get /films`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
     const filmsLoader = Operation.loadFilms();
@@ -311,7 +324,7 @@ describe(`Operations work correctly`, () => {
       });
   });
 
-  it(`Should make a correct API call to /films/promo`, function () {
+  it(`Should make a correct API call to get /films/promo`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
     const promoFilmLoader = Operation.loadPromoFilm();
@@ -330,7 +343,7 @@ describe(`Operations work correctly`, () => {
       });
   });
 
-  it(`Should make a correct API call to /favorite`, function () {
+  it(`Should make a correct API call to post /favorite`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
     const addFilmToUserListLoader = Operation.addFilmToUserList(fakeResponseFilm.id);
@@ -349,7 +362,7 @@ describe(`Operations work correctly`, () => {
       });
   });
 
-  it(`Should make a correct API call to /comments/:id`, function () {
+  it(`Should make a correct API call to post /comments/:id`, function () {
     const apiMock = new MockAdapter(api);
     const dispatch = jest.fn();
     const updateCurrentComments = Operation.postCommentToFilm(fakeResponseFilm.id, `Fake review`);
@@ -368,6 +381,25 @@ describe(`Operations work correctly`, () => {
         expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.SET_COMMENT_ERROR,
           payload: null,
+        });
+      });
+  });
+
+  it(`Should make a correct API call to get /comments/:id`, function () {
+    const apiMock = new MockAdapter(api);
+    const dispatch = jest.fn();
+    const updateCurrentComments = Operation.getCommentsToFilm(fakeResponseFilm.id);
+
+    apiMock
+      .onGet(`/comments/${fakeResponseFilm.id}`)
+      .reply(200, fakeResponseComments);
+
+    return updateCurrentComments(dispatch, () => {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenNthCalledWith(1, {
+          type: ActionType.LOAD_COMMENTS,
+          payload: fakeResponseComments,
         });
       });
   });

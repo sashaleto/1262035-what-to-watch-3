@@ -1,6 +1,8 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MovieCard from './movie-card';
+import MovieCard from './movie-card.jsx';
+import history from "../../history";
+import {Router} from "react-router-dom";
 
 const film = {
   title: `Gangs of new york`,
@@ -22,13 +24,16 @@ const film = {
 
 it(`Render MovieCard`, () => {
   const tree = renderer
-        .create(<MovieCard
-          film={film}
-          onMovieCardClick={() => {}}
-          onMovieCardHover={() => {}}
-          onMovieCardLeave={() => {}}
-          isHovered={false}
-        />)
+        .create(
+            <Router history={history}>
+              <MovieCard
+                film={film}
+                onMovieCardHover={() => {}}
+                onMovieCardLeave={() => {}}
+                isHovered={false}
+              />
+            </Router>
+        )
         .toJSON();
 
   expect(tree).toMatchSnapshot();

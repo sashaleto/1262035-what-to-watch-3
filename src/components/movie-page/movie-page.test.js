@@ -1,10 +1,13 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MoviePage from "./movie-page";
+import {Provider} from "react-redux";
+import configureStore from "redux-mock-store";
+import {MoviePage} from "./movie-page.jsx";
 import {AuthorizationStatus} from "../../reducer/user/user";
 import history from "../../history";
 import {Router} from "react-router-dom";
 
+const mockStore = configureStore([]);
 const movie = {
   title: `Gangs of new york`,
   posterImage: `https://htmlacademy-react-3.appspot.com/wtw/static/film/poster/Gangs_of_New_York_Poster.jpg`,
@@ -60,21 +63,26 @@ const films = [
 const userAvatarUrl = `img/avatar.jpg`;
 
 it(`Render MoviePage`, () => {
+  const store = mockStore({});
+
   const tree = renderer
         .create(
-            <Router history={history}>
-              <MoviePage
-                movie={movie}
-                films={films}
-                onMovieCardClick={() => {}}
-                playingFilm={null}
-                setPlayingFilm={() => {}}
-                userAvatarUrl={userAvatarUrl}
-                authStatus={AuthorizationStatus.AUTH}
-                addToMyList={() => {}}
-                removeFromMyList={() => {}}
-              />
-            </Router>
+            <Provider store={store}>
+              <Router history={history}>
+                <MoviePage
+                  movie={movie}
+                  comments={[]}
+                  userAvatarUrl={userAvatarUrl}
+                  authStatus={AuthorizationStatus.AUTH}
+                  addToMyList={() => {}}
+                  removeFromMyList={() => {}}
+                  loadComments={() => {}}
+                  setActiveFilm={() => {}}
+                  activeFilmId={movie.id}
+                  filmsToRender={films}
+                />
+              </Router>
+            </Provider>
         )
         .toJSON();
 

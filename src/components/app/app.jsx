@@ -7,7 +7,7 @@ import MoviePage from '../movie-page/movie-page.jsx';
 import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {AuthorizationStatus, Operation as UserOperation} from "../../reducer/user/user";
 import {Operation as DataOperation} from "../../reducer/data/data";
-import {getActiveFilmId, getShownCardsBound} from "../../reducer/state/selectors";
+import {getShownCardsBound} from "../../reducer/state/selectors";
 import {getAuthorizationStatus, getSignInError, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
 import {getMainFilms, getUserListFilms} from "../../reducer/data/selectors";
@@ -157,7 +157,6 @@ App.propTypes = {
   onShowMoreClick: PropTypes.func.isRequired,
   shownCardsBound: PropTypes.number.isRequired,
   login: PropTypes.func.isRequired,
-  activeFilm: PropTypes.object,
   userInfo: PropTypes.object,
   addToMyList: PropTypes.func.isRequired,
   removeFromMyList: PropTypes.func.isRequired,
@@ -173,7 +172,6 @@ const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
   mainFilms: getMainFilms(state),
   shownCardsBound: getShownCardsBound(state),
-  activeFilm: getFilms(state)[getActiveFilmId(state)],
   heroMovie: getPromoFilm(state),
   reviewError: getReviewError(state),
   signInError: getSignInError(state),
