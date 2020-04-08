@@ -61,7 +61,7 @@ const withVideo = (Component) => {
       const video = this._videoRef.current;
 
       if (this.state.isPlaying) {
-        video.play();
+        video.play().catch(() => {});
       } else {
         video.pause();
       }
