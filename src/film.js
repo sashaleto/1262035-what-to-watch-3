@@ -20,28 +20,6 @@ export default class Film {
     this.isFavorite = film[`is_favorite`];
   }
 
-  toRAW() {
-    return {
-      "id": this.id,
-      "name": this.title,
-      "poster_image": this.posterImage,
-      "preview_image": this.previewImage,
-      "background_image": this.backgroundImage,
-      "background_color": this.backgroundColor,
-      "video_link": this.videoLink,
-      "preview_video_link": this.trailerLink,
-      "description": this.description,
-      "rating": this.rating.score,
-      "scores_count": this.rating.count,
-      "director": this.director,
-      "starring": this.starring,
-      "run_time": this.runTime,
-      "genre": this.genre,
-      "released": this.released,
-      "is_favorite": this.isFavorite,
-    };
-  }
-
   static parseFilm(film) {
     return new Film(film);
   }
@@ -55,9 +33,5 @@ export default class Film {
 
   static parseFilms(films) {
     return films.map(Film.parseFilm);
-  }
-
-  static clone(film) {
-    return new Film(film.toRAW());
   }
 }

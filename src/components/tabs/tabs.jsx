@@ -12,6 +12,8 @@ const TabsTitles = {
 class Tabs extends PureComponent {
   constructor(props) {
     super(props);
+
+    this._handleTabClick = this._handleTabClick.bind(this);
   }
 
   _setTabActiveClass(title) {
@@ -19,7 +21,7 @@ class Tabs extends PureComponent {
     return activeTab === title ? `movie-nav__item--active` : ``;
   }
 
-  _onTabClickHandler(e, newActiveTab) {
+  _handleTabClick(e, newActiveTab) {
     e.preventDefault();
     this.props.onActivateItem(newActiveTab);
   }
@@ -55,7 +57,7 @@ class Tabs extends PureComponent {
             {Object.values(TabsTitles).map((title) => {
               return <li key={title} className={`movie-nav__item ${this._setTabActiveClass(title)}`}>
                 <a href="#" className="movie-nav__link" onClick={(e) => {
-                  this._onTabClickHandler(e, title);
+                  this._handleTabClick(e, title);
                 }}>{title}</a>
               </li>;
             })}

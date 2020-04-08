@@ -10,10 +10,10 @@ class SignIn extends PureComponent {
     this.loginRef = createRef();
     this.passwordRef = createRef();
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  handleSubmit(e) {
+  handleFormSubmit(e) {
     const {onSubmit} = this.props;
 
     e.preventDefault();
@@ -44,7 +44,7 @@ class SignIn extends PureComponent {
         <form
           action="#"
           className="sign-in__form"
-          onSubmit={this.handleSubmit}
+          onSubmit={this.handleFormSubmit}
         >
           {
             (signInError)
