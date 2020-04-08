@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {Router, Route, Switch, Redirect} from 'react-router-dom';
+import {Router, Route, Switch, Redirect, Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import Main from '../main/main.jsx';
 import MoviePage from '../movie-page/movie-page.jsx';
@@ -8,7 +8,7 @@ import {ActionCreator as ActionCreatorState} from "../../reducer/state/state";
 import {AuthorizationStatus, Operation as UserOperation} from "../../reducer/user/user";
 import {Operation as DataOperation} from "../../reducer/data/data";
 import {getActiveFilmId, getShownCardsBound} from "../../reducer/state/selectors";
-import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
+import {getAuthorizationStatus, getSignInError, getUserInfo} from "../../reducer/user/selectors";
 import {getFilms, getPromoFilm, getReviewError} from "../../reducer/data/selectors";
 import {getMainFilms, getUserListFilms} from "../../reducer/data/selectors";
 import SignIn from "../sign-in/sign-in.jsx";
@@ -66,6 +66,7 @@ class App extends PureComponent {
       login,
       onSubmitReview,
       reviewError,
+      signInError,
       userFilmsList
     } = this.props;
     const avatar = userInfo ? userInfo.avatarUrl : ``;
@@ -100,7 +101,7 @@ class App extends PureComponent {
             {
               (authorizationStatus === AuthorizationStatus.AUTH)
                 ? <Redirect to={AppRoutes.ROOT}/>
-                : <SignIn onSubmit={login}/>
+                : <SignIn onSubmit={login} signInError={signInError}/>
             }
           </Route>
           <PrivateRoute exact path={`${AppRoutes.FILM}/:id${AppRoutes.ADD_REVIEW}`}
@@ -121,6 +122,20 @@ class App extends PureComponent {
             return <MyList films={userFilmsList} avatarUrl={avatar}/>;
           }}>
           </PrivateRoute>
+          <Route
+            render={() => (
+              <Fragment>
+                <section style={{padding: `20px 75px`}}>
+                  <h1 style={{lineHeight: `1.5`}}>
+                    404.
+                    <br />
+                    <small>Page not found</small>
+                  </h1>
+                  <Link to={AppRoutes.ROOT}>Go to main page</Link>
+                </section>
+              </Fragment>
+            )}
+          />
         </Switch>
       </Router>
     );
@@ -148,6 +163,7 @@ App.propTypes = {
   removeFromMyList: PropTypes.func.isRequired,
   onSubmitReview: PropTypes.func.isRequired,
   reviewError: PropTypes.string,
+  signInError: PropTypes.string,
   userFilmsList: PropTypes.array.isRequired,
 };
 
@@ -160,6 +176,7 @@ const mapStateToProps = (state) => ({
   activeFilm: getFilms(state)[getActiveFilmId(state)],
   heroMovie: getPromoFilm(state),
   reviewError: getReviewError(state),
+  signInError: getSignInError(state),
   userFilmsList: getUserListFilms(state),
 });
 

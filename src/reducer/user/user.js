@@ -1,4 +1,6 @@
 import {extend} from "../../utils.js";
+import history from "../../history";
+import {AppRoutes} from "../../constants";
 
 const AuthorizationStatus = {
   AUTH: `AUTH`,
@@ -8,11 +10,13 @@ const AuthorizationStatus = {
 const initialState = {
   authorizationStatus: AuthorizationStatus.NO_AUTH,
   authInfo: null,
+  signInError: ``,
 };
 
 const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
   SAVE_USER_INFO: `SAVE_USER_INFO`,
+  SET_LOGIN_ERROR: `SET_LOGIN_ERROR`,
 };
 
 const ActionCreator = {
@@ -29,6 +33,11 @@ const ActionCreator = {
       payload: userData,
     };
   },
+
+  setLoginError: (message) => ({
+    type: ActionType.SET_LOGIN_ERROR,
+    payload: message,
+  }),
 };
 
 export const userDataAdapter = (data) => {
@@ -60,6 +69,10 @@ const Operation = {
       .then((response) => {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.saveUserInfo(userDataAdapter(response.data)));
+        dispatch(ActionCreator.setLoginError(null));
+        history.push(AppRoutes.ROOT);
+      }).catch((err) => {
+        dispatch(ActionCreator.setLoginError(err.response.data.error));
       });
   },
 };
@@ -73,6 +86,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.SAVE_USER_INFO:
       return extend(state, {
         authInfo: action.payload,
+      });
+
+    case ActionType.SET_LOGIN_ERROR:
+      return extend(state, {
+        signInError: action.payload,
       });
   }
 
